@@ -69,6 +69,26 @@ We will also develop a game like Pacman or Snake to run on the console, controll
 Time permitting, we will also develop a more complex user input mechanism involving recording the projection surface.
 
 \section{Design}
+We will use two optical stages, one which spins (like in the video linked on the page above) and one which tilts.
+The spinning element causes the lasers to scan left-to-right, while the tilting element select a scan line.
+When outputting an image we will scan out the top line, then the next line, etc until we wrap around after the bottom line.
+Three lasers will be used, red, green, and purple (blue is harder to find).
+We don't expect to modulate their intensities, but any permutation of the colors is allowed in each of the pixels.
+
+In more detail: the spinning stage will consist of several mirrors in a ``carousel'' mounted on top of a spinning platform, perhaps a PC cooling fan.
+The carousel will spin at a fixed rate, but does not need to be regulated by the microcontroller.
+The carousel will be outfitted with a photo resistor and LED similar to the setup we are using for lab 4 which will trigger the start of each scan line.
+DMA will be used to output the pixels to the lasers, triggered by a clock.
+Thus the screen width is determined by the clock rate AND the rotational speed of the carousel.
+
+The vertical scanning is achieved by actuating a mirror with a variable-force-solenoid and spring combination from a speaker system.
+Each time the photo resistor is triggered the mirror will move to the next scan line, wrapping to the top when appropriate.
+
+The lasers will be toggled on and off with FETs.
+The FETs are controlled by the DMA channels which will toggle the digital outputs.
+
+The lasers will be calibrated to all be on the same scan line, but will be out of phase on that line.
+By delaying the lasers by the appropriate number of degrees they can be brought back into phase.
 
 \section{Standards}
 % A paragraph describing the standards (IEEE, ISO, ANSI, etc) relevant to your project.
