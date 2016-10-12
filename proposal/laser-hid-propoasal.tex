@@ -92,10 +92,24 @@ Component & Price & Link\\
 
 \section{Impact}
 % A paragraph describing the societal impact of your project. This might include:
-\subsection{safety considerations}
+\subsection{Safety considerations}
+The lasers will damage eyes if pointed directly into them.
+Although the lasers themselves will be fixed in position, they will be redirected through a collection of mirrors that change their direction.
+The mirrors will be rigidly constrained by hardware so that the lasers can only be directed out one side of the device.
+In other words, the physical properties of the hardware will ensure that software faults cannot direct lasers in an unexpected direction.
+
+We must also ensure that the lasers do not interfere with critical infrastructure such as airplanes.
+This can be avoided by testing the system inside and using the laser direction constraints discussed in the previous paragraph to prevent system errors from affecting the outside world.
 \subsection{human factors and usability}
 \subsection{interface design considerations for people with special needs}
 \subsection{Intellectual property considerations}
+The pac-man game is likely covered by intelectual property rules that prevent us from directly implementing it.
+There are two routes available to avoid this problem:
+\begin{itemize}
+  \item Trivially modify the game until it is not in violation
+  \item Substantively modify the game by inventing our own rules and mechanics
+\end{itemize}
+We will choose between these based on time and simplicity.
 
 \section{Hardware}
 % A first pass of the program you will write, including:
