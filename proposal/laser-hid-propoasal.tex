@@ -1,0 +1,114 @@
+\documentclass[10pt]{article}
+
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{setspace}
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{titlesec}
+
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{wrapfig}
+
+\usepackage{indentfirst}
+\usepackage{url}
+
+\usepackage{amsmath}
+
+\usepackage{fancyref}
+
+% put all figures at the end of the document
+%\usepackage[nomarkers,figuresonly]{endfloat}
+
+% todo notes
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+
+\usepackage{enumerate}
+\usepackage{comment}
+
+\newcommand{\ttinline}[1]{\texttt{\lstinline{#1}}}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color
+  basicstyle=\footnotesize,        % size of fonts used for the code
+  breaklines=true,                 % automatic line breaking only at whitespace
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{mygreen},    % comment style
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  %keywordstyle=\color{blue},       % keyword style
+  %stringstyle=\color{mymauve},     % string literal style
+}
+\lstset{language=Python}
+
+\begin{document}
+
+\setlength{\fboxrule}{.5mm}\setlength{\fboxsep}{1.2mm}
+\newlength{\boxlength}\setlength{\boxlength}{\textwidth}
+\addtolength{\boxlength}{-4mm}
+\begin{center}\framebox{\parbox{\boxlength}{\bf
+ECE4760 \hfill Final Project Proposal \\
+Istvan Burbank (ipb7), Peter Friend (pcf38), James Cassell (jcc384) \hfill
+\today}}
+\end{center}
+
+% \singlespacing
+% \titlespacing\section{0pt}{2pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{2pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{2pt plus 2pt minus 2pt}{2pt plus 2pt minus 2pt}
+
+\section{Intro}
+% A page describing the project at a high level (e.g. rationale, user interface, functions)
+
+\section{Design}
+
+\section{Standards}
+% A paragraph describing the standards (IEEE, ISO, ANSI, etc) relevant to your project.
+
+\section{Parts List}
+% A tentative parts cost list.
+
+% BEGIN RECEIVE ORGTBL component-table
+\begin{tabular}{lll}
+\hline
+Component & Price & Link\\
+\hline
+ &  & \\
+ &  & \\
+\end{tabular}
+% END RECEIVE ORGTBL component-table
+\begin{comment}
+  #+ORGTBL: SEND component-table orgtbl-to-latex
+  |-----------+-------+------|
+  | Component | Price | Link |
+  |-----------+-------+------|
+  |           |       |      |
+  |           |       |      |
+  % $ (optional extra dollar to keep font-lock happy, see footnote)
+\end{comment}
+
+\section{Impact}
+% A paragraph describing the societal impact of your project. This might include:
+\subsection{safety considerations}
+\subsection{human factors and usability}
+\subsection{interface design considerations for people with special needs}
+\subsection{Intellectual property considerations}
+
+\section{Hardware}
+% A first pass of the program you will write, including:
+% A block diagram or pseuocode
+% Tentative source code (if you have it)
+% A tentative schematic for any hardware you need to build.
+% A parts list with specific parts types, so that we can see if we have the material. 
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
