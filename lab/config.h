@@ -23,10 +23,6 @@
 // IF use_vref_debug IS defined, pin 25 is Vref output
 //#define use_vref_debug
 
-// IF use_uart_serial IS defined, pin 21 and pin 22 are used by the uart
-#define use_uart_serial
-#define BAUDRATE 9600 // must match PC terminal emulator setting
-
 /////////////////////////////////
 // set up clock parameters
 // system cpu clock
