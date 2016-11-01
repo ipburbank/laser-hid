@@ -31,3 +31,56 @@
 # Debug files
 *.dSYM/
 *.su
+
+### MPLab IDE bullshit ###
+# see http://microchip.wikidot.com/faq:27
+**/nbproject/Makefile-*
+**/nbproject/Package-*
+**/*.X/build
+**/*.X/dist
+**/nbproject/private
+
+### LaTeX ###
+# based on https://www.gitignore.io/api/latex, but trimmed manually by Peter
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+
+*.pdf
+
+## Intermediate documents:
+*.dvi
+*-converted-to.*
+# these rules might exclude image files for figures etc.
+# *.ps
+# *.eps
+# *.pdf
+
+## Bibliography auxiliary files (bibtex/biblatex/biber):
+*.bbl
+*.bcf
+*.blg
+*-blx.aux
+*-blx.bib
+*.brf
+*.run.xml
+
+# package specific
+# endfloat
+*.ttt
+*.fff
+
+# auto folder when using emacs and auctex
+/auto/*
+
+######## end of the real stuff only IDE automatic bullshit below here #######
