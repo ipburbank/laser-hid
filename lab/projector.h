@@ -47,7 +47,9 @@
 /**
  * A pixel in RGB color space represented in six bits. Bits not defined here
  * should not be set.
+ * A GCC-specific pragma is used to ensure pixels are stored in only one byte.
  */
+#pragma pack(1)
 struct pixel {
   unsigned int red   : 2;
   unsigned int blue  : 2;
