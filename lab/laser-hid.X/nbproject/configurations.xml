@@ -8,6 +8,7 @@
       <itemPath>../include.h</itemPath>
       <itemPath>../pt_cornell_1_2_1.h</itemPath>
       <itemPath>../parameters.h</itemPath>
+      <itemPath>../projector.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
