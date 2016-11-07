@@ -51,9 +51,9 @@
  */
 #pragma pack(1)
 struct pixel {
-  unsigned int red   : 2;
-  unsigned int blue  : 2;
-  unsigned int green : 2;
+  char red   : 2;
+  char blue  : 2;
+  char green : 2;
 };
 
 //@}
