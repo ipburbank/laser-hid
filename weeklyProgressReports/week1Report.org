@@ -5,7 +5,10 @@
 This past week, a large portion of the work focused on creating the physical projector.
 
 Istvan led design on a part meant for the mirrors to be attached to and to be attached to the CPU fan.
-This part was then sent to RPL to be printed.
+This part was designed in CAD and sent to the cornell RPL for 3D printing (which is at no cost to the project).
+Istvan also established the public interface of the projector to the game (a framebuffer is exposed which is a 2-d array of ~pixel_t~ bitfields, which in turn have 2-bit red green and blue fields).
+Istvan also investigated the feasiblity of incorporating a VGA interface, allowing projection from a laptop.
+The investigation involved the design and routing of a PCB with the required components, but during that process it was determined that the inherent complexity and number of parts was outside the scope of this project.
 
 James focused calculations were done to determine what the size our screen will be at different distances from the display.
 Along with at what angles can we position the rotating mirror in order to still hit the mirror array based on position relative to the mirror array.
