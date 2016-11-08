@@ -15,12 +15,15 @@ Along with at what angles can we position the rotating mirror in order to still 
 Other considerations were given into how the laser interacts with the spinning mirror, and how large of a horizontal arc this may give us.
 It was determined that at the small distances from which you can still see the lazer, the arc will be minimal and hard to notice.
 
-Peter put what you worked on here.
+After we realized that the memory needed to buffer all of the pixels would be a serious concern, we focused on the space efficiency of our framebuffer.
+Peter researched standards compliant bitfields and how to "pack" them into structs and arrays to maximize space efficiency without relying on non-standard compiler features such as pragmas.
+Finally, Peter planned out pin and peripheral use so that writing a single byte into a port output SFR can output at least six pins.
+This is interesting under the constraints of leaving free SPI pins and the weird mapping of physical pins to IO Ports.
+Obviously, this is so that the DMA can write a single byte for each pixel (two bits per color).
 
 Overall, we worked together on figuring out what types of hardware we are going to use in order to disaply 240p.
 This included reading datasheets for many different DACs as well as external memory for storing a frame buffer.
 
-During the past week we started to map out all the peripherals and pins we are going to use for the project.
 Below are tables that we created detailing these pin and peripheral assignments.
 * Peripheral Use
 | Peripheral | file used in | purpose           |
