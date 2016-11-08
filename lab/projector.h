@@ -61,7 +61,7 @@ struct pixel {
  * Once a pixels value is changed in this array the new value will be projected
  * the next time the pixel is output (there is no v-sync).
  */
-extern struct pixel framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
+extern struct pixel framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 
 //@}
 
