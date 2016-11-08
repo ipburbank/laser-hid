@@ -46,5 +46,10 @@
 //@{
 
 //@}
+/**
+ * Projected image height and width in pixels.
+ */
+#define IMAGE_HEIGHT (50)
+#define IMAGE_WIDTH  (50)
 
 #endif // PARAMETERS_H

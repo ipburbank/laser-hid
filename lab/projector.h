@@ -31,12 +31,6 @@
 /*******************************/
 //@{
 
-/**
- * Projected image height and width in pixels.
- */
-#define IMAGE_HEIGHT (240)
-#define IMAGE_WIDTH  (352)
-
 //@}
 
 /*********************************/
