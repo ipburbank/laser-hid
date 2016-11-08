@@ -1,0 +1,51 @@
+#+TITLE: ECE 4760 Laser Projector Progress Report Week 1
+#+AUTHOR: Peter Friend (pcf38), Istvan Burbank (ipb7), James Cassell (jcc384)
+#+OPTIONS: toc:nil
+
+This past week, a large portion of the work focused on creating the physical projector.
+
+Istvan led design on a part meant for the mirrors to be attached to and to be attached to the CPU fan.
+This part was then sent to RPL to be printed.
+
+James focused calculations were done to determine what the size our screen will be at different distances from the display.
+Along with at what angles can we position the rotating mirror in order to still hit the mirror array based on position relative to the mirror array.
+Other considerations were given into how the laser interacts with the spinning mirror, and how large of a horizontal arc this may give us.
+It was determined that at the small distances from which you can still see the lazer, the arc will be minimal and hard to notice.
+
+Peter put what you worked on here.
+
+Overall, we worked together on figuring out what types of hardware we are going to use in order to disaply 240p.
+This included reading datasheets for many different DACs as well as external memory for storing a frame buffer.
+
+During the past week we started to map out all the peripherals and pins we are going to use for the project.
+Below are tables that we created detailing these pin and peripheral assignments.
+* Peripheral Use
+| Peripheral | file used in | purpose           |
+|------------+--------------+-------------------|
+| AD1        |              | Joystick movement |
+|------------+--------------+-------------------|
+| Timer3     |              | AD1 timing        |
+|------------+--------------+-------------------|
+| SPI1       |              | ???               |
+|------------+--------------+-------------------|
+* Pinout
+| Direction | Peripheral | Signal       | Symbolic Pin | Pin |
+|-----------+------------+--------------+--------------+-----|
+| in        | AD1        |              | AN0          |   2 |
+| in        | AD1        |              | AN1          |   3 |
+|-----------+------------+--------------+--------------+-----|
+| out       | (gpio)     |              | RB0          |   4 |
+| out       | (gpio)     |              | RB1          |   5 |
+| out       | (gpio)     |              | RB2          |   6 |
+| out       | (gpio)     |              | RB3          |   7 |
+| out       | (gpio)     |              | RB4          |  11 |
+| out       | (gpio)     |              | RB5          |  14 |
+| out       | (gpio)     |              | RB7          |  16 |
+|-----------+------------+--------------+--------------+-----|
+| out       | SPI1       | Slave Select | RPB15        |  26 |
+| out       | SPI1       | Data Out     | RPB8         |  17 |
+| in        | SPI1       | Data In      | RPB11        |  22 |
+| out       | SPI1       |              | SCK1         |  25 |
+|-----------+------------+--------------+--------------+-----|
+|           |            |              |              |     |
+
