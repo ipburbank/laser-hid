@@ -18,4 +18,8 @@
 #define IMAGE_HEIGHT (50)
 #define IMAGE_WIDTH  (50)
 
+/* tab is 4 spaces for purposes of text rendering
+ */
+#define RENDERING_TAB_WIDTH (4)
+
 #endif // PARAMETERS_H
