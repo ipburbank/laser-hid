@@ -24,13 +24,6 @@
 #define ARRAY_LEN(a) (sizeof(a)/sizeof(a[0]))
 
 //////////////////////
-/* SWAP MACRO       */
-//////////////////////
-
-// used for rendering, copy-pastad from tft_ghx.h
-#define swap(a, b) { short t = a; a = b; b = t; }
-
-//////////////////////
 /* PULL UP/DOWN     */
 //////////////////////
 
