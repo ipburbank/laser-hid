@@ -10,46 +10,147 @@
  */
 
 /*
-This is the core graphics library for all our displays, providing a common
-set of graphics primitives (points, lines, circles, etc.).  It needs to be
-paired with a hardware-specific library for each display device we carry
-(to handle the lower-level functions).
-
-Adafruit invests time and resources providing this open source code, please
-support Adafruit & open-source hardware by purchasing products from Adafruit!
-
-Copyright (c) 2013 Adafruit Industries.  All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-- Redistributions of source code must retain the above copyright notice,
-  this list of conditions and the following disclaimer.
-- Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-*/
+ * This is the core graphics library for all our displays, providing a common
+ * set of graphics primitives (points, lines, circles, etc.).  It needs to be
+ * paired with a hardware-specific library for each display device we carry
+ * (to handle the lower-level functions).
+ *
+ * Adafruit invests time and resources providing this open source code, please
+ * support Adafruit & open-source hardware by purchasing products from Adafruit!
+ *
+ * Copyright (c) 2013 Adafruit Industries.  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #include "rendering.h"
 #include "glcdfont.c"
 
+//copy-pastad from tft_ghx.h
+#define swap(a, b) { short t = a; a = b; b = t; }
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
-                                                 // this function totally replaces the original tft version
+// this function totally replaces the original tft version
 void rendering_drawPixel(short x, short y, struct pixel color) {
   framebuffer[y][x] = color;
+}
+
+// from tft_master.c, but modified to just call drawPixel
+void rendering_drawFastVLine(short x, short y, short h, struct pixel color) {
+  /* Draw a vertical line at location from (x,y) to (x,y+h-1) with color
+   * Parameters:
+   *      x:  x-coordinate line to draw; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of starting point of line; top left of screen is y=0
+   *              and y increases to the bottom
+   *      h:  height of line to draw
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // Rudimentary clipping
+  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) return;
+
+  // don't go off screen
+  if((y+h-1) >= IMAGE_HEIGHT)
+    h = IMAGE_HEIGHT - y;
+
+  // draw from bottom to top
+  unsigned int current_y;
+  for (current_y = y; current_y < y + h - 1; current_y++) {
+    rendering_drawPixel(x, current_y, color);
+  }
+}
+
+// from tft_master.c, but modified to just call drawPixel
+void rendering_drawFastHLine(short x, short y, short w, struct pixel color) {
+  /* Draw a horizontal line at location from (x,y) to (x+w-1,y) with color
+   * Parameters:
+   *      x:  x-coordinate starting point of line; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of starting point of line; top left of screen is y=0
+   *              and y increases to the bottom
+   *      w:  width of line to draw
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // Rudimentary clipping
+  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
+    return;
+  }
+
+  // don't go off edge of screen
+  if((x+w-1) >= IMAGE_WIDTH) {
+    w = IMAGE_WIDTH - x;
+  }
+
+  // draw from left to right
+  unsigned int current_x;
+  for (current_x = x; current_x < x + w - 1; current_x++) {
+    rendering_drawPixel(current_x, y, color);
+  }
+}
+
+// from tft_master.c, but modified to just call drawPixel
+void rendering_fillRect(short x, short y, short w, short h,
+                        struct pixel color) {
+  /* Draw a filled rectangle with starting top-left vertex (x,y),
+   *  width w and height h with given color
+   * Parameters:
+   *      x:  x-coordinate of top-left vertex; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of top-left vertex; top left of screen is y=0
+   *              and y increases to the bottom
+   *      w:  width of rectangle
+   *      h:  height of rectangle
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // rudimentary clipping (drawChar w/big text requires this)
+  if ((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
+    return;
+  }
+
+  // don't go off screen horizontally
+  if ((x + w - 1) >= IMAGE_WIDTH) {
+    w = IMAGE_WIDTH  - x;
+  }
+  // don't go off screen vertically
+  if ((y + h - 1) >= IMAGE_HEIGHT) {
+    h = IMAGE_HEIGHT - y;
+  }
+
+  unsigned int current_y;
+  unsigned int current_x;
+  // iterate through y first then x because the framebuffer array is laid out by
+  // row then column. This may be good for performance, but the order is
+  // arbitrary anyway.
+  for (current_y = y; current_y < y + h - 1; current_y++) {
+    for (current_x = x; current_x < x + w - 1; current_x++) {
+      rendering_drawPixel(current_x, current_y, color);
+    }
+  }
 }
 
 void rendering_drawCircle(short x0, short y0, short r, struct pixel color) {

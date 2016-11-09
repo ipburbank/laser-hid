@@ -77,6 +77,8 @@ extern struct pixel framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 /********************************/
 //@{
 
+bool projector_pixel_equal(struct pixel const a, struct pixel const b);
+
 //@}
 
 #endif // PROJECTOR_H
