@@ -45,126 +45,78 @@
 #include "rendering.h"
 #include "glcdfont.c"
 
+/*******************************/
+/* LOCAL Macro Definitions     */
+/*******************************/
+//@{
+
 //copy-pastad from tft_ghx.h
 #define swap(a, b) { short t = a; a = b; b = t; }
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
-// this function totally replaces the original tft version
-void rendering_drawPixel(short x, short y, struct pixel color) {
-  framebuffer[y][x] = color;
-}
+//@}
 
-// from tft_master.c, but modified to just call drawPixel
-void rendering_drawFastVLine(short x, short y, short h, struct pixel color) {
-  /* Draw a vertical line at location from (x,y) to (x,y+h-1) with color
-   * Parameters:
-   *      x:  x-coordinate line to draw; top left of screen is x=0
-   *              and x increases to the right
-   *      y:  y-coordinate of starting point of line; top left of screen is y=0
-   *              and y increases to the bottom
-   *      h:  height of line to draw
-   *      color:  16-bit color value
-   * Returns:     Nothing
-   */
+/********************************/
+/* LOCAL Type(def) Declarations */
+/********************************/
+//@{
 
-  // Rudimentary clipping
-  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) return;
+//@}
 
-  // don't go off screen
-  if((y+h-1) >= IMAGE_HEIGHT)
-    h = IMAGE_HEIGHT - y;
+/*******************************/
+/* LOCAL Variable Definitions  */
+/*******************************/
+//@{
 
-  // draw from bottom to top
-  unsigned int current_y;
-  for (current_y = y; current_y < y + h - 1; current_y++) {
-    rendering_drawPixel(x, current_y, color);
-  }
-}
+static struct pixel textcolor;
+static struct pixel textbgcolor;
+static unsigned short cursor_y;
+static unsigned short cursor_x;
+static unsigned short textsize;
+static unsigned short wrap;
+static unsigned short rotation;
 
-// from tft_master.c, but modified to just call drawPixel
-void rendering_drawFastHLine(short x, short y, short w, struct pixel color) {
-  /* Draw a horizontal line at location from (x,y) to (x+w-1,y) with color
-   * Parameters:
-   *      x:  x-coordinate starting point of line; top left of screen is x=0
-   *              and x increases to the right
-   *      y:  y-coordinate of starting point of line; top left of screen is y=0
-   *              and y increases to the bottom
-   *      w:  width of line to draw
-   *      color:  16-bit color value
-   * Returns:     Nothing
-   */
+//@}
 
-  // Rudimentary clipping
-  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
-    return;
-  }
+/*******************************/
+/* LOCAL Function Declarations */
+/*******************************/
+//@{
 
-  // don't go off edge of screen
-  if((x+w-1) >= IMAGE_WIDTH) {
-    w = IMAGE_WIDTH - x;
-  }
+static void rendering_drawPixel(short x, short y, struct pixel color);
 
-  // draw from left to right
-  unsigned int current_x;
-  for (current_x = x; current_x < x + w - 1; current_x++) {
-    rendering_drawPixel(current_x, y, color);
-  }
-}
+static void rendering_drawFastVLine(short x, short y, short h, struct pixel color);
 
-// from tft_master.c, but modified to just call drawPixel
-void rendering_fillRect(short x, short y, short w, short h,
-                        struct pixel color) {
-  /* Draw a filled rectangle with starting top-left vertex (x,y),
-   *  width w and height h with given color
-   * Parameters:
-   *      x:  x-coordinate of top-left vertex; top left of screen is x=0
-   *              and x increases to the right
-   *      y:  y-coordinate of top-left vertex; top left of screen is y=0
-   *              and y increases to the bottom
-   *      w:  width of rectangle
-   *      h:  height of rectangle
-   *      color:  16-bit color value
-   * Returns:     Nothing
-   */
+static void rendering_drawFastHLine(short x, short y, short w, struct pixel color);
 
-  // rudimentary clipping (drawChar w/big text requires this)
-  if ((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
-    return;
-  }
+static void rendering_fillRect(short x, short y, short w, short h,
+                               struct pixel color);
+//@}
 
-  // don't go off screen horizontally
-  if ((x + w - 1) >= IMAGE_WIDTH) {
-    w = IMAGE_WIDTH  - x;
-  }
-  // don't go off screen vertically
-  if ((y + h - 1) >= IMAGE_HEIGHT) {
-    h = IMAGE_HEIGHT - y;
-  }
+/*******************************/
+/* GLOBAL Variable Definitions */
+/*******************************/
+//@{
 
-  unsigned int current_y;
-  unsigned int current_x;
-  // iterate through y first then x because the framebuffer array is laid out by
-  // row then column. This may be good for performance, but the order is
-  // arbitrary anyway.
-  for (current_y = y; current_y < y + h - 1; current_y++) {
-    for (current_x = x; current_x < x + w - 1; current_x++) {
-      rendering_drawPixel(current_x, current_y, color);
-    }
-  }
-}
+//@}
+
+/*******************************/
+/* GLOBAL Function Definitions */
+/*******************************/
+//@{
 
 void rendering_drawCircle(short x0, short y0, short r, struct pixel color) {
-/* Draw a circle outline with center (x0,y0) and radius r, with given color
- * Parameters:
- *      x0: x-coordinate of center of circle. The top-left of the screen
- *          has x-coordinate 0 and increases to the right
- *      y0: y-coordinate of center of circle. The top-left of the screen
- *          has y-coordinate 0 and increases to the bottom
- *      r:  radius of circle
- *      color: 16-bit color value for the circle. Note that the circle
- *          isn't filled. So, this is the color of the outline of the circle
- * Returns: Nothing
- */
+  /* Draw a circle outline with center (x0,y0) and radius r, with given color
+   * Parameters:
+   *      x0: x-coordinate of center of circle. The top-left of the screen
+   *          has x-coordinate 0 and increases to the right
+   *      y0: y-coordinate of center of circle. The top-left of the screen
+   *          has y-coordinate 0 and increases to the bottom
+   *      r:  radius of circle
+   *      color: 16-bit color value for the circle. Note that the circle
+   *          isn't filled. So, this is the color of the outline of the circle
+   * Returns: Nothing
+   */
   short f = 1 - r;
   short ddF_x = 1;
   short ddF_y = -2 * r;
@@ -198,8 +150,8 @@ void rendering_drawCircle(short x0, short y0, short r, struct pixel color) {
 }
 
 void rendering_drawCircleHelper( short x0, short y0,
-               short r, unsigned char cornername, struct pixel color) {
-// Helper function for drawing circles and circular objects
+                                 short r, unsigned char cornername, struct pixel color) {
+  // Helper function for drawing circles and circular objects
   short f     = 1 - r;
   short ddF_x = 1;
   short ddF_y = -2 * r;
@@ -235,23 +187,23 @@ void rendering_drawCircleHelper( short x0, short y0,
 }
 
 void rendering_fillCircle(short x0, short y0, short r, struct pixel color) {
-/* Draw a filled circle with center (x0,y0) and radius r, with given color
- * Parameters:
- *      x0: x-coordinate of center of circle. The top-left of the screen
- *          has x-coordinate 0 and increases to the right
- *      y0: y-coordinate of center of circle. The top-left of the screen
- *          has y-coordinate 0 and increases to the bottom
- *      r:  radius of circle
- *      color: 16-bit color value for the circle
- * Returns: Nothing
- */
+  /* Draw a filled circle with center (x0,y0) and radius r, with given color
+   * Parameters:
+   *      x0: x-coordinate of center of circle. The top-left of the screen
+   *          has x-coordinate 0 and increases to the right
+   *      y0: y-coordinate of center of circle. The top-left of the screen
+   *          has y-coordinate 0 and increases to the bottom
+   *      r:  radius of circle
+   *      color: 16-bit color value for the circle
+   * Returns: Nothing
+   */
   rendering_drawFastVLine(x0, y0-r, 2*r+1, color);
   rendering_fillCircleHelper(x0, y0, r, 3, 0, color);
 }
 
 void rendering_fillCircleHelper(short x0, short y0, short r,
-    unsigned char cornername, short delta, struct pixel color) {
-// Helper function for drawing filled circles
+                                unsigned char cornername, short delta, struct pixel color) {
+  // Helper function for drawing filled circles
   short f     = 1 - r;
   short ddF_x = 1;
   short ddF_y = -2 * r;
@@ -281,20 +233,20 @@ void rendering_fillCircleHelper(short x0, short y0, short r,
 
 // Bresenham's algorithm - thx wikpedia
 void rendering_drawLine(short x0, short y0,
-			    short x1, short y1,
-			    struct pixel color) {
-/* Draw a straight line from (x0,y0) to (x1,y1) with given color
- * Parameters:
- *      x0: x-coordinate of starting point of line. The x-coordinate of
- *          the top-left of the screen is 0. It increases to the right.
- *      y0: y-coordinate of starting point of line. The y-coordinate of
- *          the top-left of the screen is 0. It increases to the bottom.
- *      x1: x-coordinate of ending point of line. The x-coordinate of
- *          the top-left of the screen is 0. It increases to the right.
- *      y1: y-coordinate of ending point of line. The y-coordinate of
- *          the top-left of the screen is 0. It increases to the bottom.
- *      color: 16-bit color value for line
- */
+                        short x1, short y1,
+                        struct pixel color) {
+  /* Draw a straight line from (x0,y0) to (x1,y1) with given color
+   * Parameters:
+   *      x0: x-coordinate of starting point of line. The x-coordinate of
+   *          the top-left of the screen is 0. It increases to the right.
+   *      y0: y-coordinate of starting point of line. The y-coordinate of
+   *          the top-left of the screen is 0. It increases to the bottom.
+   *      x1: x-coordinate of ending point of line. The x-coordinate of
+   *          the top-left of the screen is 0. It increases to the right.
+   *      y1: y-coordinate of ending point of line. The y-coordinate of
+   *          the top-left of the screen is 0. It increases to the bottom.
+   *      color: 16-bit color value for line
+   */
   short steep = abs(y1 - y0) > abs(x1 - x0);
   if (steep) {
     swap(x0, y0);
@@ -335,18 +287,18 @@ void rendering_drawLine(short x0, short y0,
 
 // Draw a rectangle
 void rendering_drawRect(short x, short y, short w, short h, struct pixel color) {
-/* Draw a rectangle outline with top left vertex (x,y), width w
- * and height h at given color
- * Parameters:
- *      x:  x-coordinate of top-left vertex. The x-coordinate of
- *          the top-left of the screen is 0. It increases to the right.
- *      y:  y-coordinate of top-left vertex. The y-coordinate of
- *          the top-left of the screen is 0. It increases to the bottom.
- *      w:  width of the rectangle
- *      h:  height of the rectangle
- *      color:  16-bit color of the rectangle outline
- * Returns: Nothing
- */
+  /* Draw a rectangle outline with top left vertex (x,y), width w
+   * and height h at given color
+   * Parameters:
+   *      x:  x-coordinate of top-left vertex. The x-coordinate of
+   *          the top-left of the screen is 0. It increases to the right.
+   *      y:  y-coordinate of top-left vertex. The y-coordinate of
+   *          the top-left of the screen is 0. It increases to the bottom.
+   *      w:  width of the rectangle
+   *      h:  height of the rectangle
+   *      color:  16-bit color of the rectangle outline
+   * Returns: Nothing
+   */
   rendering_drawFastHLine(x, y, w, color);
   rendering_drawFastHLine(x, y+h-1, w, color);
   rendering_drawFastVLine(x, y, h, color);
@@ -355,19 +307,19 @@ void rendering_drawRect(short x, short y, short w, short h, struct pixel color) 
 
 // Draw a rounded rectangle
 void rendering_drawRoundRect(short x, short y, short w, short h,
-        short r, struct pixel color) {
-/* Draw a rounded rectangle outline with top left vertex (x,y), width w,
- * height h and radius of curvature r at given color
- * Parameters:
- *      x:  x-coordinate of top-left vertex. The x-coordinate of
- *          the top-left of the screen is 0. It increases to the right.
- *      y:  y-coordinate of top-left vertex. The y-coordinate of
- *          the top-left of the screen is 0. It increases to the bottom.
- *      w:  width of the rectangle
- *      h:  height of the rectangle
- *      color:  16-bit color of the rectangle outline
- * Returns: Nothing
- */
+                             short r, struct pixel color) {
+  /* Draw a rounded rectangle outline with top left vertex (x,y), width w,
+   * height h and radius of curvature r at given color
+   * Parameters:
+   *      x:  x-coordinate of top-left vertex. The x-coordinate of
+   *          the top-left of the screen is 0. It increases to the right.
+   *      y:  y-coordinate of top-left vertex. The y-coordinate of
+   *          the top-left of the screen is 0. It increases to the bottom.
+   *      w:  width of the rectangle
+   *      h:  height of the rectangle
+   *      color:  16-bit color of the rectangle outline
+   * Returns: Nothing
+   */
   // smarter version
   rendering_drawFastHLine(x+r  , y    , w-2*r, color); // Top
   rendering_drawFastHLine(x+r  , y+h-1, w-2*r, color); // Bottom
@@ -382,7 +334,7 @@ void rendering_drawRoundRect(short x, short y, short w, short h,
 
 // Fill a rounded rectangle
 void rendering_fillRoundRect(short x, short y, short w,
-				 short h, short r, struct pixel color) {
+                             short h, short r, struct pixel color) {
   // smarter version
   rendering_fillRect(x+r, y, w-2*r, h, color);
 
@@ -393,19 +345,19 @@ void rendering_fillRoundRect(short x, short y, short w,
 
 // Draw a triangle
 void rendering_drawTriangle(short x0, short y0,
-				short x1, short y1,
-				short x2, short y2, struct pixel color) {
-/* Draw a triangle outline with vertices (x0,y0),(x1,y1),(x2,y2) with given color
- * Parameters:
- *      x0: x-coordinate of one of the 3 vertices
- *      y0: y-coordinate of one of the 3 vertices
- *      x1: x-coordinate of one of the 3 vertices
- *      y1: y-coordinate of one of the 3 vertices
- *      x2: x-coordinate of one of the 3 vertices
- *      y2: y-coordinate of one of the 3 vertices
- *      color: 16-bit color value for outline
- * Returns: Nothing
- */
+                            short x1, short y1,
+                            short x2, short y2, struct pixel color) {
+  /* Draw a triangle outline with vertices (x0,y0),(x1,y1),(x2,y2) with given color
+   * Parameters:
+   *      x0: x-coordinate of one of the 3 vertices
+   *      y0: y-coordinate of one of the 3 vertices
+   *      x1: x-coordinate of one of the 3 vertices
+   *      y1: y-coordinate of one of the 3 vertices
+   *      x2: x-coordinate of one of the 3 vertices
+   *      y2: y-coordinate of one of the 3 vertices
+   *      color: 16-bit color value for outline
+   * Returns: Nothing
+   */
   rendering_drawLine(x0, y0, x1, y1, color);
   rendering_drawLine(x1, y1, x2, y2, color);
   rendering_drawLine(x2, y2, x0, y0, color);
@@ -413,19 +365,19 @@ void rendering_drawTriangle(short x0, short y0,
 
 // Fill a triangle
 void rendering_fillTriangle ( short x0, short y0,
-				  short x1, short y1,
-				  short x2, short y2, struct pixel color) {
-/* Draw a filled triangle with vertices (x0,y0),(x1,y1),(x2,y2) with given color
- * Parameters:
- *      x0: x-coordinate of one of the 3 vertices
- *      y0: y-coordinate of one of the 3 vertices
- *      x1: x-coordinate of one of the 3 vertices
- *      y1: y-coordinate of one of the 3 vertices
- *      x2: x-coordinate of one of the 3 vertices
- *      y2: y-coordinate of one of the 3 vertices
- *      color: 16-bit color value
- * Returns: Nothing
- */
+                              short x1, short y1,
+                              short x2, short y2, struct pixel color) {
+  /* Draw a filled triangle with vertices (x0,y0),(x1,y1),(x2,y2) with given color
+   * Parameters:
+   *      x0: x-coordinate of one of the 3 vertices
+   *      y0: y-coordinate of one of the 3 vertices
+   *      x1: x-coordinate of one of the 3 vertices
+   *      y1: y-coordinate of one of the 3 vertices
+   *      x2: x-coordinate of one of the 3 vertices
+   *      y2: y-coordinate of one of the 3 vertices
+   *      color: 16-bit color value
+   * Returns: Nothing
+   */
   short a, b, y, last;
 
   // Sort coordinates by Y order (y2 >= y1 >= y0)
@@ -474,8 +426,8 @@ void rendering_fillTriangle ( short x0, short y0,
     sa += dx01;
     sb += dx02;
     /* longhand:
-    a = x0 + (x1 - x0) * (y - y0) / (y1 - y0);
-    b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
+       a = x0 + (x1 - x0) * (y - y0) / (y1 - y0);
+       b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
     */
     if(a > b) swap(a,b);
     rendering_drawFastHLine(a, y, b-a+1, color);
@@ -491,8 +443,8 @@ void rendering_fillTriangle ( short x0, short y0,
     sa += dx12;
     sb += dx02;
     /* longhand:
-    a = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
-    b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
+       a = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
+       b = x0 + (x2 - x0) * (y - y0) / (y2 - y0);
     */
     if(a > b) swap(a,b);
     rendering_drawFastHLine(a, y, b-a+1, color);
@@ -500,8 +452,8 @@ void rendering_fillTriangle ( short x0, short y0,
 }
 
 void rendering_drawBitmap(short x, short y,
-			      const unsigned char *bitmap, short w, short h,
-			      struct pixel color) {
+                          const unsigned char *bitmap, short w, short h,
+                          struct pixel color) {
 
   short i, j, byteWidth = (w + 7) / 8;
 
@@ -521,10 +473,10 @@ void rendering_write(unsigned char c){
   } else if (c == '\r') {
     // skip em
   } else if (c == '\t'){
-      int new_x = cursor_x + RENDERING_TAB_WIDTH;
-      if (new_x < IMAGE_WIDTH){
-          cursor_x = new_x;
-      }
+    int new_x = cursor_x + RENDERING_TAB_WIDTH;
+    if (new_x < IMAGE_WIDTH){
+      cursor_x = new_x;
+    }
   } else {
     rendering_drawChar(cursor_x, cursor_y, c, textcolor, textbgcolor, textsize);
     cursor_x += textsize*6;
@@ -536,18 +488,18 @@ void rendering_write(unsigned char c){
 }
 
 inline void rendering_writeString(char* str){
-/* Print text onto screen
- * Call rendering_setCursor(), rendering_setTextColor(), rendering_setTextSize()
- *  as necessary before printing
- */
-    while (*str){
-        rendering_write(*str++);
-    }
+  /* Print text onto screen
+   * Call rendering_setCursor(), rendering_setTextColor(), rendering_setTextSize()
+   *  as necessary before printing
+   */
+  while (*str){
+    rendering_write(*str++);
+  }
 }
 
 // Draw a character
 void rendering_drawChar(short x, short y, unsigned char c, struct pixel color, struct pixel bg, unsigned char size) {
-    char i, j;
+  char i, j;
   if((x >= IMAGE_WIDTH)            || // Clip right
      (y >= IMAGE_HEIGHT)           || // Clip bottom
      ((x + 6 * size - 1) < 0) || // Clip left
@@ -567,7 +519,7 @@ void rendering_drawChar(short x, short y, unsigned char c, struct pixel color, s
         else {  // big size
           rendering_fillRect(x+(i*size), y+(j*size), size, size, color);
         }
-      } else if (bg != color) {
+      } else if (!projector_pixel_equal(bg, color)) {
         if (size == 1) // default size
           rendering_drawPixel(x+i, y+j, bg);
         else {  // big size
@@ -580,22 +532,22 @@ void rendering_drawChar(short x, short y, unsigned char c, struct pixel color, s
 }
 
 inline void rendering_setCursor(short x, short y) {
-/* Set cursor for text to be printed
- * Parameters:
- *      x = x-coordinate of top-left of text starting
- *      y = y-coordinate of top-left of text starting
- * Returns: Nothing
- */
+  /* Set cursor for text to be printed
+   * Parameters:
+   *      x = x-coordinate of top-left of text starting
+   *      y = y-coordinate of top-left of text starting
+   * Returns: Nothing
+   */
   cursor_x = x;
   cursor_y = y;
 }
 
 inline void rendering_setTextSize(unsigned char s) {
-/*Set size of text to be displayed
- * Parameters:
- *      s = text size (1 being smallest)
- * Returns: nothing
- */
+  /*Set size of text to be displayed
+   * Parameters:
+   *      s = text size (1 being smallest)
+   * Returns: nothing
+   */
   textsize = (s > 0) ? s : 1;
 }
 
@@ -606,11 +558,11 @@ inline void rendering_setTextColor(struct pixel c) {
 }
 
 inline void rendering_setTextColor2(struct pixel c, struct pixel b) {
-/* Set color of text to be displayed
- * Parameters:
- *      c = 16-bit color of text
- *      b = 16-bit color of text background
- */
+  /* Set color of text to be displayed
+   * Parameters:
+   *      c = 16-bit color of text
+   *      b = 16-bit color of text background
+   */
   textcolor   = c;
   textbgcolor = b;
 }
@@ -620,11 +572,134 @@ inline void rendering_setTextWrap(char w) {
 }
 
 inline unsigned char rendering_getRotation(void) {
-/* Returns current roation of screen
- *          0 = no rotation (0 degree rotation)
- *          1 = rotate 90 degree clockwise
- *          2 = rotate 180 degree
- *          3 = rotate 90 degree anticlockwise
- */
+  /* Returns current roation of screen
+   *          0 = no rotation (0 degree rotation)
+   *          1 = rotate 90 degree clockwise
+   *          2 = rotate 180 degree
+   *          3 = rotate 90 degree anticlockwise
+   */
   return rotation;
 }
+
+//@}
+
+/*******************************/
+/* ISR Definitions             */
+/*******************************/
+//@{
+
+//@}
+
+
+/*******************************/
+/* LOCAL Function Definitions  */
+/*******************************/
+//@{
+
+// this function totally replaces the original tft version
+static void rendering_drawPixel(short x, short y, struct pixel color) {
+  framebuffer[y][x] = color;
+}
+
+// from tft_master.c, but modified to just call drawPixel
+static void rendering_drawFastVLine(short x, short y, short h,
+                                    struct pixel color) {
+  /* Draw a vertical line at location from (x,y) to (x,y+h-1) with color
+   * Parameters:
+   *      x:  x-coordinate line to draw; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of starting point of line; top left of screen is y=0
+   *              and y increases to the bottom
+   *      h:  height of line to draw
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // Rudimentary clipping
+  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) return;
+
+  // don't go off screen
+  if((y+h-1) >= IMAGE_HEIGHT)
+    h = IMAGE_HEIGHT - y;
+
+  // draw from bottom to top
+  unsigned int current_y;
+  for (current_y = y; current_y < y + h - 1; current_y++) {
+    rendering_drawPixel(x, current_y, color);
+  }
+}
+
+// from tft_master.c, but modified to just call drawPixel
+static void rendering_drawFastHLine(short x, short y, short w,
+                                    struct pixel color) {
+  /* Draw a horizontal line at location from (x,y) to (x+w-1,y) with color
+   * Parameters:
+   *      x:  x-coordinate starting point of line; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of starting point of line; top left of screen is y=0
+   *              and y increases to the bottom
+   *      w:  width of line to draw
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // Rudimentary clipping
+  if((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
+    return;
+  }
+
+  // don't go off edge of screen
+  if((x+w-1) >= IMAGE_WIDTH) {
+    w = IMAGE_WIDTH - x;
+  }
+
+  // draw from left to right
+  unsigned int current_x;
+  for (current_x = x; current_x < x + w - 1; current_x++) {
+    rendering_drawPixel(current_x, y, color);
+  }
+}
+
+// from tft_master.c, but modified to just call drawPixel
+static void rendering_fillRect(short x, short y, short w, short h,
+                               struct pixel color) {
+  /* Draw a filled rectangle with starting top-left vertex (x,y),
+   *  width w and height h with given color
+   * Parameters:
+   *      x:  x-coordinate of top-left vertex; top left of screen is x=0
+   *              and x increases to the right
+   *      y:  y-coordinate of top-left vertex; top left of screen is y=0
+   *              and y increases to the bottom
+   *      w:  width of rectangle
+   *      h:  height of rectangle
+   *      color:  16-bit color value
+   * Returns:     Nothing
+   */
+
+  // rudimentary clipping (drawChar w/big text requires this)
+  if ((x >= IMAGE_WIDTH) || (y >= IMAGE_HEIGHT)) {
+    return;
+  }
+
+  // don't go off screen horizontally
+  if ((x + w - 1) >= IMAGE_WIDTH) {
+    w = IMAGE_WIDTH  - x;
+  }
+  // don't go off screen vertically
+  if ((y + h - 1) >= IMAGE_HEIGHT) {
+    h = IMAGE_HEIGHT - y;
+  }
+
+  unsigned int current_y;
+  unsigned int current_x;
+  // iterate through y first then x because the framebuffer array is laid out by
+  // row then column. This may be good for performance, but the order is
+  // arbitrary anyway.
+  for (current_y = y; current_y < y + h - 1; current_y++) {
+    for (current_x = x; current_x < x + w - 1; current_x++) {
+      rendering_drawPixel(current_x, current_y, color);
+    }
+  }
+}
+
+//@}
