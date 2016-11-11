@@ -8,8 +8,8 @@
 * Pinout
 | Direction | Peripheral | Signal       | Symbolic Pin | Pin |
 |-----------+------------+--------------+--------------+-----|
-| in        | AD1        |              | AN0          |   2 |
-| in        | AD1        |              | AN1          |   3 |
+| in        | AD1        | Joystick X   | AN0          |   2 |
+| in        | AD1        | Joystick Y   | AN1          |   3 |
 |-----------+------------+--------------+--------------+-----|
 | out       | (gpio)     |              | RB0          |   4 |
 | out       | (gpio)     |              | RB1          |   5 |
