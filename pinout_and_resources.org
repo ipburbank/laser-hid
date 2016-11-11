@@ -11,13 +11,13 @@
 | in        | AD1        | Joystick X   | AN0          |   2 |
 | in        | AD1        | Joystick Y   | AN1          |   3 |
 |-----------+------------+--------------+--------------+-----|
-| out       | (gpio)     |              | RB0          |   4 |
-| out       | (gpio)     |              | RB1          |   5 |
-| out       | (gpio)     |              | RB2          |   6 |
-| out       | (gpio)     |              | RB3          |   7 |
-| out       | (gpio)     |              | RB4          |  11 |
-| out       | (gpio)     |              | RB5          |  14 |
-| out       | (gpio)     |              | RB7          |  16 |
+| out       | (gpio)     | Red bit0     | RB0          |   4 |
+| out       | (gpio)     | Red bit1     | RB1          |   5 |
+| out       | (gpio)     | Blue bit0    | RB2          |   6 |
+| out       | (gpio)     | Blue bit1    | RB3          |   7 |
+| out       | (gpio)     | Green bit0   | RB4          |  11 |
+| out       | (gpio)     | Green Bit1   | RB5          |  14 |
+| out       | (gpio)     | (future use) | RB7          |  16 |
 |-----------+------------+--------------+--------------+-----|
 | out       | SPI1       | Slave Select | RPB15        |  26 |
 | out       | SPI1       | Data Out     | RPB8         |  17 |
