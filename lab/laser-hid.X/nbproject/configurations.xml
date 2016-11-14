@@ -22,7 +22,7 @@
       <itemPath>../glcdfont.c</itemPath>
       <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
-      <itemPath>../gldfont.c</itemPath>
+      <itemPath>../glcdfont.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
