@@ -41,7 +41,7 @@
 /*******************************/
 //@{
 
-struct pixel_color framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
+struct projector_pixel_color framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
 
 //@}
 
