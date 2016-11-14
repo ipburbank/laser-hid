@@ -9,6 +9,7 @@
       <itemPath>../pt_cornell_1_2_1.h</itemPath>
       <itemPath>../parameters.h</itemPath>
       <itemPath>../projector.h</itemPath>
+      <itemPath>../rendering.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -18,7 +19,10 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>../main.c</itemPath>
+      <itemPath>../glcdfont.c</itemPath>
+      <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
+      <itemPath>../glcdfont.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

@@ -50,6 +50,11 @@ struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
 /*******************************/
 //@{
 
+bool projector_color_equal(struct projector_color const a,
+                           struct projector_color const b) {
+  return (a.red == b.red) && (a.green == b.green) && (a.blue == b.blue);
+}
+
 //@}
 
 /*******************************/
