@@ -44,7 +44,7 @@
  * A GCC-specific pragma is used to ensure pixels are stored in only one byte.
  */
 #pragma pack(1)
-struct projector_pixel_color {
+struct projector_color {
   char red   : 2;
   char blue  : 2;
   char green : 2;
@@ -61,7 +61,7 @@ struct projector_pixel_color {
  * Once a pixels value is changed in this array the new value will be projected
  * the next time the pixel is output (there is no v-sync).
  */
-extern struct pixel_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
+extern struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 
 //@}
 
