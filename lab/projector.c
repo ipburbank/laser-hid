@@ -41,7 +41,7 @@
 /*******************************/
 //@{
 
-struct pixel framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
+struct pixel_color framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
 
 //@}
 
