@@ -526,7 +526,7 @@ void rendering_drawChar(short x, short y, unsigned char c,
         else {  // big size
           rendering_fillRect(x+(i*size), y+(j*size), size, size, color);
         }
-      } else if (!projector_pixel_equal(bg, color)) {
+      } else if (!projector_color_equal(bg, color)) {
         if (size == 1) // default size
           rendering_drawPixel(x+i, y+j, bg);
         else {  // big size

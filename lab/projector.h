@@ -77,7 +77,13 @@ extern struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 /********************************/
 //@{
 
-bool projector_pixel_equal(struct projector_color const a,
+/**
+ * @brief Return true if a and b represent exactly the same color
+ *
+ * Two structs that represent the same color might not be the same bits because
+ * the spec allows "padding" needed to satisfy alignment to contain any value.
+ */
+bool projector_color_equal(struct projector_color const a,
                            struct projector_color const b);
 
 //@}
