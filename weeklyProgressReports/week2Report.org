@@ -20,6 +20,13 @@ DMA is configured the next row.
 
 
 * Peter
+I ported the TFT graphics library to draw into our framebuffer instead of to the TFT.
+This involved manually rewriting a few functions that directly accessed the TFT at a low level.
+Our color representation is a packed struct rather than the short used by the original code, thus types had to be changed across the code to use the new color representation.
+
+I also wrote a first pass at a joystick reading library using the ADC to provide system input.
+This uses two ADC channels in auto mode, converting as fast as possible, to read from the two analog channels of the analog stick.
+Additional work must be done to calibrate and convert the resulting number into a more meaningful form.
 
 * James
 
