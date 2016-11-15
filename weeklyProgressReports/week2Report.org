@@ -1,0 +1,25 @@
+#+TITLE: ECE 4760 Laser Projector Progress Report Week 2
+#+AUTHOR: Peter Friend (pcf38), Istvan Burbank (ipb7), James Cassell (jcc384)
+#+OPTIONS: toc:nil
+
+This week we worked on fleshing out the circuit designs, finalizing the pinout on the MCU, experimenting with new multi-color lasers and building the mirror carousel.
+
+* Istvan
+I received the mirror carousel from the 3D printing shop this week and have begun affixing the mirrors.
+I also have been designing a current-source to supply the lasers with which will use a NPN transistor and three resistors to provide a fixed current across laser diode, even as the impedence of the diode changes.
+
+Lastly, I have designed the functional description of how the projector will work at high detail which I will transcribe into code this week. Find a summary below:
+
+The projector consists of a spinning x-scan mirror that scans left to right, and
+a y-scan mirror that scans from top to bottom. At the start of each row the
+`row_trigger` exhibits a rising edge. After that edge, pixels are clocked out by
+DMA triggered by the `pixel_clock`. After all of the pixels have been clocked
+out, the DMA interrupts the CPU which moves the y-stage to the next scan line
+(allowing it to settle before pixels are clocked out for the next row) and the
+DMA is configured the next row.
+
+
+* Peter
+
+* James
+
