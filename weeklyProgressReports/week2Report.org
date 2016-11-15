@@ -8,3 +8,10 @@
 
 * James
 
+This week I worked on calculating what RPM our mirrors/fan needs to be spinning at in order to get a desired resolution.
+The main focus of the week though included getting the lasers working.
+I recieved several laser pens in the mail from ebay, and disassembled one of them for testing with.
+The pen was torn apart so to get to the PCB with the laser diode attached.
+After seeing that there is a voltage control circuit on the PCB, it was determined that it needs to be removed so we can have varying intensity.
+The laser diode was desoldered and then time was spent looking online for documentation on the part to we can know what each of the leads on it does along with how we should power the device.
+In the case that we can't find documentation, I met with Prof. Pollock to talk about what I should probably expect and methods to find out what each of the leads are based on experiments.
