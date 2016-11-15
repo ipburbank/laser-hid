@@ -1,6 +1,6 @@
 #+TITLE: ECE 4760 Laser Projector Progress Report Week 2
 #+AUTHOR: Peter Friend (pcf38), Istvan Burbank (ipb7), James Cassell (jcc384)
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:nil ^:{}
 
 This week we worked on fleshing out the circuit designs, finalizing the pinout on the MCU, experimenting with new multi-color lasers and building the mirror carousel.
 
