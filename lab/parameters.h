@@ -22,4 +22,18 @@
  */
 #define RENDERING_TAB_WIDTH (4)
 
+/*
+ * Controls conversion of ADC values into nice direction vectors.
+ */
+
+// size of range of positive part of joystick
+#define JOYSTICK_RAW_POS_RANGE (1024/2)
+// where in the ADC range the neutral position of the joystick is
+#define JOYSTICK_RAW_MIDDLE (1024/2)
+// size of range of negative part of joystick
+#define JOYSTICK_RAW_NEG_RANGE (1024/2)
+// range of positive or negative part of output value of joystick (full range is
+// twice this)
+#define JOYSTICK_OUTPUT_RANGE (1024)
+
 #endif // PARAMETERS_H

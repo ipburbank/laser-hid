@@ -107,9 +107,37 @@ void joystick_init(void) {
 struct vect_cart joystick_get_pos(void) {
   // the ADC is a 10 bit output, and we ask for it in "Integer 16 bit", which is
   // implicitly unsigned (see family reference manual register 17-1).
+
+  // these won't overflow because the ADC value is only in the bottom 10 bits
+  int16_t const x = (int16_t) ReadADC10(0);
+  int16_t const y = (int16_t) ReadADC10(1);
+
+  int16_t const x_centered = x - JOYSTICK_RAW_MIDDLE;
+  int16_t const y_centered = y - JOYSTICK_RAW_MIDDLE;
+
+  // these scale factors convert into a uniform scale, so that
+  // -JOYSTICK_OUTPUT_RANGE <= output <= JOYSTICK_OUTPUT_RANGE. The scale
+  // factors have to be signed so that the multiplication produces a signed
+  // value instead of converting the signed operand to an unsigned.
+  static int16_t const pos_scale_factor =
+    JOYSTICK_OUTPUT_RANGE / JOYSTICK_RAW_POS_RANGE;
+  static int16_t const neg_scale_factor =
+    JOYSTICK_OUTPUT_RANGE / JOYSTICK_RAW_NEG_RANGE;
+
   struct vect_cart current;
-  current.x = (int16_t) ReadADC10(0);
-  current.y = (int16_t) ReadADC10(1);
+
+  if (x_centered > 0) {
+    current.x = x_centered * pos_scale_factor;
+  } else {
+    current.x = x_centered * neg_scale_factor;
+  }
+
+  if (y_centered > 0) {
+    current.y = y_centered * pos_scale_factor;
+  } else {
+    current.y = y_centered * neg_scale_factor;
+  }
+
   return current;
 }
 
