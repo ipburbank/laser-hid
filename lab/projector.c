@@ -63,6 +63,11 @@
  */
 volatile uint8_t current_row;
 
+/**
+ * A blank (black) pixel
+ */
+struct projector_color const blank_pixel = {0};
+
 //@}
 
 /*******************************/
@@ -85,6 +90,13 @@ static void configure_dma_for_row(uint8_t row_number);
  * @param pixel color to display
  */
 static void update_y_axis_position(uint8_t row_number);
+
+/**
+ * Set the lasers to the specified color.
+ *
+ * @param pixel color to display
+ */
+static void write_pixel(struct projector_color const pixel);
 
 //@}
 
@@ -178,10 +190,18 @@ void projector_init() {
  * This interrupt is called when all of the pixels from a row have been
  * displayed. The mirror should be moved to the next line, the Timer Gate latch
  * reset, timer reset, and DMA configured for the next row.
+ *
+ * We also turn off the lasers clearing the last pixel. This could also be
+ * achieved by adding an always-black pixel to the end of the row and having DMA
+ * output it, an option that should be considered based on the performance of
+ * this solution.
  */
 void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   // acknowledge the INT controller, we're servicing int
   INTClearFlag(INT_SOURCE_DMA(DMA_CHANNEL0));
+
+  // turn off the lasers
+  write_pixel(blank_pixel);
 
   current_row = (current_row + 1) % IMAGE_HEIGHT;
 
@@ -242,6 +262,24 @@ static void update_y_axis_position(uint8_t row_number) {
 
   // put the message in the DAC FIFO
   WriteSPI1(dac_word);
+}
+
+static void write_pixel(struct projector_color const pixel) {
+  // pixel needs to be accessed as raw bits which is achieved using this
+  // disgusting hack
+  union {
+    struct projector_color pixel;
+    uint8_t pixel_as_int;
+  } pixel_to_int_converter;
+  pixel_to_int_converter.pixel = pixel;
+  uint8_t pixel_int = pixel_to_int_converter.pixel_as_int;
+
+  // set/clear the bits appropriately
+  // The masking is unecessary in the first case and could be avoided in the
+  // second case but is included in both because it is more explicit and more
+  // clear.
+  mPORTBSetBits  ( ((unsigned int) pixel_int) & 0XFF);
+  mPORTBClearBits(~((unsigned int) pixel_int) & 0XFF);
 }
 
 //@}
