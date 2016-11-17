@@ -78,7 +78,7 @@ static void configure_dma_for_row(uint8_t row_number);
 /**
  *
  */
-static void update_y_axis_position(uint8_t mirror_position);
+static void update_y_axis_position(uint8_t row_number);
 
 //@}
 
@@ -120,7 +120,7 @@ void projector_init() {
              40);
 
   // set up the pin to reset the Gate Latch, set initially high
-  // (the signal is active high)
+  // (the signal is active low)
   PORTSetPinsDigitalOut(IOPORT_A, BIT_3);
   mPORTASetBits(BIT_3);
 
@@ -179,10 +179,8 @@ void projector_init() {
  * this solution.
  */
 void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
-  int evFlags;
   // acknowledge the INT controller, we're servicing int
   INTClearFlag(INT_SOURCE_DMA(DMA_CHANNEL0));
-  evFlags=DmaChnGetEvFlags(DMA_CHANNEL0); // get the event flags
 
   // turn off the lasers
   LATB = 0;
@@ -194,7 +192,9 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
 
   // reset the Timer Gate Latch
   mPORTAClearBits(BIT_3);     // set the active low reset signal
-  Nop(); Nop(); Nop(); Nop(); // wait for reset to occur
+  Nop(); Nop(); Nop(); Nop(); // wait for reset to occur - 4 nops is 100ns, an
+                              // upper bound on the time the signal has to be
+                              // low for the latch to be happy
   mPORTASetBits(BIT_3);       // unset the active low reset signal
 
   // prepare the DMA to output the next row
@@ -216,11 +216,11 @@ static void configure_dma_for_row(uint8_t row_number) {
 
   // Set up the DMA transfer
   DmaChnSetTxfer(PIXEL_DMA_CHN,                      // DMA channel number
-                 &projector_framebuffer[row_number], // Source
+                 projector_framebuffer[row_number], // Source
                  (void *) &LATB,                     // Destination
                  IMAGE_WIDTH,                        // source size
                  1,                                  // dest size
-                 1);                                 // cell size
+                 1);                                 // cell sizenc
 
   // Start DMA channel transfer on IRQ from timer 1
   // i.e. transfer a pixel every time the timer hits its period
@@ -235,7 +235,10 @@ static void configure_dma_for_row(uint8_t row_number) {
   DmaChnIntEnable(PIXEL_DMA_CHN);
 }
 
-static void update_y_axis_position(uint8_t mirror_position) {
+static void update_y_axis_position(uint8_t row_number) {
+  // \todo: Determine the actual relation from row number to mirror position
+  uint8_t mirror_position = row_number;
+
   // construct the DAC message by adding the DAC config bits on to the message
   uint16_t dac_word = Y_MIRROR_SPI_CONFIG | mirror_position;
 
