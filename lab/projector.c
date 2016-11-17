@@ -172,12 +172,20 @@ void projector_init() {
  * This interrupt is called when all of the pixels from a row have been
  * displayed. The mirror should be moved to the next line, the Timer Gate latch
  * reset, timer reset, and DMA configured for the next row.
+ *
+ * We also turn off the lasers clearing the last pixel. This could also be
+ * achieved by adding an always-black pixel to the end of the row and having DMA
+ * output it, an option that should be considered based on the performance of
+ * this solution.
  */
 void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   int evFlags;
   // acknowledge the INT controller, we're servicing int
   INTClearFlag(INT_SOURCE_DMA(DMA_CHANNEL0));
   evFlags=DmaChnGetEvFlags(DMA_CHANNEL0); // get the event flags
+
+  // turn off the lasers
+  LATB = 0;
 
   current_row = (current_row + 1) % IMAGE_HEIGHT;
 
