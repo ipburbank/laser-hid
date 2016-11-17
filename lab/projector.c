@@ -179,7 +179,7 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   INTClearFlag(INT_SOURCE_DMA(DMA_CHANNEL0));
   evFlags=DmaChnGetEvFlags(DMA_CHANNEL0); // get the event flags
 
-  current_row++;
+  current_row = (current_row + 1) % IMAGE_HEIGHT;
 
   // move the y-axis mirror to the next row
   update_y_axis_position(current_row);
