@@ -51,6 +51,8 @@
 //@{
 
 void joystick_init(void) {
+  PORTSetPinsDigitalIn(IOPORT_A, BIT_2);
+
   // ensure starts turned off
   CloseADC10();
 
@@ -139,6 +141,10 @@ struct vect_cart joystick_get_pos(void) {
   }
 
   return current;
+}
+
+inline bool joystick_pushed(void) {
+  return PORTReadBits(IOPORT_A, BIT_2) != 0x0;
 }
 
 //@}

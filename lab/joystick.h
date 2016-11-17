@@ -71,6 +71,14 @@ void joystick_init(void);
  */
 struct vect_cart joystick_get_vect(void);
 
+/**
+ * @brief Whether the joystick button is pressed.
+ *
+ * Inteded to be polled. Any event-ish view should be provided by a state
+ * machine that consumes this.
+ */
+inline bool joystick_pushed(void);
+
 //@}
 
 #endif // JOYSTICK_H
