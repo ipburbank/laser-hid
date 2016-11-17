@@ -86,6 +86,13 @@ extern struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 bool projector_color_equal(struct projector_color const a,
                            struct projector_color const b);
 
+
+/**
+ * @brief Initialize projector peripherals, variables etc. MUST be called before
+ * calling any other projector functions!
+ */
+void projector_init( void );
+
 //@}
 
 #endif // PROJECTOR_H
