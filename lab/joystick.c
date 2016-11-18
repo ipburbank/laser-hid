@@ -106,7 +106,7 @@ void joystick_init(void) {
   OpenADC10(config1, config2, config3, configport, configscan);
 }
 
-struct vect_cart joystick_get_pos(void) {
+struct joystick_vect joystick_get_pos(void) {
   // the ADC is a 10 bit output, and we ask for it in "Integer 16 bit", which is
   // implicitly unsigned (see family reference manual register 17-1).
 
@@ -126,7 +126,7 @@ struct vect_cart joystick_get_pos(void) {
   static int16_t const neg_scale_factor =
     JOYSTICK_OUTPUT_RANGE / JOYSTICK_RAW_NEG_RANGE;
 
-  struct vect_cart current;
+  struct joystick_vect current;
 
   if (x_centered > 0) {
     current.x = x_centered * pos_scale_factor;
