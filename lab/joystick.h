@@ -33,12 +33,11 @@
 /**
  * @brief vector representing the joystick state.
  *
- * "cart" refers to "cartesian" as opposed to polar. The coordinate system
- * origin is in the upper-left corner, thus a negative x value is the joystick
- * is left of neutral and a negative y value is the joystick being up from
- * neutral.
+ * The coordinate system origin is in the upper-left corner, thus a negative x
+ * value is the joystick is left of neutral and a negative y value is the
+ * joystick being up from neutral.
  */
-struct vect_cart {
+struct joystick_vect {
   int16_t x;
   int16_t y;
 };
@@ -69,7 +68,7 @@ void joystick_init(void);
  * vector of the joystick position. This should be polled as frequently as
  * desired, there is no notion of "consuming" a value.
  */
-struct vect_cart joystick_get_vect(void);
+struct joystick_vect joystick_get_pos(void);
 
 //@}
 
