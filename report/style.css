@@ -1,0 +1,43 @@
+body {
+    background-color: grey;
+}
+
+header {
+    background-color: white;
+    width: 50em;
+    padding: 1em;
+    margin-bottom: 2em;
+
+    /* center */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+header h1 {
+    text-align: center;
+}
+
+section {
+    width: 50em;
+    background-color: white;
+    margin-bottom: 1em;
+    padding: 1em;
+
+    /* center horizontally */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.figure {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.figure img {
+    width: 100%;
+}
+
+.caption {
+    text-align: center;
+}
