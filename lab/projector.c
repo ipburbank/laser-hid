@@ -63,6 +63,11 @@
  */
 volatile uint8_t current_row;
 
+/**
+ * A blank (black) pixel
+ */
+struct projector_color const blank_pixel = {0};
+
 //@}
 
 /*******************************/
@@ -79,6 +84,11 @@ static void configure_dma_for_row(uint8_t row_number);
  *
  */
 static void update_y_axis_position(uint8_t row_number);
+
+/**
+ *
+ */
+static void write_pixel(struct projector_color pixel);
 
 //@}
 
@@ -183,7 +193,7 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   INTClearFlag(INT_SOURCE_DMA(DMA_CHANNEL0));
 
   // turn off the lasers
-  LATB = 0;
+  write_pixel(blank_pixel);
 
   current_row = (current_row + 1) % IMAGE_HEIGHT;
 
@@ -244,6 +254,21 @@ static void update_y_axis_position(uint8_t row_number) {
 
   // put the message in the DAC FIFO
   WriteSPI1(dac_word);
+}
+
+static void write_pixel(struct projector_color pixel) {
+  // pixel needs to be accessed as raw bits which is achieved using this
+  // disgusting hack
+  union {
+    struct projector_color pixel;
+    uint8_t pixel_as_int;
+  } pixel_to_int_converter;
+  pixel_to_int_converter.pixel = pixel;
+  uint8_t pixel_int = pixel_to_int_converter.pixel_as_int;
+
+  // set/clear the bits appropriately
+  mPORTBSetBits  ( ((unsigned int) pixel_int) & 0XFF);
+  mPORTBClearBits(~((unsigned int) pixel_int) & 0XFF);
 }
 
 //@}
