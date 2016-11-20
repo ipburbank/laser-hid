@@ -15,6 +15,8 @@
       <itemPath>../firehose/view.h</itemPath>
       <itemPath>../firehose/firehose.h</itemPath>
       <itemPath>../firehose/firehose_include.h</itemPath>
+      <itemPath>../spatial.h</itemPath>
+      <itemPath>../cursor.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,6 +35,7 @@
       <itemPath>../firehose/simulation.c</itemPath>
       <itemPath>../firehose/view.c</itemPath>
       <itemPath>../firehose/firehose_parameters.c</itemPath>
+      <itemPath>../cursor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
