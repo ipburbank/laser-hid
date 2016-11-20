@@ -68,7 +68,7 @@ void joystick_init(void);
  * vector of the joystick position. This should be polled as frequently as
  * desired, there is no notion of "consuming" a value.
  */
-struct joystick_vect joystick_get_vect(void);
+struct joystick_vect joystick_get_pos(void);
 
 /**
  * @brief Whether the joystick button is pressed.
