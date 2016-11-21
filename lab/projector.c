@@ -58,13 +58,13 @@
 //@{
 
 /**
- * The current row (scan line) being displayed. This is updated in the ISR and
- * thus is volatile.
+ * @brief The current row (scan line) being displayed.
+ * This is updated in the ISR and thus is volatile.
  */
 volatile uint8_t current_row;
 
 /**
- * A blank (black) pixel
+ * @brief A blank (black) pixel
  */
 struct projector_color const blank_pixel = {0};
 
