@@ -83,4 +83,7 @@
 # auto folder when using emacs and auctex
 /auto/*
 
+# Doxygen output
+docs/doxygen
+
 ######## end of the real stuff only IDE automatic bullshit below here #######
