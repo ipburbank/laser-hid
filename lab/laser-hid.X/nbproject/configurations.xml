@@ -13,6 +13,7 @@
       <itemPath>../rendering.h</itemPath>
       <itemPath>../spatial.h</itemPath>
       <itemPath>../cursor.h</itemPath>
+      <itemPath>../gui.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -27,6 +28,7 @@
       <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
       <itemPath>../cursor.c</itemPath>
+      <itemPath>../gui.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
