@@ -86,9 +86,11 @@ static void configure_dma_for_row(uint8_t row_number);
 static void update_y_axis_position(uint8_t row_number);
 
 /**
+ * Set the lasers to the specified color.
  *
+ * @param pixel color to display
  */
-static void write_pixel(struct projector_color pixel);
+static void write_pixel(struct projector_color const pixel);
 
 //@}
 
@@ -256,7 +258,7 @@ static void update_y_axis_position(uint8_t row_number) {
   WriteSPI1(dac_word);
 }
 
-static void write_pixel(struct projector_color pixel) {
+static void write_pixel(struct projector_color const pixel) {
   // pixel needs to be accessed as raw bits which is achieved using this
   // disgusting hack
   union {
@@ -267,6 +269,9 @@ static void write_pixel(struct projector_color pixel) {
   uint8_t pixel_int = pixel_to_int_converter.pixel_as_int;
 
   // set/clear the bits appropriately
+  // The masking is unecessary in the first case and could be avoided in the
+  // second case but is included in both because it is more explicit and more
+  // clear.
   mPORTBSetBits  ( ((unsigned int) pixel_int) & 0XFF);
   mPORTBClearBits(~((unsigned int) pixel_int) & 0XFF);
 }
