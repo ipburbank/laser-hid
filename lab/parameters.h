@@ -55,4 +55,6 @@
 #define GUI_TEXT_COLOR {.red = 0x0, .green = 0x0, .blue = 0x2}
 #define GUI_TEXT_SIZE (2)
 
+#define BG_COLOR {.red = 0x0, .green = 0x0, .blue = 0x0}
+
 #endif // PARAMETERS_H

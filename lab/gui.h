@@ -76,6 +76,16 @@ void gui_draw_button(struct spatial_pos const top_left,
 bool gui_button_pushed(struct spatial_pos const top_left,
                        short const width, short const height);
 
+/**
+ * @brief Crudely erase button (and anything behind it)
+ *
+ * Arguments are the same as gui_draw_button. This just plops a rectangle
+ * overtop of the button, erasing anything that the transparent button was
+ * originally drawn on top of.
+ */
+void gui_erase_button(struct spatial_pos const top_left,
+                      short const width, short const height);
+
 //@}
 
 #endif // GUI_H

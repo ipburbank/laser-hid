@@ -70,6 +70,12 @@ bool gui_button_pushed(struct spatial_pos const top_left,
     joystick_pushed();
 }
 
+void gui_erase_button(struct spatial_pos const top_left,
+                      short const width, short const height) {
+  struct projector_color const bg_color = BG_COLOR;
+  rendering_drawRect(top_left.x, top_left.y, width, height, bg_color);
+}
+
 //@}
 
 /*******************************/
