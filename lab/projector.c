@@ -76,17 +76,23 @@ struct projector_color const blank_pixel = {0};
 //@{
 
 /**
+ * @brief Configure the DMA's source address to output the provided row from the start.
+ * Includes setup of timers, interrupts, etc.
  *
+ * @param pixel color to display
  */
 static void configure_dma_for_row(uint8_t row_number);
 
 /**
+ * @brief Set the y axis mirrors angle to direct the laser to the appropriate place for
+ * the given row.
  *
+ * @param pixel color to display
  */
 static void update_y_axis_position(uint8_t row_number);
 
 /**
- * Set the lasers to the specified color.
+ * @brief Set the lasers to the specified color.
  *
  * @param pixel color to display
  */
@@ -227,12 +233,12 @@ static void configure_dma_for_row(uint8_t row_number) {
   DmaChnOpen(PIXEL_DMA_CHN, 3, DMA_OPEN_DEFAULT);
 
   // Set up the DMA transfer
-  DmaChnSetTxfer(PIXEL_DMA_CHN,                      // DMA channel number
-                 projector_framebuffer[row_number], // Source
-                 (void *) &LATB,                     // Destination
-                 IMAGE_WIDTH,                        // source size
-                 1,                                  // dest size
-                 1);                                 // cell sizenc
+  DmaChnSetTxfer(PIXEL_DMA_CHN,                              // channel number
+                 (void *) projector_framebuffer[row_number], // Source
+                 (void *) &LATB,                             // Destination
+                 IMAGE_WIDTH,                                // source size
+                 1,                                          // dest size
+                 1);                                         // cell size
 
   // Start DMA channel transfer on IRQ from timer 1
   // i.e. transfer a pixel every time the timer hits its period
