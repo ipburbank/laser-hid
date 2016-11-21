@@ -50,4 +50,9 @@
 // faster movement.
 #define CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK (JOYSTICK_OUTPUT_RANGE/2)
 
+#define GUI_BUTTON_BORDER_COLOR {.red = 0x2, .green = 0x0, .blue = 0x0}
+
+#define GUI_TEXT_COLOR {.red = 0x0, .green = 0x0, .blue = 0x2}
+#define GUI_TEXT_SIZE (2)
+
 #endif // PARAMETERS_H
