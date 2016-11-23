@@ -84,7 +84,6 @@
 /auto/*
 
 # Doxygen output
-docs/html
-docs/latex
+docs/doxygen
 
 ######## end of the real stuff only IDE automatic bullshit below here #######
