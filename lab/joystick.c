@@ -86,7 +86,8 @@ void joystick_init(void) {
     ADC_ALT_INPUT_OFF;
 
   uint32_t const config3 =
-    // number of ADC clock cycles to sample before beginning conversion
+    // number of ADC clock cycles to sample before beginning conversion. The
+    // particular number is choosen totally arbitrarily.
     ADC_SAMPLE_TIME_6 |
     // clock derived from PBCLK
     ADC_CONV_CLK_SYSTEM |
