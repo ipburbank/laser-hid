@@ -74,7 +74,8 @@ void joystick_init(void) {
   uint32_t const config2 =
     // use internal VREFs
     ADC_VREF_AVDD_AVSS |
-    // TODO
+    // we are not doing "offset calibration", i.e. measuring a special value to
+    // compute error in normal measurements, see reference guide 17.5.4
     ADC_OFFSET_CAL_DISABLE |
     // scan through channels
     ADC_SCAN_ON |
