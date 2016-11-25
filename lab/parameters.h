@@ -27,10 +27,14 @@
  */
 
 // size of range of positive part of joystick
+/* Preliminarily set to 512 because this is half of the range of the unsigned 10
+   bit ADC. Thus from 512 to 1024 is suppoed to be a positive setting. */
 #define JOYSTICK_RAW_POS_RANGE (1024/2)
 // where in the ADC range the neutral position of the joystick is
 #define JOYSTICK_RAW_MIDDLE (1024/2)
-// size of range of negative part of joystick
+// size of range of negative part of joystick.
+/* Preliminarily set to 512 because this is half of the range of the unsigned 10
+   bit ADC. Thus from 0 to 512 is suppoed to be a negative setting. */
 #define JOYSTICK_RAW_NEG_RANGE (1024/2)
 // range of positive or negative part of output value of joystick (full range is
 // twice this)
