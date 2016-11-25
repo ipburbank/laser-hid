@@ -632,7 +632,7 @@ static void rendering_drawFastVLine(short x, short y, short h,
     h = IMAGE_HEIGHT - y;
 
   // draw from bottom to top
-  unsigned int current_y;
+  int current_y;
   for (current_y = y; current_y < y + h - 1; current_y++) {
     rendering_drawPixel(x, current_y, color);
   }
@@ -663,7 +663,7 @@ static void rendering_drawFastHLine(short x, short y, short w,
   }
 
   // draw from left to right
-  unsigned int current_x;
+  int current_x;
   for (current_x = x; current_x < x + w - 1; current_x++) {
     rendering_drawPixel(current_x, y, color);
   }
@@ -699,12 +699,12 @@ static void rendering_fillRect(short x, short y, short w, short h,
     h = IMAGE_HEIGHT - y;
   }
 
-  unsigned int current_y;
-  unsigned int current_x;
+  int current_y;
   // iterate through y first then x because the framebuffer array is laid out by
   // row then column. This may be good for performance, but the order is
   // arbitrary anyway.
   for (current_y = y; current_y < y + h - 1; current_y++) {
+    int current_x;
     for (current_x = x; current_x < x + w - 1; current_x++) {
       rendering_drawPixel(current_x, current_y, color);
     }
