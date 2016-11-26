@@ -99,13 +99,13 @@ void joystick_init(void) {
     ENABLE_AN0_ANA | ENABLE_AN1_ANA;
 
   // which ports we _don't_ scan (scan only AN0 and AN1)
-  uint32_t const configscan =
+  uint32_t const configdontscan =
     SKIP_SCAN_AN2 | SKIP_SCAN_AN3 | SKIP_SCAN_AN4 | SKIP_SCAN_AN5 |
     SKIP_SCAN_AN6 | SKIP_SCAN_AN7 | SKIP_SCAN_AN8 | SKIP_SCAN_AN9 |
     SKIP_SCAN_AN10 | SKIP_SCAN_AN11 | SKIP_SCAN_AN12 | SKIP_SCAN_AN13 |
     SKIP_SCAN_AN14 | SKIP_SCAN_AN15;
 
-  OpenADC10(config1, config2, config3, configport, configscan);
+  OpenADC10(config1, config2, config3, configport, configdontscan);
 }
 
 struct joystick_vect joystick_get_pos(void) {
