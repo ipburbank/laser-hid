@@ -43,8 +43,6 @@
 /*
  * Controls joystick position to cursor movement rate connection
  */
-// x or y values closer to zero than this are ignored
-#define CURSOR_DIRECTION_THRESHHOLD (100)
 // joystick_units / (pixel/tick), i.e. dividing joystick units by this gives
 // pixels per tick rate. A value of 1024 means the joystick must be pushed all
 // the way to an extreme to move a pixel per tick, smaller values mean the
