@@ -53,6 +53,9 @@ void cursor_step(void) {
   struct joystick_vect input = joystick_get_pos();
 
   // convert units. (see comment in parameters.h)
+  /* This will result in joystick values closer to 0 than
+     CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK being ignored (i.e. resulting in
+     no cursor movement) due to integer arithmatic truncation. */
   int16_t const delta_x = input.x / CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK;
   int16_t const delta_y = input.y / CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK;
 
