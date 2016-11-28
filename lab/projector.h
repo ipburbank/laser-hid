@@ -23,6 +23,7 @@
 #include "include.h"
 
 #include "parameters.h"
+#include "color.h"
 
 //@}
 
@@ -38,18 +39,6 @@
 /*********************************/
 //@{
 
-/**
- * A pixel in RGB color space represented in six bits. Bits not defined here
- * should not be set.
- * A GCC-specific pragma is used to ensure pixels are stored in only one byte.
- */
-#pragma pack(1)
-struct projector_color {
-  char red   : 2;
-  char blue  : 2;
-  char green : 2;
-};
-
 //@}
 
 /*******************************/
@@ -61,7 +50,7 @@ struct projector_color {
  * Once a pixels value is changed in this array the new value will be projected
  * the next time the pixel is output (there is no v-sync).
  */
-extern struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
+extern struct color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 
 //@}
 
@@ -76,16 +65,6 @@ extern struct projector_color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
 /* GLOBAL Function Declarations */
 /********************************/
 //@{
-
-/**
- * @brief Return true if a and b represent exactly the same color
- *
- * Two structs that represent the same color might not be the same bits because
- * the spec allows "padding" needed to satisfy alignment to contain any value.
- */
-bool projector_color_equal(struct projector_color const a,
-                           struct projector_color const b);
-
 
 /**
  * @brief Initialize projector peripherals, variables etc. MUST be called before

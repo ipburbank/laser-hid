@@ -11,6 +11,7 @@
       <itemPath>../parameters.h</itemPath>
       <itemPath>../projector.h</itemPath>
       <itemPath>../rendering.h</itemPath>
+      <itemPath>../color.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -24,6 +25,7 @@
       <itemPath>../glcdfont.c</itemPath>
       <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
+      <itemPath>../color.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
