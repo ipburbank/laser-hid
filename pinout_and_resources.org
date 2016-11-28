@@ -16,8 +16,9 @@
 | <15>            | <9>       | <10>       | <12>         | <12>         | <3> |
 | System          | Direction | Peripheral | Signal       | Symbolic Pin | Pin |
 |-----------------+-----------+------------+--------------+--------------+-----|
-| Joystick        | in        | AD1        | Joystick X   | AN0          |   2 |
-|                 | in        | AD1        | Joystick Y   | AN1          |   3 |
+| Joystick        | in        | AD1        | Stick X      | AN0          |   2 |
+|                 | in        | AD1        | Stick Y      | AN1          |   3 |
+|                 | in        | (gpio)     | Stick Push   | RA2          |   9 |
 |-----------------+-----------+------------+--------------+--------------+-----|
 | Laser Out       | out       | (gpio)     | Red bit0     | RB0          |   4 |
 |                 | out       | (gpio)     | Red bit1     | RB1          |   5 |
