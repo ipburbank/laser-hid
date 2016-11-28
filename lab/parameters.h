@@ -38,6 +38,6 @@
 #define JOYSTICK_RAW_NEG_RANGE (1024/2)
 // range of positive or negative part of output value of joystick (full range is
 // twice this)
-#define JOYSTICK_OUTPUT_RANGE (1024)
+#define JOYSTICK_OUTPUT_RANGE (100)
 
 #endif // PARAMETERS_H
