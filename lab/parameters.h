@@ -48,6 +48,6 @@
 // the way to an extreme to move a pixel per tick, smaller values mean the
 // joystick must be moved less to get movement and can be moved further for
 // faster movement.
-#define CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK (1024/2)
+#define CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK (JOYSTICK_OUTPUT_RANGE/2)
 
 #endif // PARAMETERS_H
