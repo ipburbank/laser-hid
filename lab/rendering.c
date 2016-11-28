@@ -68,8 +68,8 @@
 /*******************************/
 //@{
 
-static struct projector_color textcolor;
-static struct projector_color textbgcolor;
+static struct color textcolor;
+static struct color textbgcolor;
 static unsigned short cursor_y;
 static unsigned short cursor_x;
 static unsigned short textsize;
@@ -83,16 +83,16 @@ static unsigned short rotation;
 /*******************************/
 //@{
 
-static void rendering_drawPixel(short x, short y, struct projector_color color);
+static void rendering_drawPixel(short x, short y, struct color color);
 
 static void rendering_drawFastVLine(short x, short y, short h,
-                                    struct projector_color color);
+                                    struct color color);
 
 static void rendering_drawFastHLine(short x, short y, short w,
-                                    struct projector_color color);
+                                    struct color color);
 
 static void rendering_fillRect(short x, short y, short w, short h,
-                               struct projector_color color);
+                               struct color color);
 //@}
 
 /*******************************/
@@ -108,7 +108,7 @@ static void rendering_fillRect(short x, short y, short w, short h,
 //@{
 
 void rendering_drawCircle(short x0, short y0, short r,
-                          struct projector_color color) {
+                          struct color color) {
   /* Draw a circle outline with center (x0,y0) and radius r, with given color
    * Parameters:
    *      x0: x-coordinate of center of circle. The top-left of the screen
@@ -154,7 +154,7 @@ void rendering_drawCircle(short x0, short y0, short r,
 
 void rendering_drawCircleHelper(short x0, short y0, short r,
                                 unsigned char cornername,
-                                struct projector_color color) {
+                                struct color color) {
   // Helper function for drawing circles and circular objects
   short f     = 1 - r;
   short ddF_x = 1;
@@ -191,7 +191,7 @@ void rendering_drawCircleHelper(short x0, short y0, short r,
 }
 
 void rendering_fillCircle(short x0, short y0, short r,
-                          struct projector_color color) {
+                          struct color color) {
   /* Draw a filled circle with center (x0,y0) and radius r, with given color
    * Parameters:
    *      x0: x-coordinate of center of circle. The top-left of the screen
@@ -208,7 +208,7 @@ void rendering_fillCircle(short x0, short y0, short r,
 
 void rendering_fillCircleHelper(short x0, short y0, short r,
                                 unsigned char cornername, short delta,
-                                struct projector_color color) {
+                                struct color color) {
   // Helper function for drawing filled circles
   short f     = 1 - r;
   short ddF_x = 1;
@@ -240,7 +240,7 @@ void rendering_fillCircleHelper(short x0, short y0, short r,
 // Bresenham's algorithm - thx wikpedia
 void rendering_drawLine(short x0, short y0,
                         short x1, short y1,
-                        struct projector_color color) {
+                        struct color color) {
   /* Draw a straight line from (x0,y0) to (x1,y1) with given color
    * Parameters:
    *      x0: x-coordinate of starting point of line. The x-coordinate of
@@ -293,7 +293,7 @@ void rendering_drawLine(short x0, short y0,
 
 // Draw a rectangle
 void rendering_drawRect(short x, short y, short w, short h,
-                        struct projector_color color) {
+                        struct color color) {
   /* Draw a rectangle outline with top left vertex (x,y), width w
    * and height h at given color
    * Parameters:
@@ -314,7 +314,7 @@ void rendering_drawRect(short x, short y, short w, short h,
 
 // Draw a rounded rectangle
 void rendering_drawRoundRect(short x, short y, short w, short h,
-                             short r, struct projector_color color) {
+                             short r, struct color color) {
   /* Draw a rounded rectangle outline with top left vertex (x,y), width w,
    * height h and radius of curvature r at given color
    * Parameters:
@@ -341,7 +341,7 @@ void rendering_drawRoundRect(short x, short y, short w, short h,
 
 // Fill a rounded rectangle
 void rendering_fillRoundRect(short x, short y, short w, short h, short r,
-                             struct projector_color color) {
+                             struct color color) {
   // smarter version
   rendering_fillRect(x+r, y, w-2*r, h, color);
 
@@ -352,7 +352,7 @@ void rendering_fillRoundRect(short x, short y, short w, short h, short r,
 
 // Draw a triangle
 void rendering_drawTriangle(short x0, short y0, short x1, short y1, short x2,
-                            short y2, struct projector_color color) {
+                            short y2, struct color color) {
   /* Draw a triangle outline with vertices (x0,y0),(x1,y1),(x2,y2) with given color
    * Parameters:
    *      x0: x-coordinate of one of the 3 vertices
@@ -371,7 +371,7 @@ void rendering_drawTriangle(short x0, short y0, short x1, short y1, short x2,
 
 // Fill a triangle
 void rendering_fillTriangle (short x0, short y0, short x1, short y1, short x2,
-                             short y2, struct projector_color color) {
+                             short y2, struct color color) {
   /* Draw a filled triangle with vertices (x0,y0),(x1,y1),(x2,y2) with given color
    * Parameters:
    *      x0: x-coordinate of one of the 3 vertices
@@ -458,7 +458,7 @@ void rendering_fillTriangle (short x0, short y0, short x1, short y1, short x2,
 
 void rendering_drawBitmap(short x, short y,
                           const unsigned char *bitmap, short w, short h,
-                          struct projector_color color) {
+                          struct color color) {
 
   short i, j, byteWidth = (w + 7) / 8;
 
@@ -504,7 +504,7 @@ inline void rendering_writeString(char* str){
 
 // Draw a character
 void rendering_drawChar(short x, short y, unsigned char c,
-                        struct projector_color color, struct projector_color bg,
+                        struct color color, struct color bg,
                         unsigned char size) {
   char i, j;
   if((x >= IMAGE_WIDTH)            || // Clip right
@@ -526,7 +526,7 @@ void rendering_drawChar(short x, short y, unsigned char c,
         else {  // big size
           rendering_fillRect(x+(i*size), y+(j*size), size, size, color);
         }
-      } else if (!projector_color_equal(bg, color)) {
+      } else if (!color_equal(bg, color)) {
         if (size == 1) // default size
           rendering_drawPixel(x+i, y+j, bg);
         else {  // big size
@@ -558,14 +558,14 @@ inline void rendering_setTextSize(unsigned char s) {
   textsize = (s > 0) ? s : 1;
 }
 
-inline void rendering_setTextColor(struct projector_color c) {
+inline void rendering_setTextColor(struct color c) {
   // For 'transparent' background, we'll set the bg
   // to the same as fg instead of using a flag
   textcolor = textbgcolor = c;
 }
 
-inline void rendering_setTextColor2(struct projector_color c,
-                                    struct projector_color b) {
+inline void rendering_setTextColor2(struct color c,
+                                    struct color b) {
   /* Set color of text to be displayed
    * Parameters:
    *      c = 16-bit color of text
@@ -606,13 +606,13 @@ inline unsigned char rendering_getRotation(void) {
 
 // this function totally replaces the original tft version
 static void rendering_drawPixel(short x, short y,
-                                struct projector_color color) {
+                                struct color color) {
   projector_framebuffer[y][x] = color;
 }
 
 // from tft_master.c, but modified to just call drawPixel
 static void rendering_drawFastVLine(short x, short y, short h,
-                                    struct projector_color color) {
+                                    struct color color) {
   /* Draw a vertical line at location from (x,y) to (x,y+h-1) with color
    * Parameters:
    *      x:  x-coordinate line to draw; top left of screen is x=0
@@ -640,7 +640,7 @@ static void rendering_drawFastVLine(short x, short y, short h,
 
 // from tft_master.c, but modified to just call drawPixel
 static void rendering_drawFastHLine(short x, short y, short w,
-                                    struct projector_color color) {
+                                    struct color color) {
   /* Draw a horizontal line at location from (x,y) to (x+w-1,y) with color
    * Parameters:
    *      x:  x-coordinate starting point of line; top left of screen is x=0
@@ -671,7 +671,7 @@ static void rendering_drawFastHLine(short x, short y, short w,
 
 // from tft_master.c, but modified to just call drawPixel
 static void rendering_fillRect(short x, short y, short w, short h,
-                               struct projector_color color) {
+                               struct color color) {
   /* Draw a filled rectangle with starting top-left vertex (x,y),
    *  width w and height h with given color
    * Parameters:
