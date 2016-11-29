@@ -13,3 +13,4 @@ Lastly, I started the physical assembly of the device.
 
 
 * James
+After finishing up the circuit for the variable intensity control of the red laser. I worked on testing what each of the leads did on both the green and the blue lasers, since they have three leads instead of two. For the green laser, after finding which leads I can use to control intensity, I designed, built, and tested a circuit which allows us to have variable intensity control of the green laser. I then worked on the blue laser and discovering what its leads do. After figuring out which leads to hook up a power and ground to, I experimentally found values for current and different intensities. Lastly, I used those intensities to design a circuit so that the PIC32 can digitaly control the blue laser intensity.
