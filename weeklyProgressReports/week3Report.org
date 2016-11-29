@@ -5,7 +5,9 @@
 This week we worked more on the software and the laser circuits.
 
 * Istvan
-
+I worked on adding automatically-generating documentation to the code which we will be able to export to HTML and include in our project page.
+Additionally, I helped James a little with the laser control circuits.
+Lastly, I started the physical assembly of the device.
 
 * Peter
 
