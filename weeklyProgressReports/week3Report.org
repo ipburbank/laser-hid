@@ -1,0 +1,13 @@
+#+TITLE: ECE 4760 Laser Projector Progress Report Week 3
+#+AUTHOR: Peter Friend (pcf38), Istvan Burbank (ipb7), James Cassell (jcc384)
+#+OPTIONS: toc:nil ^:{}
+
+This week we worked more on the software and the laser circuits.
+
+* Istvan
+
+
+* Peter
+
+
+* James
