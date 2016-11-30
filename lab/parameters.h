@@ -18,6 +18,20 @@
 #define IMAGE_HEIGHT (50)
 #define IMAGE_WIDTH  (50)
 
+/**
+ * The phase shift in pixels between lasers. May only be positive numbers which
+ * represent how many pixels after left side of the frame the color should
+ * start. Values must be less than `PHASE_SHIFT_PADDING`.
+ */
+#define RED_PHASE_SHIFT   (0)
+#define GREEN_PHASE_SHIFT (0)
+#define BLUE_PHASE_SHIFT  (0)
+
+/**
+ * How much wider to make the frame buffer to accomodate the phase shifts.
+ */
+#define PHASE_SHIFT_PADDING (0)
+
 /* tab is 4 spaces for purposes of text rendering
  */
 #define RENDERING_TAB_WIDTH (4)
