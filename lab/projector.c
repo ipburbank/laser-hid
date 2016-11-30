@@ -172,9 +172,9 @@ void projector_init() {
 
 void projector_set_pixel(struct color const color,
                          unsigned int x, unsigned int y) {
-  projector_framebuffer[y][x + RED_PHASE_SHIFT  ] = color.red;
-  projector_framebuffer[y][x + GREEN_PHASE_SHIFT] = color.green;
-  projector_framebuffer[y][x + BLUE_PHASE_SHIFT ] = color.blue;
+  projector_framebuffer[y][x + RED_PHASE_SHIFT  ].red   = color.red;
+  projector_framebuffer[y][x + GREEN_PHASE_SHIFT].green = color.green;
+  projector_framebuffer[y][x + BLUE_PHASE_SHIFT ].blue  = color.blue;
 }
 
 //@}
