@@ -15,6 +15,10 @@
 /*******************************/
 //@{
 
+#include "../color.h"
+
+#include "../parameters.h"
+
 //@}
 
 /*******************************/
@@ -25,10 +29,6 @@
 #define NUM_BALLS (385) /// Max number of balls in the simulation
 
 #define FRAMERATE (15) /// Frames per second
-
-// tft specific defines
-#define TFT_WIDTH  (ILI9340_TFTHEIGHT)
-#define TFT_HEIGHT (ILI9340_TFTWIDTH)
 
 #define BARRIER_DIST_FROM_LEFT (80)
 #define BARRIER_LENGTH (60)
@@ -53,6 +53,18 @@
 /* GLOBAL Variable Declarations */
 /********************************/
 //@{
+
+extern struct color const ball_color_fg;
+
+extern struct color const paddle_color_fg;
+
+extern struct color const barrier_color_fg;
+
+extern struct color const stats_neg_color_fg;
+
+extern struct color const stats_color_fg;
+
+extern struct color const game_over_color_fg;
 
 //@}
 

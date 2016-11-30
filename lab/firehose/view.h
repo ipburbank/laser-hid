@@ -14,10 +14,9 @@
 /*******************************/
 //@{
 
-#include "include.h"
-#include "tft_gfx.h"
-#include "tft_master.h"
+#include "firehose_include.h"
 #include <stdio.h>
+#include "../rendering.h"
 
 //@}
 
