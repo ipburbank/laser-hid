@@ -100,7 +100,8 @@ static void write_pixel(struct color const pixel);
 /*******************************/
 //@{
 
-struct color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH] = {0};
+struct color projector_framebuffer[IMAGE_HEIGHT]
+                                  [IMAGE_WIDTH + PHASE_SHIFT_PADDING] = {0};
 
 //@}
 
@@ -167,6 +168,13 @@ void projector_init() {
   SpiChnOpen(Y_MIRROR_SPI_CHN, SPICON_MSTEN | SPICON_MODE16 | SPICON_ON
              | SPICON_FRMPOL | SPICON_CKP | SPICON_FRMEN, 2);
 
+}
+
+void projector_set_pixel(struct color const color,
+                         unsigned int x, unsigned int y) {
+  projector_framebuffer[y][x + RED_PHASE_SHIFT  ] = color.red;
+  projector_framebuffer[y][x + GREEN_PHASE_SHIFT] = color.green;
+  projector_framebuffer[y][x + BLUE_PHASE_SHIFT ] = color.blue;
 }
 
 //@}
