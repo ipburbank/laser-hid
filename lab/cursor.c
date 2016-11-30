@@ -84,6 +84,18 @@ void cursor_step(void) {
   cursor_position.y = new_y;
 }
 
+void cursor_erase(void) {
+  rendering_drawMinimalCross((short) cursor_position.x,
+                             (short) cursor_position.y,
+                             color_blank);
+}
+
+void cursor_draw(void) {
+  rendering_drawMinimalCross((short) cursor_position.x,
+                             (short) cursor_position.y,
+                             cursor_fg);
+}
+
 //@}
 
 /*******************************/
