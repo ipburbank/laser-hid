@@ -686,6 +686,15 @@ void rendering_fillRect(short x, short y, short w, short h,
   }
 }
 
+void rendering_drawMinimalCross(short const x, short const y,
+                                struct color const color) {
+  rendering_drawPixel(x - 1, y,     color); // b
+  rendering_drawPixel(x,     y,     color); // c    X a X
+  rendering_drawPixel(x + 1, y,     color); // d    b c d
+  rendering_drawPixel(x,     y + 1, color); // a    X e X
+  rendering_drawPixel(x,     y - 1, color); // e
+}
+
 //@}
 
 /*******************************/

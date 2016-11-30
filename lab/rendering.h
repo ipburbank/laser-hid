@@ -101,6 +101,19 @@ void rendering_drawFastHLine(short x, short y, short w,
 void rendering_fillRect(short x, short y, short w, short h,
                         struct color color);
 
+/**
+ * @brief Draw a 3x3 pixel cross
+ *
+ * @param x X coordinate of center of cross
+ * @param y Y coordinate of center of cross
+ * @param color Color of cross
+ *
+ * The cross is the center pixel plus one pixel above and below the center and
+ * one pixel to the left and right of the center.
+ */
+void rendering_drawMinimalCross(short const x, short const y,
+                                struct color const color);
+
 //@}
 
 #endif
