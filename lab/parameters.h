@@ -12,6 +12,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+
+#include "color.h"
+
 /**
  * Projected image height and width in pixels.
  */
@@ -93,5 +96,10 @@
 // joystick must be moved less to get movement and can be moved further for
 // faster movement.
 #define CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK (JOYSTICK_OUTPUT_RANGE/2)
+
+/**
+ * @brief Foreground color of the cursor.
+ */
+extern struct color const cursor_fg;
 
 #endif // PARAMETERS_H
