@@ -46,12 +46,6 @@
 /*******************************/
 //@{
 
-/**
- * Once a pixels value is changed in this array the new value will be projected
- * the next time the pixel is output (there is no v-sync).
- */
-extern struct color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
-
 //@}
 
 /********************************/
@@ -71,6 +65,19 @@ extern struct color projector_framebuffer[IMAGE_HEIGHT][IMAGE_WIDTH];
  * calling any other projector functions!
  */
 void projector_init( void );
+
+/**
+ * @brief Set the color of a pixel at the specified location.
+ *
+ * Once a pixels value is changed, the new value will be projected the next time
+ * the pixel is output (there is no v-sync).
+ *
+ * @param color Color to be displayed
+ * @param x     Number of pixels from left side
+ * @param y     Number of pixels from the top
+ */
+void projector_set_pixel(struct color const color,
+                         unsigned int x, unsigned int y);
 
 //@}
 
