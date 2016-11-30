@@ -77,8 +77,8 @@ struct xy_vec simulation_spawnBall(void) {
   // vy=+5 to -5 pixels/sec. The speed distribution in the y-direction must be
   // uniform. The x speed can be fixed between the values indicated.
   struct xy_vec const init_position = {
-    .x = int2fix16(TFT_WIDTH - BALL_COLLISION_RADIUS - 2),
-    .y = int2fix16(TFT_HEIGHT / 2)
+    .x = int2fix16(IMAGE_WIDTH - BALL_COLLISION_RADIUS - 2),
+    .y = int2fix16(IMAGE_HEIGHT / 2)
   };
   struct xy_vec const init_velocity = {
     .x = int2fix16(-2),
@@ -209,7 +209,7 @@ int simulation_collision_substep(int substep_ball_id) {
   // check for collisions with the vertical walls
   if (substep_ball->ticks_since_collision > MIN_TICKS_BETWEEN_COLLISIONS &&
       (// right wall
-       substep_ball->position.x   > int2fix16(TFT_WIDTH - BALL_COLLISION_RADIUS)
+       substep_ball->position.x > int2fix16(IMAGE_WIDTH - BALL_COLLISION_RADIUS)
        )
       )
     {
@@ -225,7 +225,7 @@ int simulation_collision_substep(int substep_ball_id) {
   if (substep_ball->ticks_since_collision > MIN_TICKS_BETWEEN_COLLISIONS &&
       (// At the right height for the barriers
        ((substep_ball->position.y < int2fix16(BARRIER_HEIGHT) ||
-         substep_ball->position.y > int2fix16(TFT_HEIGHT - BARRIER_HEIGHT)) &&
+         substep_ball->position.y > int2fix16(IMAGE_HEIGHT - BARRIER_HEIGHT)) &&
         // and at the right x for the barriers
         // +- 4 intuitively makes the barrier wider to prevent balls slipping
         // past
@@ -247,7 +247,7 @@ int simulation_collision_substep(int substep_ball_id) {
   // check for collision with the top and bottom
   if(substep_ball->ticks_since_collision > MIN_TICKS_BETWEEN_COLLISIONS &&
      (
-      substep_ball->position.y    > int2fix16(TFT_HEIGHT - BALL_COLLISION_RADIUS)
+      substep_ball->position.y > int2fix16(IMAGE_HEIGHT - BALL_COLLISION_RADIUS)
       || substep_ball->position.y < int2fix16(0 + BALL_COLLISION_RADIUS))
      )
     {

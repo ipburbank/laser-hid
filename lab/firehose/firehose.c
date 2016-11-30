@@ -16,25 +16,7 @@
 /*******************************/
 //@{
 
-#include "include.h"
-
-////////////////////////////////////
-// clock AND protoThreads configure!
-// You MUST check this file!
-#include "config.h"
-// threading library
-#include "pt_cornell_1_2_1.h"
-////////////////////////////////////
-
-////////////////////////////////////
-// graphics libraries
-#include "tft_gfx.h"
-#include "tft_master.h"
-////////////////////////////////////
-
-//#include "view.h"
-#include "simulation.h"
-#include "sound.h"
+#include "firehose.h"
 
 //@}
 
@@ -82,18 +64,30 @@ static PT_THREAD(protothread_perSecondUpdateThread(struct pt *pt));
 //@{
 
 // Describes the position of the top of the paddle in pixel position
-short paddle_top_position;
+static short paddle_top_position;
 // Keep track of previous paddle top position
-short previous_paddle_top_position;
+static short previous_paddle_top_position;
 
 // Players current score
-int player_score;
+static int player_score;
 
 // Current game time
-int game_time;
+static int game_time;
 
 // Accumulator for frame rate per second
-int frames_per_second_accum;
+static int frames_per_second_accum;
+
+/**
+ * @brief Whether the game is running/whether game threads are scheduled
+ *
+ * Starts out true and becomes false when the game ends for any reason. When
+ * this becomes false control leaves the main firehose function.
+ */
+static bool game_ongoing = true;
+
+static struct pt pt_frameThread, pt_spawnThread, pt_perSecondUpdateThread;
+
+static volatile bool frame_trigger_flag;
 
 //@}
 
@@ -101,10 +95,6 @@ int frames_per_second_accum;
 /* GLOBAL Variable Definitions */
 /*******************************/
 //@{
-
-static struct pt pt_frameThread, pt_spawnThread, pt_perSecondUpdateThread;
-
-volatile bool frame_trigger_flag;
 
 //@}
 
@@ -117,7 +107,7 @@ volatile bool frame_trigger_flag;
  * The main function configures peripherals, interrupts, and threads, then
  * infinately runs the thread scheduler.
  */
-int main(void) {
+void firehose_main(void) {
 
   ///////////////////////
   /* Set Up PT Threads */
@@ -144,32 +134,25 @@ int main(void) {
   view_init();
   view_draw_barriers();
 
-  //////////////////////
-  /* Configure Paddle */
-  //////////////////////
-
-  paddle_init();
-
-  //////////////////////////////////
-  /* Setup system wide interrupts */
-  //////////////////////////////////
-
-  INTEnableSystemMultiVectoredInt();
-  /////////////////////
-  /* Configure Sound */
-  /////////////////////
-
-  sound_init();
-
   ///////////////////////
   /* Run the scheduler */
   ///////////////////////
 
-  while (1) {
+  // the ordering might be important in laser-hid (as opposed to lab3 proper)
+  // because the game_ongoing flag will be set to false in
+  // perSecondUpdateThread, and we don't want the other threads to get a chance
+  // to run after that happens
+  while (game_ongoing) {
     PT_SCHEDULE(protothread_frameThread(&pt_frameThread));
     PT_SCHEDULE(protothread_spawnThread(&pt_spawnThread));
     PT_SCHEDULE(protothread_perSecondUpdateThread(&pt_perSecondUpdateThread));
   }
+
+  // end timer 3
+  CloseTimer3();
+
+  // end pthreads, return to normal operation
+  // TODO end pthreads
 } // main
 
 //@}
@@ -206,7 +189,21 @@ static PT_THREAD(protothread_frameThread(struct pt *pt)) {
 
     // Update the paddle position based on controller
     previous_paddle_top_position = paddle_top_position;
-    paddle_top_position = (TFT_HEIGHT - PADDLE_HEIGHT) * (paddle_poll()) / 1023.0;
+    struct joystick_vect const stick_pos = joystick_get_pos();
+    // un-center joystick so it is in [0, 2*JOYSTICK_OUTPUT_RANGE] instead of
+    // [-JOYSTICK_OUTPUT_RANGE, JOYSTICK_OUTPUT_RANGE]
+    uint16_t const uncentered_stick =
+      (uint16_t) stick_pos.x + JOYSTICK_OUTPUT_RANGE;
+    /* range of paddle_top_position is [0, IMAGE_HEIGHT - PADDLE_HEIGHT]. This
+     * arithmetic scales the joystick output to this range without using a
+     * floating point number by doing careful operation ordering. It is
+     * mathematically equivalent to: (uncentered_stick /
+     * (2*JOYSTICK_OUTOUT_RANGE)) * (IMAGE_HEIGHT - PADDLE_HEIGHT)
+     */
+    paddle_top_position =
+      (IMAGE_HEIGHT - PADDLE_HEIGHT) *
+      uncentered_stick /
+      2 * JOYSTICK_OUTPUT_RANGE;
     // draw new paddle position
     view_redraw_paddle(previous_paddle_top_position, paddle_top_position);
 
@@ -226,13 +223,6 @@ static PT_THREAD(protothread_frameThread(struct pt *pt)) {
       // check for score updates and play related sounds
       int score_change = simulation_score_substep(ball_index, paddle_top_position);
       player_score += score_change;
-      // play sounds based on scoring
-      if (score_change > 0){
-        sound_play(PLUS_ONE);
-      }
-      else if (score_change < 0){
-        sound_play(MINUS_ONE);
-      }
 
       // if the ball wasn't erased draw its new position
       if(balls[ball_index].is_on_field) {
@@ -245,7 +235,7 @@ static PT_THREAD(protothread_frameThread(struct pt *pt)) {
     // update the number of balls on screen
     // Update that we have completed a frame
     frames_per_second_accum++;
-    
+
     // Update score and number of balls on screen
     view_draw_fast_stats(player_score, simulation_num_spawned_balls);
 
@@ -284,13 +274,13 @@ static PT_THREAD(protothread_perSecondUpdateThread(struct pt *pt)) {
     view_draw_barriers();
     // Check if we have reached the end of the game
     if(GAME_LENGTH <= game_time){
-      // Play sound indicating game is over
-      sound_play(END_GAME);
       // Display "END GAME" on the TFT
-      tft_setCursor(BARRIER_DIST_FROM_LEFT, TFT_HEIGHT/2);
-      tft_setTextColor(ILI9340_RED);
-      tft_writeString("GAME OVER");
-      while(1){} // Just stop
+      rendering_setCursor(BARRIER_DIST_FROM_LEFT, IMAGE_HEIGHT/2);
+      rendering_setTextColor(game_over_color_fg);
+      rendering_writeString("GAME OVER");
+      // Yield for three seconds
+      PT_YIELD_TIME_msec(3000);
+      game_ongoing = false; // stop the game, return control to top level
     }
     // Yield for one second
     PT_YIELD_TIME_msec(1000);

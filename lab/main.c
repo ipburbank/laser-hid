@@ -22,8 +22,7 @@
 // clock AND protoThreads configure!
 // You MUST check this file!
 #include "config.h"
-// threading library
-#include "pt_cornell_1_2_1.h"
+
 ////////////////////////////////////
 
 #include "projector.h"
@@ -72,12 +71,6 @@
 
 int main(void) {
 
-  ///////////////////////
-  /* Set Up PT Threads */
-  ///////////////////////
-
-  PT_setup();
-
   //////////////////////
   /* Set Up Projector */
   //////////////////////
@@ -95,7 +88,7 @@ int main(void) {
   ///////////////////////
 
   while (1) {
-    // e.g. PT_SCHEDULE(protothread_uartThread(&pt_uartThread));
+    
   }
 } // main
 

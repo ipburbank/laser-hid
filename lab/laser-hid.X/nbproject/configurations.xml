@@ -12,6 +12,11 @@
       <itemPath>../projector.h</itemPath>
       <itemPath>../rendering.h</itemPath>
       <itemPath>../color.h</itemPath>
+      <itemPath>../firehose/firehose_parameters.h</itemPath>
+      <itemPath>../firehose/simulation.h</itemPath>
+      <itemPath>../firehose/view.h</itemPath>
+      <itemPath>../firehose/firehose.h</itemPath>
+      <itemPath>../firehose/firehose_include.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -26,6 +31,10 @@
       <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
       <itemPath>../color.c</itemPath>
+      <itemPath>../firehose/firehose.c</itemPath>
+      <itemPath>../firehose/simulation.c</itemPath>
+      <itemPath>../firehose/view.c</itemPath>
+      <itemPath>../firehose/firehose_parameters.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

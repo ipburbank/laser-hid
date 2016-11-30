@@ -15,9 +15,8 @@
 /*******************************/
 //@{
 
-#include "include.h"
-
-#include "tft_master.h" // for tft size defines
+#include "firehose_include.h"
+#include "firehose_parameters.h"
 
 //@}
 
