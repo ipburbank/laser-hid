@@ -90,6 +90,17 @@ void rendering_write(unsigned char c);
 
 void rendering_writeString(char* str);    // This is the function to use to write a string
 
+void rendering_drawPixel(short x, short y, struct color color);
+
+void rendering_drawFastVLine(short x, short y, short h,
+                             struct color color);
+
+void rendering_drawFastHLine(short x, short y, short w,
+                             struct color color);
+
+void rendering_fillRect(short x, short y, short w, short h,
+                        struct color color);
+
 //@}
 
 #endif

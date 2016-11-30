@@ -83,16 +83,6 @@ static unsigned short rotation;
 /*******************************/
 //@{
 
-static void rendering_drawPixel(short x, short y, struct color color);
-
-static void rendering_drawFastVLine(short x, short y, short h,
-                                    struct color color);
-
-static void rendering_drawFastHLine(short x, short y, short w,
-                                    struct color color);
-
-static void rendering_fillRect(short x, short y, short w, short h,
-                               struct color color);
 //@}
 
 /*******************************/
@@ -589,30 +579,15 @@ inline unsigned char rendering_getRotation(void) {
   return rotation;
 }
 
-//@}
-
-/*******************************/
-/* ISR Definitions             */
-/*******************************/
-//@{
-
-//@}
-
-
-/*******************************/
-/* LOCAL Function Definitions  */
-/*******************************/
-//@{
-
 // this function totally replaces the original tft version
-static void rendering_drawPixel(short x, short y,
+void rendering_drawPixel(short x, short y,
                                 struct color color) {
   projector_set_pixel(color, (unsigned int) x, (unsigned int) y);
 }
 
 // from tft_master.c, but modified to just call drawPixel
-static void rendering_drawFastVLine(short x, short y, short h,
-                                    struct color color) {
+void rendering_drawFastVLine(short x, short y, short h,
+                             struct color color) {
   /* Draw a vertical line at location from (x,y) to (x,y+h-1) with color
    * Parameters:
    *      x:  x-coordinate line to draw; top left of screen is x=0
@@ -639,8 +614,8 @@ static void rendering_drawFastVLine(short x, short y, short h,
 }
 
 // from tft_master.c, but modified to just call drawPixel
-static void rendering_drawFastHLine(short x, short y, short w,
-                                    struct color color) {
+void rendering_drawFastHLine(short x, short y, short w,
+                             struct color color) {
   /* Draw a horizontal line at location from (x,y) to (x+w-1,y) with color
    * Parameters:
    *      x:  x-coordinate starting point of line; top left of screen is x=0
@@ -670,8 +645,8 @@ static void rendering_drawFastHLine(short x, short y, short w,
 }
 
 // from tft_master.c, but modified to just call drawPixel
-static void rendering_fillRect(short x, short y, short w, short h,
-                               struct color color) {
+void rendering_fillRect(short x, short y, short w, short h,
+                        struct color color) {
   /* Draw a filled rectangle with starting top-left vertex (x,y),
    *  width w and height h with given color
    * Parameters:
@@ -710,5 +685,20 @@ static void rendering_fillRect(short x, short y, short w, short h,
     }
   }
 }
+
+//@}
+
+/*******************************/
+/* ISR Definitions             */
+/*******************************/
+//@{
+
+//@}
+
+
+/*******************************/
+/* LOCAL Function Definitions  */
+/*******************************/
+//@{
 
 //@}
