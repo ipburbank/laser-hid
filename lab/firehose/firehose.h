@@ -20,16 +20,6 @@
 #include "firehose_parameters.h"
 
 ////////////////////////////////////
-// config that PT likes
-#include "../config.h"
-////////////////////////////////////
-
-////////////////////////////////////
-// threading library
-#include "../pt_cornell_1_2_1.h"
-////////////////////////////////////
-
-////////////////////////////////////
 // graphics libraries
 #include "../rendering.h"
 ////////////////////////////////////
@@ -75,9 +65,18 @@
 //@{
 
 /**
+ * @brief One-time initialization of the firehose game
+ *
+ * Called once per reset, even if the game is played multiple times. Must be
+ * called before firehose_main()
+ */
+void firehose_init(void);
+
+/**
  * @brief Run the firhose game, return when game is finished.
  *
- * Runs protothreads internally.
+ * Runs protothreads internally. firehose_init() must be called before this is
+ * run for the first time.
  */
 void firehose_main(void);
 

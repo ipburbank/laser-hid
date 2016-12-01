@@ -18,6 +18,15 @@
 
 #include "firehose.h"
 
+////////////////////////////////////
+// the config has to be before pthreads
+#include "pt_config.h"
+// threading library
+#include "../pt_cornell_1_2_1.h"
+// pthreads cannot be included in the header, probably because it has no include
+// guards, though previous experiments sugges the problem may be deeper
+////////////////////////////////////
+
 //@}
 
 /*******************************/
@@ -103,12 +112,7 @@ static volatile bool frame_trigger_flag;
 /*******************************/
 //@{
 
-/** 
- * The main function configures peripherals, interrupts, and threads, then
- * infinately runs the thread scheduler.
- */
-void firehose_main(void) {
-
+void firehose_init(void) {
   ///////////////////////
   /* Set Up PT Threads */
   ///////////////////////
@@ -118,6 +122,17 @@ void firehose_main(void) {
   PT_INIT(&pt_spawnThread);
   PT_INIT(&pt_perSecondUpdateThread);
 
+  ////////////////////
+  /* Configure View */
+  ////////////////////
+
+  view_init();
+}
+
+void firehose_main(void) {
+  // this is here because it was in main in the lab3 code. I don't for sure why.
+  view_draw_barriers();
+
   //////////////////////
   /* Configure Timers */
   //////////////////////
@@ -126,13 +141,6 @@ void firehose_main(void) {
   // sys_clock/64 is the clock to the timer after the configured divison
   OpenTimer3(T3_ON | T3_SOURCE_INT | T3_PS_1_64, (sys_clock/64) / FRAMERATE);
   ConfigIntTimer3(T3_INT_ON | T3_INT_PRIOR_2);
-
-  ////////////////////
-  /* Configure View */
-  ////////////////////
-
-  view_init();
-  view_draw_barriers();
 
   ///////////////////////
   /* Run the scheduler */
@@ -150,9 +158,6 @@ void firehose_main(void) {
 
   // end timer 3
   CloseTimer3();
-
-  // end pthreads, return to normal operation
-  // TODO end pthreads
 } // main
 
 //@}
