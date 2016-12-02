@@ -28,6 +28,12 @@
 
 #define NUM_BALLS (385) /// Max number of balls in the simulation
 
+/**
+ * @brief Target frames per second
+ *
+ * The length of a tick is generally (1 second / FRAMERATE), but it is possible
+ * that a tick can run too long, causing the next one to be skipped.
+ */
 #define FRAMERATE (15) /// Frames per second
 
 #define BARRIER_DIST_FROM_LEFT (80)
@@ -37,7 +43,8 @@
 #define PADDLE_DISTANCE_FROM_LEFT (20)
 #define DISABLE_PADDLE_OPTIMIZATION (false)
 
-#define SPAWN_TIME (10) /// time between ball spawns in msec
+#define SPAWN_BALLS_PER_TICK (66)
+
 #define GAME_LENGTH (120) // How long user gets to play the game
 
 //@}

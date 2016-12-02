@@ -18,15 +18,6 @@
 
 #include "firehose.h"
 
-////////////////////////////////////
-// the config has to be before pthreads
-#include "pt_config.h"
-// threading library
-#include "../pt_cornell_1_2_1.h"
-// pthreads cannot be included in the header, probably because it has no include
-// guards, though previous experiments sugges the problem may be deeper
-////////////////////////////////////
-
 //@}
 
 /*******************************/
@@ -52,18 +43,18 @@
  * Update the ball simulation, redraw the balls, and update score, ball count,
  * catcher, etc on the TFT
  */
-static PT_THREAD(protothread_frameThread(struct pt *pt));
+static void frame(void);
 
 /** 
  * Spawn new balls on the screen when appropriate
  */
-static PT_THREAD(protothread_spawnThread(struct pt *pt));
+static void spawn_balls(void);
 
 /**
  * Does slow updates that are neccessary.
  * These updates include game time, frame rate, barrier redraw 
  */
-static PT_THREAD(protothread_perSecondUpdateThread(struct pt *pt));
+static void per_second_update(void);
 
 //@}
 
@@ -94,9 +85,10 @@ static int frames_per_second_accum;
  */
 static bool game_ongoing = true;
 
-static struct pt pt_frameThread, pt_spawnThread, pt_perSecondUpdateThread;
-
-static volatile bool frame_trigger_flag;
+/**
+ * @brief The ticks since when we define the second to have began.
+ */
+static unsigned int ticks_since_second = 0;
 
 //@}
 
@@ -113,14 +105,14 @@ static volatile bool frame_trigger_flag;
 //@{
 
 void firehose_init(void) {
-  ///////////////////////
-  /* Set Up PT Threads */
-  ///////////////////////
+  // lol we can keep any paddle position from a previous play who cares yolo
 
-  PT_setup();
-  PT_INIT(&pt_frameThread);
-  PT_INIT(&pt_spawnThread);
-  PT_INIT(&pt_perSecondUpdateThread);
+  player_score = 0;
+  game_time = 0;
+  frames_per_second_accum = 0;
+  game_ongoing = true;
+  ticks_since_second = 0;
+
 
   ////////////////////
   /* Configure View */
@@ -129,36 +121,17 @@ void firehose_init(void) {
   view_init();
 }
 
-void firehose_main(void) {
-  // this is here because it was in main in the lab3 code. I don't for sure why.
-  view_draw_barriers();
+void firehose_tick(void) {
+  frame();
+  spawn_balls();
 
-  //////////////////////
-  /* Configure Timers */
-  //////////////////////
-
-  // set up timer3 to trigger at FRAMERATE
-  // sys_clock/64 is the clock to the timer after the configured divison
-  OpenTimer3(T3_ON | T3_SOURCE_INT | T3_PS_1_64, (sys_clock/64) / FRAMERATE);
-  ConfigIntTimer3(T3_INT_ON | T3_INT_PRIOR_2);
-
-  ///////////////////////
-  /* Run the scheduler */
-  ///////////////////////
-
-  // the ordering might be important in laser-hid (as opposed to lab3 proper)
-  // because the game_ongoing flag will be set to false in
-  // perSecondUpdateThread, and we don't want the other threads to get a chance
-  // to run after that happens
-  while (game_ongoing) {
-    PT_SCHEDULE(protothread_frameThread(&pt_frameThread));
-    PT_SCHEDULE(protothread_spawnThread(&pt_spawnThread));
-    PT_SCHEDULE(protothread_perSecondUpdateThread(&pt_perSecondUpdateThread));
+  if (ticks_since_second == FRAMERATE) {
+    per_second_update();
+    ticks_since_second = 0;
+  } else {
+    ticks_since_second += 1;
   }
-
-  // end timer 3
-  CloseTimer3();
-} // main
+}
 
 //@}
 
@@ -167,14 +140,6 @@ void firehose_main(void) {
 /*******************************/
 //@{
 
-void __ISR(_TIMER_3_VECTOR, ipl2) Timer3Handler(void) {
-  // clear the interrupt flag
-  mT3ClearIntFlag();
-
-  // indicate that it is time to execute a frame
-  frame_trigger_flag = true;
-}
-
 //@}
 
 /*******************************/
@@ -182,116 +147,85 @@ void __ISR(_TIMER_3_VECTOR, ipl2) Timer3Handler(void) {
 /*******************************/
 //@{
 
-static PT_THREAD(protothread_frameThread(struct pt *pt)) {
-  PT_BEGIN(pt);
+static void frame(void) {
+  // Update the paddle position based on controller
+  previous_paddle_top_position = paddle_top_position;
+  struct joystick_vect const stick_pos = joystick_get_pos();
+  // un-center joystick so it is in [0, 2*JOYSTICK_OUTPUT_RANGE] instead of
+  // [-JOYSTICK_OUTPUT_RANGE, JOYSTICK_OUTPUT_RANGE]
+  uint16_t const uncentered_stick =
+    (uint16_t) stick_pos.x + JOYSTICK_OUTPUT_RANGE;
+  /* range of paddle_top_position is [0, IMAGE_HEIGHT - PADDLE_HEIGHT]. This
+   * arithmetic scales the joystick output to this range without using a
+   * floating point number by doing careful operation ordering. It is
+   * mathematically equivalent to: (uncentered_stick /
+   * (2*JOYSTICK_OUTOUT_RANGE)) * (IMAGE_HEIGHT - PADDLE_HEIGHT)
+   */
+  paddle_top_position =
+    (IMAGE_HEIGHT - PADDLE_HEIGHT) *
+    uncentered_stick /
+    2 * JOYSTICK_OUTPUT_RANGE;
+  // draw new paddle position
+  view_redraw_paddle(previous_paddle_top_position, paddle_top_position);
 
-  while (1) {
-    // wait until it is time to produce a frame
-    PT_WAIT_UNTIL(pt, frame_trigger_flag);
-
-    // reset the flag
-    frame_trigger_flag = false;
-
-    // Update the paddle position based on controller
-    previous_paddle_top_position = paddle_top_position;
-    struct joystick_vect const stick_pos = joystick_get_pos();
-    // un-center joystick so it is in [0, 2*JOYSTICK_OUTPUT_RANGE] instead of
-    // [-JOYSTICK_OUTPUT_RANGE, JOYSTICK_OUTPUT_RANGE]
-    uint16_t const uncentered_stick =
-      (uint16_t) stick_pos.x + JOYSTICK_OUTPUT_RANGE;
-    /* range of paddle_top_position is [0, IMAGE_HEIGHT - PADDLE_HEIGHT]. This
-     * arithmetic scales the joystick output to this range without using a
-     * floating point number by doing careful operation ordering. It is
-     * mathematically equivalent to: (uncentered_stick /
-     * (2*JOYSTICK_OUTOUT_RANGE)) * (IMAGE_HEIGHT - PADDLE_HEIGHT)
-     */
-    paddle_top_position =
-      (IMAGE_HEIGHT - PADDLE_HEIGHT) *
-      uncentered_stick /
-      2 * JOYSTICK_OUTPUT_RANGE;
-    // draw new paddle position
-    view_redraw_paddle(previous_paddle_top_position, paddle_top_position);
-
-    // for each ball update it and draw it
-    int ball_index;
-    for(ball_index = 0; ball_index < NUM_BALLS; ball_index++) {
-      // if this ball is not on the field don't bother doing anything
-      if(!balls[ball_index].is_on_field) {
-        continue;
-      }
-
-      // remove the ball's old position
-      view_remove_ball(balls[ball_index].position);
-
-      simulation_substep(ball_index);
-
-      // check for score updates and play related sounds
-      int score_change = simulation_score_substep(ball_index, paddle_top_position);
-      player_score += score_change;
-
-      // if the ball wasn't erased draw its new position
-      if(balls[ball_index].is_on_field) {
-        view_draw_ball(balls[ball_index].position);
-      }
+  // for each ball update it and draw it
+  int ball_index;
+  for(ball_index = 0; ball_index < NUM_BALLS; ball_index++) {
+    // if this ball is not on the field don't bother doing anything
+    if(!balls[ball_index].is_on_field) {
+      continue;
     }
 
-    // draw the scores
+    // remove the ball's old position
+    view_remove_ball(balls[ball_index].position);
 
-    // update the number of balls on screen
-    // Update that we have completed a frame
-    frames_per_second_accum++;
+    simulation_substep(ball_index);
 
-    // Update score and number of balls on screen
-    view_draw_fast_stats(player_score, simulation_num_spawned_balls);
+    // check for score updates and play related sounds
+    int score_change = simulation_score_substep(ball_index, paddle_top_position);
+    player_score += score_change;
 
-    // yield so that even if we are running behind the framerate other threads
-    // still get a chance to run
-    PT_YIELD(pt);
+    // if the ball wasn't erased draw its new position
+    if(balls[ball_index].is_on_field) {
+      view_draw_ball(balls[ball_index].position);
+    }
+  }
 
-    // never exit while
-  } // END WHILE(1)
-  PT_END(pt);
-} // tnhread
+  // draw the scores
 
-static PT_THREAD(protothread_spawnThread(struct pt *pt)) {
-  PT_BEGIN(pt);
+  // update the number of balls on screen
+  // Update that we have completed a frame
+  frames_per_second_accum++;
 
-  while (1) {
-    struct xy_vec sacrificed_ball_pos = simulation_spawnBall();
-    view_remove_ball(sacrificed_ball_pos);
-
-    PT_YIELD_TIME_msec(SPAWN_TIME);
-    // never exit while
-  } // END WHILE(1)
-  PT_END(pt);
+  // Update score and number of balls on screen
+  view_draw_fast_stats(player_score, simulation_num_spawned_balls);
 }
 
-static PT_THREAD(protothread_perSecondUpdateThread(struct pt *pt)) {
-  PT_BEGIN(pt);
-
-  while (1) {
-    // update game time elapsed and redraw game time and framerate
-    game_time++;
-    view_draw_slow_stats(frames_per_second_accum, game_time);
-    // reset accumulator
-    frames_per_second_accum = 0;
-    // redraw barriers incase they got into a fight with some balls
-    view_draw_barriers();
-    // Check if we have reached the end of the game
-    if(GAME_LENGTH <= game_time){
-      // Display "END GAME" on the TFT
-      rendering_setCursor(BARRIER_DIST_FROM_LEFT, IMAGE_HEIGHT/2);
-      rendering_setTextColor(game_over_color_fg);
-      rendering_writeString("GAME OVER");
-      // Yield for three seconds
-      PT_YIELD_TIME_msec(3000);
-      game_ongoing = false; // stop the game, return control to top level
-    }
-    // Yield for one second
-    PT_YIELD_TIME_msec(1000);
-    // never exit while
+static void spawn_balls(void) {
+  unsigned int i;
+  for (i = 0; i < SPAWN_BALLS_PER_TICK; i++) {
+    struct xy_vec sacrificed_ball_pos = simulation_spawnBall();
+    view_remove_ball(sacrificed_ball_pos);
   }
-  PT_END(pt);
+}
+
+static void per_second_update(void) {
+  // update game time elapsed and redraw game time and framerate
+  game_time++;
+  view_draw_slow_stats(frames_per_second_accum, game_time);
+  // reset accumulator
+  frames_per_second_accum = 0;
+  // redraw barriers incase they got into a fight with some balls
+  view_draw_barriers();
+  // Check if we have reached the end of the game
+  if(GAME_LENGTH <= game_time){
+    // Display "END GAME" on the TFT
+    rendering_setCursor(BARRIER_DIST_FROM_LEFT, IMAGE_HEIGHT/2);
+    rendering_setTextColor(game_over_color_fg);
+    rendering_writeString("GAME OVER");
+    // Yield for three seconds
+    game_ongoing = false; // stop the game, return control to top level
+  }
 }
 
 //@}
