@@ -5,7 +5,6 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>../include.h</itemPath>
-      <itemPath>../pt_cornell_1_2_1.h</itemPath>
       <itemPath>../joystick.h</itemPath>
       <itemPath>../parameters.h</itemPath>
       <itemPath>../projector.h</itemPath>
@@ -16,7 +15,6 @@
       <itemPath>../firehose/view.h</itemPath>
       <itemPath>../firehose/firehose.h</itemPath>
       <itemPath>../firehose/firehose_include.h</itemPath>
-      <itemPath>../firehose/pt_config.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

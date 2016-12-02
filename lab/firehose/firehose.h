@@ -65,20 +65,20 @@
 //@{
 
 /**
- * @brief One-time initialization of the firehose game
+ * @brief Initialize the firehose game before every play.
  *
- * Called once per reset, even if the game is played multiple times. Must be
- * called before firehose_main()
+ * Each time the game ends, must be called before firehose_tick is called again.
  */
 void firehose_init(void);
 
 /**
- * @brief Run the firhose game, return when game is finished.
+ * @brief Run a tick of the firehose game.
+ * @return True if the game is continuing, false if the game has ended.
  *
- * Runs protothreads internally. firehose_init() must be called before this is
- * run for the first time.
+ * After the game has ended, firehose_init must be called again before this can
+ * be called.
  */
-void firehose_main(void);
+bool firehose_tick(void);
 
 //@}
 
