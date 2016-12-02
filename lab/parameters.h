@@ -22,9 +22,32 @@
  * The phase shift in pixels between lasers. May only be positive numbers which
  * represent how many pixels after left side of the frame the color should
  * start. Values must be less than `PHASE_SHIFT_PADDING`.
+ *
+ * One laser should have a zero shift, this is the one to the right of which the
+ * others are shifted.
+ */
+/**
+ * @brief Shift to the right of the red laser.
+ *
+ * How many pixels to the right the red laser is of the laser with zero
+ * shift. Must be smaller than PHASE_SHIFT_PADDING.
  */
 #define RED_PHASE_SHIFT   (0)
+
+/**
+ * @brief Shift to the right of the green laser.
+ *
+ * How many pixels to the right the red laser is of the laser with zero
+ * shift. Must be smaller than PHASE_SHIFT_PADDING.
+ */
 #define GREEN_PHASE_SHIFT (0)
+
+/**
+ * @brief Shift to the right of the blue laser.
+ *
+ * How many pixels to the right the red laser is of the laser with zero
+ * shift. Must be smaller than PHASE_SHIFT_PADDING.
+ */
 #define BLUE_PHASE_SHIFT  (0)
 
 /**
