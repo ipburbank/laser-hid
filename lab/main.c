@@ -27,6 +27,7 @@
 ////////////////////////////////////
 
 #include "projector.h"
+#include "rendering.h"
 
 //@}
 
@@ -71,13 +72,6 @@
 //@{
 
 int main(void) {
-
-  ///////////////////////
-  /* Set Up PT Threads */
-  ///////////////////////
-
-  PT_setup();
-
   //////////////////////
   /* Set Up Projector */
   //////////////////////
@@ -95,7 +89,15 @@ int main(void) {
   ///////////////////////
 
   while (1) {
-    // e.g. PT_SCHEDULE(protothread_uartThread(&pt_uartThread));
+    rendering_fillRect(0, 0,
+                       IMAGE_WIDTH / 3, IMAGE_HEIGHT,
+                       color_purest_red);
+    rendering_fillRect(IMAGE_WIDTH / 3, 0,
+                       IMAGE_WIDTH / 3, IMAGE_HEIGHT,
+                       color_purest_green);
+    rendering_fillRect((IMAGE_WIDTH / 3) * 2, 0,
+                       IMAGE_WIDTH / 3, IMAGE_HEIGHT,
+                       color_purest_blue);
   }
 } // main
 

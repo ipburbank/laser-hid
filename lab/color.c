@@ -29,6 +29,24 @@
 
 struct color const color_blank = {0};
 
+struct color const color_purest_red = {
+  .red = 3,
+  .green = 0,
+  .blue = 0
+};
+
+struct color const color_purest_green = {
+  .red = 0,
+  .green = 3,
+  .blue = 0
+};
+
+struct color const color_purest_blue = {
+  .red = 0,
+  .green = 0,
+  .blue = 3
+};
+
 //@}
 
 /*******************************/

@@ -60,6 +60,21 @@ struct color {
 
 extern struct color const color_blank;
 
+/**
+ * @brief Maximum intensity red, no other colors.
+ */
+extern struct color const color_purest_red;
+
+/**
+ * @brief Maximum intensity green, no other colors.
+ */
+extern struct color const color_purest_green;
+
+/**
+ * @brief Maximum intensity blue, no other colors.
+ */
+extern struct color const color_purest_blue;
+
 //@}
 
 /********************************/
