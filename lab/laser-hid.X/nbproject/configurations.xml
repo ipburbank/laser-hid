@@ -10,8 +10,6 @@
       <itemPath>../projector.h</itemPath>
       <itemPath>../rendering.h</itemPath>
       <itemPath>../color.h</itemPath>
-      <itemPath>../spatial.h</itemPath>
-      <itemPath>../cursor.h</itemPath>
       <itemPath>../firehose/firehose_parameters.h</itemPath>
       <itemPath>../firehose/simulation.h</itemPath>
       <itemPath>../firehose/view.h</itemPath>
@@ -31,7 +29,6 @@
       <itemPath>../rendering.c</itemPath>
       <itemPath>../projector.c</itemPath>
       <itemPath>../color.c</itemPath>
-      <itemPath>../cursor.c</itemPath>
       <itemPath>../firehose/firehose.c</itemPath>
       <itemPath>../firehose/simulation.c</itemPath>
       <itemPath>../firehose/view.c</itemPath>
