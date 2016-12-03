@@ -113,7 +113,6 @@ void firehose_init(void) {
   game_ongoing = true;
   ticks_since_second = 0;
 
-
   ////////////////////
   /* Configure View */
   ////////////////////
@@ -191,9 +190,6 @@ static void frame(void) {
     }
   }
 
-  // draw the scores
-
-  // update the number of balls on screen
   // Update that we have completed a frame
   frames_per_second_accum++;
 
@@ -223,7 +219,6 @@ static void per_second_update(void) {
     rendering_setCursor(BARRIER_DIST_FROM_LEFT, IMAGE_HEIGHT/2);
     rendering_setTextColor(game_over_color_fg);
     rendering_writeString("GAME OVER");
-    // Yield for three seconds
     game_ongoing = false; // stop the game, return control to top level
   }
 }
