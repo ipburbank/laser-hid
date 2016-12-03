@@ -582,7 +582,12 @@ inline unsigned char rendering_getRotation(void) {
 // this function totally replaces the original tft version
 void rendering_drawPixel(short x, short y,
                                 struct color color) {
-  projector_set_pixel(color, (unsigned int) x, (unsigned int) y);
+  if (x >= IMAGE_WIDTH || y >= IMAGE_HEIGHT || x < 0 || y < 0) {
+    // no-op if pixel is off screen
+    return;
+  } else {
+    projector_set_pixel(color, (unsigned int) x, (unsigned int) y);
+  }
 }
 
 // from tft_master.c, but modified to just call drawPixel
