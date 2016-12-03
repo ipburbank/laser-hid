@@ -12,9 +12,6 @@
 | Pixel Clock     | Timer1     |                      | Trigger DMA0 transfer                              |
 |                 | DMA0       |                      | Output Pixels to the lasers                        |
 |-----------------+------------+----------------------+----------------------------------------------------|
-| Firehose        | Timer3     | firehose/firehose.c  | Frame timer                                        |
-|                 | Timer5     | pt_cornell_1_1_1.h   | Protothreads timer                                 |
-|-----------------+------------+----------------------+----------------------------------------------------|
 
 * Pinout
 | <15>            | <9>       | <10>       | <12>         | <12>         | <3> |
