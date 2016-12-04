@@ -66,6 +66,8 @@
  */
 void projector_init( void );
 
+void projector_start();
+
 /**
  * @brief Set the color of a pixel at the specified location.
  *

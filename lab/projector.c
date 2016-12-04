@@ -170,6 +170,11 @@ void projector_init() {
 
 }
 
+void projector_start() {
+  // Set up the DMA for the first row
+  configure_dma_for_row(0);
+}
+
 void projector_set_pixel(struct color const color,
                          unsigned int x, unsigned int y) {
   projector_framebuffer[y][x + RED_PHASE_SHIFT  ].red   = color.red;
