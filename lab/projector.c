@@ -254,6 +254,8 @@ static void configure_dma_for_row(uint8_t row_number) {
   // and that the next row should be configured.
   DmaChnSetEvEnableFlags(PIXEL_DMA_CHN, DMA_EV_BLOCK_DONE);
   DmaChnIntEnable(PIXEL_DMA_CHN);
+  
+  DmaChnEnable(PIXEL_DMA_CHN);
 }
 
 static void update_y_axis_position(uint8_t row_number) {
