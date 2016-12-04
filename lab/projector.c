@@ -14,13 +14,12 @@
  * and the clock is reset.
  *
  * Externally, the photo transistor is latched with the ability to be reset by
- * the CPU. The latched signal is used as the GATE for the pixel clock; that is,
- * the pixel clock is initially zero, then once the photo transistor is
- * triggered the pixel clock will start counting. After the DMA finishes
- * outputting the row it triggers an interrupt that eventually (not timing
- * critical as extraneous interrupts are ignored by the DMA controller after the
- * transfer is complete) resets the latch (halting the timer) and resets the
- * timer to 0.
+ * the CPU. The latched signal triggers an ISR via a Change Notification, which
+ * clears the timer (sets it to 0) and calls `trigger_row()` which starts
+ * clocking out pixels with dma. After the DMA finishes outputting the row it
+ * triggers an interrupt that eventually (not timing critical as extraneous
+ * interrupts are ignored by the DMA controller after the transfer is complete)
+ * resets the latch (halting the timer) and resets the timer to 0.
  *
  */
 
@@ -79,6 +78,13 @@ volatile uint8_t current_row;
 static void configure_dma_for_row(uint8_t row_number);
 
 /**
+ * @brief Trigger outputting currently configured row.
+ *
+ * Clears Timer1
+ */
+static void trigger_row(void);
+
+/**
  * @brief Set the y axis mirrors angle to direct the laser to the appropriate place for
  * the given row.
  *
@@ -119,19 +125,31 @@ void projector_init() {
   //  - T1_ON         :: Timer is turned on
   //  - T1_SOURCE_INT :: Clock source is internal
   //  - T1_PS_1_1     :: Prescalar is 1 to 1 (timer sees PBCLK)
-  //  - T1_GATE_ON    :: Gated mode is on: The timer will only count when T1CK
-  //                     is high. This is connected to the latched
-  //                     row trigger signal.
   //
   // The timer's period is used to fine-tune how long each pixel lasts;
   // one pixel displayed every time the timer wraps around.
-  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1 | T1_GATE_ON,
+  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1,
              40);
 
   // set up the pin to reset the Gate Latch, set initially high
   // (the signal is active low)
   PORTSetPinsDigitalOut(IOPORT_A, BIT_3);
   mPORTASetBits(BIT_3);
+
+  ////////////////
+  /* Set Up CN  */
+  ////////////////
+
+  // see reference manual 12.3.3.1
+  CNCONASET = BIT_15; // enable CN on Port A (set bit 15 of CNCON to 1)
+  PORTSetPinsDigitalIn(IOPORT_A, BIT_4); // RA4 is input
+  unsigned int ignore = PORTA; // clear interrupt
+  IPC8SET  = ((unsigned int) 5) << 18; // set CN interrupt priority
+                                       // (IPC6<20:18>=5, defaults to 0 at POR)
+  IFS1CLR  = BIT_13; // clear CN interrupt flag (set bit 0 of IFS1 to 0)
+  CNENASET = BIT_4;  // enable for RA4 (set bit 4 of CNENA to 1)
+                     // see family data sheet 11.1.4
+  IEC1SET  = BIT_13; // enable CN interrupt (set bit 0 of IEC1 to 1)
 
   ////////////////
   /* Set Up DMA */
@@ -142,6 +160,8 @@ void projector_init() {
   INTSetVectorSubPriority(INT_VECTOR_DMA(PIXEL_DMA_CHN),
                           INT_SUB_PRIORITY_LEVEL_3);
   INTEnable(INT_SOURCE_DMA(PIXEL_DMA_CHN), INT_ENABLED);
+
+  configure_dma_for_row(0);
 
   ////////////////
   /* Set Up SPI */
@@ -167,7 +187,11 @@ void projector_init() {
   // The fpbDiv = 2 sets baud rate to Fpb / fpbDiv.
   SpiChnOpen(Y_MIRROR_SPI_CHN, SPICON_MSTEN | SPICON_MODE16 | SPICON_ON
              | SPICON_FRMPOL | SPICON_CKP | SPICON_FRMEN, 2);
+}
 
+static void trigger_row(void) {
+  WriteTimer1(0);
+  DmaChnEnable(PIXEL_DMA_CHN);
 }
 
 void projector_set_pixel(struct color const color,
@@ -215,6 +239,17 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
 
   // prepare the DMA to output the next row
   configure_dma_for_row(current_row);
+}
+
+void __ISR(_CHANGE_NOTICE_VECTOR, IPL5SOFT) LightArrival(void) {
+  if ((PORTA & BIT_4) == BIT_4) {
+    // if the bit is high, the light just went off. The light disappearing is a
+    // low-to-high edge.
+    trigger_row();
+  }
+
+  // clear the interrupt flag
+  IFS1CLR = BIT_13;
 }
 
 //@}
