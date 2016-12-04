@@ -74,9 +74,6 @@ static int player_score;
 // Current game time
 static int game_time;
 
-// Accumulator for frame rate per second
-static int frames_per_second_accum;
-
 /**
  * @brief Whether the game is running/whether game threads are scheduled
  *
@@ -109,7 +106,6 @@ void firehose_init(void) {
 
   player_score = 0;
   game_time = 0;
-  frames_per_second_accum = 0;
   game_ongoing = true;
   ticks_since_second = 0;
 
@@ -190,9 +186,6 @@ static void frame(void) {
     }
   }
 
-  // Update that we have completed a frame
-  frames_per_second_accum++;
-
   // Update score and number of balls on screen
   view_draw_fast_stats(player_score, simulation_num_spawned_balls);
 }
@@ -208,9 +201,7 @@ static void spawn_balls(void) {
 static void per_second_update(void) {
   // update game time elapsed and redraw game time and framerate
   game_time++;
-  view_draw_slow_stats(frames_per_second_accum, game_time);
-  // reset accumulator
-  frames_per_second_accum = 0;
+  view_draw_slow_stats(ticks_since_second, game_time);
   // redraw barriers incase they got into a fight with some balls
   view_draw_barriers();
   // Check if we have reached the end of the game
