@@ -14,13 +14,12 @@
  * and the clock is reset.
  *
  * Externally, the photo transistor is latched with the ability to be reset by
- * the CPU. The latched signal is used as the GATE for the pixel clock; that is,
- * the pixel clock is initially zero, then once the photo transistor is
- * triggered the pixel clock will start counting. After the DMA finishes
- * outputting the row it triggers an interrupt that eventually (not timing
- * critical as extraneous interrupts are ignored by the DMA controller after the
- * transfer is complete) resets the latch (halting the timer) and resets the
- * timer to 0.
+ * the CPU. The latched signal triggers an ISR via a Change Notification, which
+ * clears the timer (sets it to 0) and calls `trigger_row()` which starts
+ * clocking out pixels with dma. After the DMA finishes outputting the row it
+ * triggers an interrupt that eventually (not timing critical as extraneous
+ * interrupts are ignored by the DMA controller after the transfer is complete)
+ * resets the latch (halting the timer) and resets the timer to 0.
  *
  */
 
@@ -79,6 +78,11 @@ volatile uint8_t current_row;
 static void configure_dma_for_row(uint8_t row_number);
 
 /**
+ * Trigger outputting currently configured row.
+ */
+void trigger_row( void );
+
+/**
  * @brief Set the y axis mirrors angle to direct the laser to the appropriate place for
  * the given row.
  *
@@ -119,13 +123,10 @@ void projector_init() {
   //  - T1_ON         :: Timer is turned on
   //  - T1_SOURCE_INT :: Clock source is internal
   //  - T1_PS_1_1     :: Prescalar is 1 to 1 (timer sees PBCLK)
-  //  - T1_GATE_ON    :: Gated mode is on: The timer will only count when T1CK
-  //                     is high. This is connected to the latched
-  //                     row trigger signal.
   //
   // The timer's period is used to fine-tune how long each pixel lasts;
   // one pixel displayed every time the timer wraps around.
-  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1 | T1_GATE_ON,
+  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1,
              40);
 
   // set up the pin to reset the Gate Latch, set initially high
@@ -142,6 +143,8 @@ void projector_init() {
   INTSetVectorSubPriority(INT_VECTOR_DMA(PIXEL_DMA_CHN),
                           INT_SUB_PRIORITY_LEVEL_3);
   INTEnable(INT_SOURCE_DMA(PIXEL_DMA_CHN), INT_ENABLED);
+
+  configure_dma_for_row(0);
 
   ////////////////
   /* Set Up SPI */
@@ -167,12 +170,10 @@ void projector_init() {
   // The fpbDiv = 2 sets baud rate to Fpb / fpbDiv.
   SpiChnOpen(Y_MIRROR_SPI_CHN, SPICON_MSTEN | SPICON_MODE16 | SPICON_ON
              | SPICON_FRMPOL | SPICON_CKP | SPICON_FRMEN, 2);
-
 }
 
-void projector_start() {
-  // Set up the DMA for the first row
-  configure_dma_for_row(0);
+void trigger_row( void ) {
+  DmaChnEnable(PIXEL_DMA_CHN);
 }
 
 void projector_set_pixel(struct color const color,
@@ -222,6 +223,7 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   configure_dma_for_row(current_row);
 }
 
+// \todo: Write an ISR which clears the timer and calls `trigger_row` on latched opto CN
 //@}
 
 /*******************************/
@@ -254,8 +256,6 @@ static void configure_dma_for_row(uint8_t row_number) {
   // and that the next row should be configured.
   DmaChnSetEvEnableFlags(PIXEL_DMA_CHN, DMA_EV_BLOCK_DONE);
   DmaChnIntEnable(PIXEL_DMA_CHN);
-  
-  DmaChnEnable(PIXEL_DMA_CHN);
 }
 
 static void update_y_axis_position(uint8_t row_number) {
