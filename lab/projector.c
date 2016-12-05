@@ -295,8 +295,11 @@ static void configure_dma_for_row(uint8_t row_number) {
 }
 
 static void update_y_axis_position(uint8_t row_number) {
-  // \todo: Determine the actual relation from row number to mirror position
-  uint8_t mirror_position = row_number;
+  // Convert the row number into the correct DAC output
+  // float avoided by rewrite: (row_number / IMAGE_HEIGHT) * (MAX_COMMAND - MIN_COMMAND) + MIN_COMMAND
+  uint16_t mirror_position =
+    (row_number * (Y_AXIS_MAX_COMMAND - Y_AXIS_MIN_COMMAND)) / IMAGE_HEIGHT
+    + Y_AXIS_MIN_COMMAND;
 
   // construct the DAC message by adding the DAC config bits on to the message
   uint16_t dac_word = Y_MIRROR_SPI_CONFIG | mirror_position;
