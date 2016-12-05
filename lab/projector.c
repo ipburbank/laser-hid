@@ -146,16 +146,17 @@ void projector_init() {
   ////////////////
   /* Set Up CN  */
   ////////////////
+
   // see reference manual 12.3.3.1
   CNCONASET = BIT_15; // enable CN on Port A (set bit 15 of CNCON to 1)
   PORTSetPinsDigitalIn(IOPORT_A, BIT_4); // RA4 is input
   unsigned int ignore = PORTA; // clear interrupt
-  IPC6SET = ((unsigned int) 5) << 20; // set CN interrupt priority
-                                      // (IPC6<20:18>=5, defaults to 0 at POR)
-  IFS1CLR  = BIT_0; // clear CN interrupt flag (set bit 0 of IFS1 to 0)
-  CNENASET = BIT_4; // enable for RA4 (set bit 4 of CNENA to 1)
-                    // see family data sheet 11.1.4
-  IEC1SET  = BIT_1; // enable CN interrupt (set bit 0 of IEC1 to 1)
+  IPC8SET  = ((unsigned int) 5) << 18; // set CN interrupt priority
+                                       // (IPC6<20:18>=5, defaults to 0 at POR)
+  IFS1CLR  = BIT_13; // clear CN interrupt flag (set bit 0 of IFS1 to 0)
+  CNENASET = BIT_4;  // enable for RA4 (set bit 4 of CNENA to 1)
+                     // see family data sheet 11.1.4
+  IEC1SET  = BIT_13; // enable CN interrupt (set bit 0 of IEC1 to 1)
 
   ////////////////
   /* Set Up DMA */
@@ -247,13 +248,17 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   configure_dma_for_row(current_row);
 }
 
-void __ISR(CN_IRQ, IPL5SOFT) LightArrival(void) {
+void __ISR(_CHANGE_NOTICE_VECTOR, IPL5SOFT) LightArrival(void) {
   if ((PORTA & BIT_4) == BIT_4) {
     // if the bit is high, the light just went off. The light disappearing is a
     // low-to-high edge.
     trigger_row();
   }
+
+  // clear the interrupt flag
+  IFS1CLR = BIT_13;
 }
+
 //@}
 
 /*******************************/
