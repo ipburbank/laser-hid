@@ -78,7 +78,7 @@ void firehose_init(void);
  * After the game has ended, firehose_init must be called again before this can
  * be called.
  */
-void firehose_tick(void);
+bool firehose_tick(void);
 
 //@}
 

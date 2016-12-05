@@ -116,7 +116,7 @@ void firehose_init(void) {
   view_init();
 }
 
-void firehose_tick(void) {
+bool firehose_tick(void) {
   frame();
   spawn_balls();
 
@@ -126,6 +126,8 @@ void firehose_tick(void) {
   } else {
     ticks_since_second += 1;
   }
+
+  return game_ongoing;
 }
 
 //@}
