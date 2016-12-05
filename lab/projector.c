@@ -155,6 +155,11 @@ void projector_init() {
   /* Set Up DMA */
   ////////////////
 
+  // Set up the pins as an output
+  PORTSetPinsDigitalOut(IOPORT_B, BIT_0 | BIT_1   // red
+                                | BIT_2 | BIT_3   // blue
+                                | BIT_4 | BIT_5); // green
+
   // Configure DMA interrupt vector and enable DMA interrupts on CPU
   INTSetVectorPriority(INT_VECTOR_DMA(PIXEL_DMA_CHN), INT_PRIORITY_LEVEL_5);
   INTSetVectorSubPriority(INT_VECTOR_DMA(PIXEL_DMA_CHN),
