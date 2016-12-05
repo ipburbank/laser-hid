@@ -15,7 +15,7 @@
 /**
  * Projected image height and width in pixels.
  */
-#define IMAGE_HEIGHT (50)
+#define IMAGE_HEIGHT (10)
 #define IMAGE_WIDTH  (50)
 
 /**
@@ -58,6 +58,20 @@
 /* tab is 4 spaces for purposes of text rendering
  */
 #define RENDERING_TAB_WIDTH (4)
+
+/**
+ * @brief Min voltage to output to drive the y-axis mirror
+ *
+ * This is in the 10-bit data format accepted by the DAC
+ */
+#define Y_AXIS_MIN_COMMAND (0 * 1023)
+
+/**
+ * @brief Max voltage to output to drive the y-axis mirror
+ *
+ * This is in the 10-bit data format accepted by the DAC
+ */
+#define Y_AXIS_MAX_COMMAND ((3/3.3) * 1023)
 
 /*
  * Controls conversion of ADC values into nice direction vectors.
