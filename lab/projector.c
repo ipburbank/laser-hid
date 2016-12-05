@@ -42,6 +42,10 @@
 #define Y_MIRROR_SPI_CHN    (1)
 #define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_VREF | DAC_ACTIVE)
 
+/**
+ * @brief How many clock ticks the pixel is on
+ */
+#define PIXEL_ON_TIME (400)
 //@}
 
 /********************************/
@@ -128,8 +132,7 @@ void projector_init() {
   //
   // The timer's period is used to fine-tune how long each pixel lasts;
   // one pixel displayed every time the timer wraps around.
-  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1,
-             40);
+  OpenTimer1(T1_ON | T1_SOURCE_INT | T1_PS_1_1, PIXEL_ON_TIME);
 
   // set up the pin to reset the Gate Latch, set initially high
   // (the signal is active low)
