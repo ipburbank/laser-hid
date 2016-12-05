@@ -42,6 +42,13 @@
 #define Y_MIRROR_SPI_CHN    (1)
 #define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_VREF | DAC_ACTIVE)
 
+/**
+ * @brief The IRQ number of the CN interrupt.
+ *
+ * From family data sheet table 7-1.
+ */
+#define CN_IRQ (45)
+
 //@}
 
 /********************************/
@@ -78,9 +85,11 @@ volatile uint8_t current_row;
 static void configure_dma_for_row(uint8_t row_number);
 
 /**
- * Trigger outputting currently configured row.
+ * @brief Trigger outputting currently configured row.
+ *
+ * Clears Timer1
  */
-void trigger_row( void );
+static void trigger_row( void );
 
 /**
  * @brief Set the y axis mirrors angle to direct the laser to the appropriate place for
@@ -135,6 +144,20 @@ void projector_init() {
   mPORTASetBits(BIT_3);
 
   ////////////////
+  /* Set Up CN  */
+  ////////////////
+  // see reference manual 12.3.3.1
+  CNCONASET = BIT_15; // enable CN on Port A (set bit 15 of CNCON to 1)
+  PORTSetPinsDigitalIn(IOPORT_A, BIT_4); // RA4 is input
+  unsigned int ignore = PORTA; // clear interrupt
+  IPC6SET = ((unsigned int) 5) << 20; // set CN interrupt priority
+                                      // (IPC6<20:18>=5, defaults to 0 at POR)
+  IFS1CLR  = BIT_0; // clear CN interrupt flag (set bit 0 of IFS1 to 0)
+  CNENASET = BIT_4; // enable for RA4 (set bit 4 of CNENA to 1)
+                    // see family data sheet 11.1.4
+  IEC1SET  = BIT_1; // enable CN interrupt (set bit 0 of IEC1 to 1)
+
+  ////////////////
   /* Set Up DMA */
   ////////////////
 
@@ -172,7 +195,8 @@ void projector_init() {
              | SPICON_FRMPOL | SPICON_CKP | SPICON_FRMEN, 2);
 }
 
-void trigger_row( void ) {
+static void trigger_row(void) {
+  WriteTimer1(0);
   DmaChnEnable(PIXEL_DMA_CHN);
 }
 
@@ -223,7 +247,13 @@ void __ISR(_DMA0_VECTOR, IPL5SOFT) EndOfRowHandler(void) {
   configure_dma_for_row(current_row);
 }
 
-// \todo: Write an ISR which clears the timer and calls `trigger_row` on latched opto CN
+void __ISR(CN_IRQ, IPL5SOFT) LightArrival(void) {
+  if ((PORTA & BIT_4) == BIT_4) {
+    // if the bit is high, the light just went off. The light disappearing is a
+    // low-to-high edge.
+    trigger_row();
+  }
+}
 //@}
 
 /*******************************/

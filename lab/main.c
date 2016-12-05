@@ -89,8 +89,6 @@ int main(void) {
   //////////////////////////////////
 
   INTEnableSystemMultiVectoredInt();
-  
-  projector_start();
 
   ///////////////////////
   /* Run the scheduler */
