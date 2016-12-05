@@ -42,13 +42,6 @@
 #define Y_MIRROR_SPI_CHN    (1)
 #define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_VREF | DAC_ACTIVE)
 
-/**
- * @brief The IRQ number of the CN interrupt.
- *
- * From family data sheet table 7-1.
- */
-#define CN_IRQ (45)
-
 //@}
 
 /********************************/
