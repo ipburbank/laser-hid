@@ -43,7 +43,7 @@
 #define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_VREF | DAC_ACTIVE)
 
 /**
- * How many clock ticks the pixel is on
+ * @brief How many clock ticks the pixel is on
  */
 #define PIXEL_ON_TIME (400)
 //@}
