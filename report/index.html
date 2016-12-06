@@ -22,12 +22,30 @@
 
     <section>
       <h2>Introduction</h2>
+      <p>
+        An image projector that draws using colored lasers controlled by a PIC32.
+      </p>
 
+      <p>
+        We use several colored lasers to generate a single pixel.
+        A system of mirrors deflects the lasers to control where they shine.
+        A vertical mirror controls the height of the projected laser.
+        A spinning mirror assembly causes the laser to &quot;scan&quot; horizontally.
+        The spinning mirrors always spin at constant speed while the software outputs pixels.
+        The vertical mirror changes position at the end of every row.
       </p>
     </section>
 
     <section>
       <h2>High-level design</h2>
+      <p>
+        The horizontal mirrors are four mirrors on the sides of a spinning cube.
+        A single row of the output display is shown in the time it takes for one of the four spinning mirrors to move through part of it's arc.
+        Each rotation of the mirror assembly is thus four rows.
+        The rotation of the mirror assembly is used to control the beginning of a row via a phototransistor and Change Notification interrupt.
+        DMA outputs the entire row into our diode control circuits, with a timer controlling the time between pixels.
+        The interrupt for the end of the DMA block transfer is used to configure the DMA and the vertical mirror for the next row.
+      </p>
 
       <h3>Background math</h3>
 
