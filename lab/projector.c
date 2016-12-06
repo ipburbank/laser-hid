@@ -40,7 +40,7 @@
 
 #define PIXEL_DMA_CHN       (0)
 #define Y_MIRROR_SPI_CHN    (1)
-#define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_VREF | DAC_ACTIVE)
+#define Y_MIRROR_SPI_CONFIG (DAC_A | DAC_GAIN_2VREF | DAC_ACTIVE)
 
 /**
  * @brief How many clock ticks the pixel is on
@@ -175,10 +175,10 @@ void projector_init() {
   /* Set Up SPI */
   ////////////////
 
-  // SPI Slave Sync output on pin 11
+  // SPI Slave Sync output on pin 26
   PPSOutput(1, RPB15, SS1);
 
-  // SPI1 data output on pin 14
+  // SPI1 data output on pin 17
   PPSOutput(2, RPB8, SDO1);
 
   // SPI channel 1 channel A drives the y axis control mirror.
@@ -296,16 +296,20 @@ static void configure_dma_for_row(uint8_t row_number) {
 
 static void update_y_axis_position(uint8_t row_number) {
   // Convert the row number into the correct DAC output
-  // float avoided by rewrite: (row_number / IMAGE_HEIGHT) * (MAX_COMMAND - MIN_COMMAND) + MIN_COMMAND
+  // float avoided by rewrite:
+  // (row_number / IMAGE_HEIGHT) * (MAX_COMMAND - MIN_COMMAND) + MIN_COMMAND
   uint16_t mirror_position =
     (row_number * (Y_AXIS_MAX_COMMAND - Y_AXIS_MIN_COMMAND)) / IMAGE_HEIGHT
     + Y_AXIS_MIN_COMMAND;
 
   // construct the DAC message by adding the DAC config bits on to the message
-  uint16_t dac_word = Y_MIRROR_SPI_CONFIG | mirror_position;
+  uint16_t dac_word = Y_MIRROR_SPI_CONFIG | ((mirror_position << 2) & 0x0FFF);
 
+  // wait for spi to empty
+  while (TxBufFullSPI1());
   // put the message in the DAC FIFO
   WriteSPI1(dac_word);
+  while (SPI1STATbits.SPIBUSY); // wait for end of transaction
 }
 
 static void write_pixel(struct color const pixel) {
