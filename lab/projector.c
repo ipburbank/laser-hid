@@ -277,7 +277,7 @@ static void configure_dma_for_row(uint8_t row_number) {
   DmaChnSetTxfer(PIXEL_DMA_CHN,                              // channel number
                  (void *) projector_framebuffer[row_number], // Source
                  (void *) &LATB,                             // Destination
-                 IMAGE_WIDTH,                                // source size
+                 IMAGE_WIDTH + PHASE_SHIFT_PADDING,          // source size
                  1,                                          // dest size
                  1);                                         // cell size
 
