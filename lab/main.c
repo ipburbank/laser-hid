@@ -19,6 +19,7 @@
 #include "parameters.h"
 
 #include "projector.h"
+#include "rendering.h"
 
 //@}
 
@@ -90,8 +91,17 @@ int main(void) {
   /* Run the scheduler */
   ///////////////////////
 
-  while (1) {
+  struct color ece_color = {
+    .red = 3,
+    .green = 0,
+    .blue = 0
+  };
 
+  while (1) {
+    rendering_setCursor(0, 0);
+    rendering_setTextSize(1);
+    rendering_setTextColor(ece_color);
+    rendering_writeString("ECE");
   }
 } // main
 
