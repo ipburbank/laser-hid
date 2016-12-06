@@ -12,6 +12,9 @@
 #ifndef PARAMETERS_H
 #define PARAMETERS_H
 
+
+#include "color.h"
+
 /**
  * Projected image height and width in pixels.
  */
@@ -86,12 +89,19 @@
 
 /*
  * Controls joystick position to cursor movement rate connection
+ * @brief Controls joystick position to cursor movement rate connection
+ *
+ * joystick_units / (pixel/tick), i.e. dividing joystick units by this gives
+ * pixels per tick rate. A value of 1024 means the joystick must be pushed all
+ * the way to an extreme to move a pixel per tick, smaller values mean the
+ * joystick must be moved less to get movement and can be moved further for
+ * faster movement.
  */
-// joystick_units / (pixel/tick), i.e. dividing joystick units by this gives
-// pixels per tick rate. A value of 1024 means the joystick must be pushed all
-// the way to an extreme to move a pixel per tick, smaller values mean the
-// joystick must be moved less to get movement and can be moved further for
-// faster movement.
 #define CURSOR_JOYSTICK_UNITS_PER_PIXEL_PER_TICK (JOYSTICK_OUTPUT_RANGE/2)
+
+/**
+ * @brief Foreground color of the cursor.
+ */
+extern struct color const cursor_fg;
 
 #endif // PARAMETERS_H

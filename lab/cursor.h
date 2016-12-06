@@ -18,6 +18,7 @@
 
 #include "joystick.h"
 #include "spatial.h"
+#include "rendering.h"
 
 //@}
 
@@ -56,6 +57,16 @@ extern struct spatial_pos cursor_position;
  * @brief Step the cursor logic, moving cursor if needed
  */
 void cursor_step(void);
+
+/**
+ * @brief Erase the cursor at cursor_position.
+ */
+void cursor_erase(void);
+
+/**
+ * @brief Draw the cursor at cursor_position.
+ */
+void cursor_draw(void);
 
 //@}
 
