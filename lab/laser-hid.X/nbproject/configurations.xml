@@ -4,9 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>../config.h</itemPath>
       <itemPath>../include.h</itemPath>
-      <itemPath>../pt_cornell_1_2_1.h</itemPath>
       <itemPath>../joystick.h</itemPath>
       <itemPath>../parameters.h</itemPath>
       <itemPath>../projector.h</itemPath>
