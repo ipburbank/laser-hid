@@ -83,7 +83,9 @@
         DMA is used to output pixels to the lasers.
         When a horizontal scan line starts, DMA is configured to output the entire row, one pixel per period of timer A.
         Timer A is free running, and its period determines the aspect ratio of the pixels.
-        The DMA transfer of the row is enabled by an ISR which runs when the optical transistor is triggered.
+        The DMA transfer of the row is enabled by a Change Notification ISR which runs when the optical transistor is triggered.
+        We configured the Change Notification via registers directly because our version of plib is missing the macros.
+        Because this PIC32 cannot distinguish between rising and falling edges when triggering the Change Notification ISR, we simply check the value of the pin in software.
         Thus, effectively, the rising edge of the optical transistor triggers the start of a row being output.
         Because the optical transistor is driven by the spinning mirror carousel, the timing of the rows is too so spinning the carousel faster would result in faster output of rows.
       </p>
