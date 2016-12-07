@@ -57,30 +57,32 @@
 // Macro for Dot and Dash
 #define DOT (0)
 #define DASH (1)
+// Macro for knowing when to stop early if code does not have four entries
+#define STOP (2)
 // Macro definitions for the Morse Code Letters and Numbers
-#define A {DOT, DASH}
+#define A {DOT, DASH, STOP}
 #define B {DASH, DOT, DOT, DOT}
 #define C {DASH, DOT, DASH, DOT}
-#define D {DASH, DOT, DOT}
-#define E {DOT}
+#define D {DASH, DOT, DOT, STOP}
+#define E {DOT, STOP}
 #define F {DOT, DOT, DASH, DOT}
-#define G {DASH, DASH, DOT}
+#define G {DASH, DASH, DOT, STOP}
 #define H {DOT, DOT, DOT, DOT}
-#define I {DOT, DOT}
+#define I {DOT, DOT, STOP}
 #define J {DOT, DASH, DASH, DASH}
-#define K {DASH, DOT, DASH}
+#define K {DASH, DOT, DASH, STOP}
 #define L {DOT, DASH, DOT, DOT}
-#define M {DASH, DASH}
-#define N {DASH, DOT}
-#define O {DASH, DASH, DASH}
+#define M {DASH, DASH, STOP}
+#define N {DASH, DOT, STOP}
+#define O {DASH, DASH, DASH, STOP}
 #define P {DOT, DASH, DASH, DOT}
 #define Q {DASH, DASH, DOT, DASH}
-#define R {DOT, DASH, DOT}
-#define S {DOT, DOT, DOT}
-#define T {DASH}
-#define U {DOT, DOT, DASH}
+#define R {DOT, DASH, DOT, STOP}
+#define S {DOT, DOT, DOT, STOP}
+#define T {DASH, STOP}
+#define U {DOT, DOT, DASH, STOP}
 #define V {DOT, DOT, DOT, DASH}
-#define W {DOT, DASH, DASH}
+#define W {DOT, DASH, DASH, STOP}
 #define X {DASH, DOT, DOT, DASH}
 #define Y {DASH, DOT, DASH, DASH}
 #define Z {DASH, DASH, DOT, DOT}
@@ -747,21 +749,31 @@ void rendering_drawDash(short const x, short const y,
 void rendering_drawMorseChar(short const x, short const y, char const letter,
                              struct color const color){
   int let = letter - 97;
+  int x_pos = x;
   unsigned int i;
   for (i = 0; i < ARRAY_LEN(letters[let]); i++) {
-    if (letters[let][i] == DOT) {
-      rendering_drawDot(x, y, color);
-    } else {
-      rendering_drawDash(x, y, color);
+    if (letters[let][i] == STOP) {
+      break;
     }
+    if (letters[let][i] == DOT) {
+      rendering_drawDot(x_pos, y, color);
+      x_pos += DOT_LEN;
+    } else {
+      rendering_drawDash(x_pos, y, color);
+      x_pos += DASH_LEN;
+    }
+    x_pos += MORSE_SPACING;
   }
 }
 
 void rendering_drawMorseString(short const x, short const y, char* const str,
                                struct color const color) {
   unsigned int i;
-  for ( i = 0; i < ARRAY_LEN(str); i++) {
-    rendering_drawMorseChar(x + i * MORSE_SPACING, y, str[i], color);
+  for ( i = 0; i < ARRAY_LEN(str) - 1; i++) {
+    // Multiply (MORSE_SPACING + DASHLEN) * 4 because that gives up a spacing
+    // after the largest possible output we could have
+    rendering_drawMorseChar(x + i * (MORSE_SPACING + DASH_LEN) * 4, y,
+                            str[i], color);
   }
 }
 
