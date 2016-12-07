@@ -297,10 +297,12 @@ static void configure_dma_for_row(uint8_t row_number) {
 static void update_y_axis_position(uint8_t row_number) {
   // Convert the row number into the correct DAC output
   // float avoided by rewrite:
-  // (row_number / IMAGE_HEIGHT) * (MAX_COMMAND - MIN_COMMAND) + MIN_COMMAND
+  // (row_number * ROW_INC) + MIN_COMMAND
   uint16_t mirror_position =
-    (row_number * (Y_AXIS_MAX_COMMAND - Y_AXIS_MIN_COMMAND)) / IMAGE_HEIGHT
-    + Y_AXIS_MIN_COMMAND;
+    (row_number * Y_AXIS_ROW_INC) + Y_AXIS_MIN_COMMAND;
+
+  // Check that mirror_position isn't too big, set to max if it is, else keep it
+  mirror_position = (mirror_position < 1024) ? (1024) : (mirror_position);
 
   // construct the DAC message by adding the DAC config bits on to the message
   uint16_t dac_word = Y_MIRROR_SPI_CONFIG | ((mirror_position << 2) & 0x0FFF);

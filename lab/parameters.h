@@ -64,7 +64,7 @@
  *
  * This is in the 10-bit data format accepted by the DAC
  */
-#define Y_AXIS_MIN_COMMAND (0 * 1023)
+#define Y_AXIS_MIN_COMMAND (1.5/3.3 * 1023)
 
 /**
  * @brief Max voltage to output to drive the y-axis mirror
@@ -72,6 +72,12 @@
  * This is in the 10-bit data format accepted by the DAC
  */
 #define Y_AXIS_MAX_COMMAND ((3/3.3) * 1023)
+
+/**
+ * @brief Voltage increase to output used to drive the y-axis mirror per row
+ *
+ */
+#define Y_AXIS_ROW_INC ((0.1/3.3) * 1023)
 
 /*
  * Controls conversion of ADC values into nice direction vectors.
