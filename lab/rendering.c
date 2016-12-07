@@ -700,6 +700,15 @@ void rendering_drawMinimalCross(short const x, short const y,
   rendering_drawPixel(x,     y - 1, color); // e
 }
 
+void rendering_drawDot(short const x, short const y, struct color const color) {
+  rendering_drawLine(x, y, x + DOT_LEN, y, color);
+}
+
+void rendering_drawDash(short const x, short const y,
+                        struct color const color) {
+  rendering_drawLine(x, y, x + DASH_LEN, y, color);
+}
+
 //@}
 
 /*******************************/

@@ -60,6 +60,16 @@
 #define RENDERING_TAB_WIDTH (4)
 
 /**
+ * @brief The number of pixels that is displayed in a dot
+ */
+#define DOT_LEN (5)
+
+/**
+ * @brief The number of pixels that is displayed in a dash
+ */
+#define DASH_LEN (20)
+
+/**
  * @brief Min voltage to output to drive the y-axis mirror
  *
  * This is in the 10-bit data format accepted by the DAC
