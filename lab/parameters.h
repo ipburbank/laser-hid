@@ -64,7 +64,7 @@
  *
  * This is in the 10-bit data format accepted by the DAC
  */
-#define Y_AXIS_MIN_COMMAND (1.5/3.3 * 1023)
+#define Y_AXIS_MIN_COMMAND (1.6/3.3 * 1023)
 
 /**
  * @brief Max voltage to output to drive the y-axis mirror
