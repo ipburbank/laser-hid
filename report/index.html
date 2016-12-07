@@ -65,6 +65,15 @@
     <section>
       <h2>Software Design</h2>
 
+      <h3>Framebuffer</h3>
+      <p>
+        The rows to project are stored in a two-dimensional array of C structs.
+        This struct uses bitfields, implementation-specific behavior, and a "bit packing" pragma to ensure that each struct fits in exactly a byte.
+        Thus a single byte can  be directly copied into the PORTB register to output the bits.
+        This allows the DMA to transfer draw pixels without software intervention.
+        An implementation-defined &quot;struct punning&quot; technique is used to convert these bit-packed structs into a numeric type when they must be written to the port without DMA.
+      </p>
+
       <h3>Projector</h3>
       <p>
         Our projector implementation makes heavy use of hardware timing.
