@@ -54,6 +54,37 @@
 #define swap(a, b) { short t = a; a = b; b = t; }
 #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
+// Macro for Dot and Dash
+#define DOT (0)
+#define DASH (1)
+// Macro definitions for the Morse Code Letters and Numbers
+#define A {DOT, DASH}
+#define B {DASH, DOT, DOT, DOT}
+#define C {DASH, DOT, DASH, DOT}
+#define D {DASH, DOT, DOT}
+#define E {DOT}
+#define F {DOT, DOT, DASH, DOT}
+#define G {DASH, DASH, DOT}
+#define H {DOT, DOT, DOT, DOT}
+#define I {DOT, DOT}
+#define J {DOT, DASH, DASH, DASH}
+#define K {DASH, DOT, DASH}
+#define L {DOT, DASH, DOT, DOT}
+#define M {DASH, DASH}
+#define N {DASH, DOT}
+#define O {DASH, DASH, DASH}
+#define P {DOT, DASH, DASH, DOT}
+#define Q {DASH, DASH, DOT, DASH}
+#define R {DOT, DASH, DOT}
+#define S {DOT, DOT, DOT}
+#define T {DASH}
+#define U {DOT, DOT, DASH}
+#define V {DOT, DOT, DOT, DASH}
+#define W {DOT, DASH, DASH}
+#define X {DASH, DOT, DOT, DASH}
+#define Y {DASH, DOT, DASH, DASH}
+#define Z {DASH, DASH, DOT, DOT}
+
 //@}
 
 /********************************/
@@ -75,6 +106,10 @@ static unsigned short cursor_x;
 static unsigned short textsize;
 static unsigned short wrap;
 static unsigned short rotation;
+
+// Hash map for morse code to dots and dashes
+int letters[26][4] = {A, B, C, D, E ,F ,G ,H ,I, J, K, L, M, N, O, P, Q ,R ,S,
+                      T, U, V, W, X, Y ,Z};
 
 //@}
 
@@ -707,6 +742,27 @@ void rendering_drawDot(short const x, short const y, struct color const color) {
 void rendering_drawDash(short const x, short const y,
                         struct color const color) {
   rendering_drawLine(x, y, x + DASH_LEN, y, color);
+}
+
+void rendering_drawMorseChar(short const x, short const y, char const letter,
+                             struct color const color){
+  int let = letter - 97;
+  unsigned int i;
+  for (i = 0; i < ARRAY_LEN(letters[let]); i++) {
+    if (letters[let][i] == DOT) {
+      rendering_drawDot(x, y, color);
+    } else {
+      rendering_drawDash(x, y, color);
+    }
+  }
+}
+
+void rendering_drawMorseString(short const x, short const y, char* const str,
+                               struct color const color) {
+  unsigned int i;
+  for ( i = 0; i < ARRAY_LEN(str); i++) {
+    rendering_drawMorseChar(x + i * MORSE_SPACING, y, str[i], color);
+  }
 }
 
 //@}

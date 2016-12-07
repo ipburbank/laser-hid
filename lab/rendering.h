@@ -139,6 +139,29 @@ void rendering_drawDot(short const x, short const y, struct color const color);
  */
 void rendering_drawDash(short const x, short const y,
                         struct color const color);
+
+/**
+ * @brief Draw the character in Morse Code
+ *
+ * @param letter The character that we want to draw, must be a-z
+ * @param color Color of the outputted Morse code
+ *
+ * The letter is encoded into Morse code and is drawn to the display
+ */
+void rendering_drawMorseChar(short x, short y, char letter, struct color color);
+
+/**
+ * @brief Draw a string in Morse Code
+ *
+ * @param x The starting X coordinate to start drawing at
+ * @param y The starting Y coordinate to start drawing at
+ * @param str The string that we want to draw, characters must all be a-z
+ * @param color Color of the outputted Morse code
+ *
+ * The string is encoded into Morse code and is drawn to the display
+ */
+void rendering_drawMorseString(short x, short y, char* str, struct color color);
+
 //@}
 
 #endif

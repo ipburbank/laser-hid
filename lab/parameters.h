@@ -70,6 +70,11 @@
 #define DASH_LEN (20)
 
 /**
+ * @brief The number of pixels between letters of Morse code
+ */
+#define MORSE_SPACING (5)
+
+/**
  * @brief Min voltage to output to drive the y-axis mirror
  *
  * This is in the 10-bit data format accepted by the DAC
