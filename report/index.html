@@ -103,6 +103,17 @@
         The aspect ratio is determined by the period of the timer that triggers cell transfers in the DMA.
       </p>
 
+      <h4>Failed attempt to use one fewer ISR</h4>
+      <p>
+        An earlier design attempted to use the gated mode of Timer1 to control the DMA and avoid the Change Notification ISR.
+        The idea was that each timer period would start a cell transfer, but the timer would only run when a row had to be output.
+        The edge caused by the phototransistor circuit was used to asynchronously set an external flip-flop high and the flip-flop output was used as the gate signal.
+        The flip-flop would be asynchronously set low in the end of row ISR before the DMA was configured for the next row.
+        This would have meant that an ISR was not required at the beginning of the row, only at the end.
+        We abandoned this because the non-obvious but documented behavior of gated timers is to generate an interrupt when the gate input goes low and deactivates the timer, rather than on period match.
+        This caused the DMA cell transfers to never fire.
+      </p>
+
     </section>
 
     <section>
