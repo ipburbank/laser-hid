@@ -65,6 +65,33 @@
     <section>
       <h2>Software Design</h2>
 
+      <h3>Projector</h3>
+      <p>
+        Our projector implementation makes heavy use of hardware timing.
+        That is, the projector code consists of several event-driven actions which are triggered by various hardware events.
+      </p>
+      <p>
+        DMA is used to output pixels to the lasers.
+        When a horizontal scan line starts, DMA is configured to output the entire row, one pixel per period of timer A.
+        Timer A is free running, and its period determines the aspect ratio of the pixels.
+        The DMA transfer of the row is enabled by an ISR which runs when the optical transistor is triggered.
+        Thus, effectively, the rising edge of the optical transistor triggers the start of a row being output.
+        Because the optical transistor is driven by the spinning mirror carousel, the timing of the rows is too so spinning the carousel faster would result in faster output of rows.
+      </p>
+
+      <p>
+        When a row finishes the DMA triggers an interrupt that increments the Y-axis mirror's position.
+        The reason it is done immediately at the end of a line is to ensure the mirror has time to settle into its new position before the start of the next row.
+        The mirror is incremented linearly on each row until it reaches the bottom of the frame then it wraps around again to the top.
+        Because the increment is triggered by the DMA which is triggered the spinning carousel, spinning the carousel faster would cause the Y-axis mirror's scan rate to increase.
+      </p>
+      <p>
+        The last two paragraphs made claims about the timing of the projector with respect to the carousel.
+        In fact, spinning the carousel faster would increase the frame rate without any software changes.
+        As the software stands now, the aspect ratio would change but that could be configured out (as the mirror spins faster the rows would get wider).
+        The aspect ratio is determined by the period of the timer that triggers cell transfers in the DMA.
+      </p>
+
     </section>
 
     <section>
