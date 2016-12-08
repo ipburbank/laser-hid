@@ -1,3 +1,23 @@
+/*
+* This library numbers figures sequentially in a webpage and edits references to
+* them to include their number.
+*
+* Insert a figure like:
+*
+* <div class="figure" id="arbitrary_unique_name">
+*   <img ... />
+*   <div class="caption">Caption for image</div>
+* </div>
+*
+* Then link to it with:
+*
+* <a class="figref" href="#arbitrary_unique_name">*ref title of link</a>
+*
+* '*ref' is replaced with "Fig n" where n is the assigned figure number. '*ref'
+* can be excluded, in which case the assigned figure number will not be
+* mentioned but the link will otherwise behave the same.
+*/
+
 function referenced_id(link_elem) {
     return link_elem.href.split("#")[1];
 }
