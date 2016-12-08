@@ -57,7 +57,10 @@
       <p>
         First item we wanted to determine was what range our angled mirror would need to support.
         To do this, we are able to find the max and minumum angle as a function of distance, height, and mirror size.
-        <img src="./images/reflectionAngle.svg">
+        <div class="figure" id="fig_reflectionAngle">
+          <img src="./images/reflectionAngle.svg" />
+          <div class="caption">Geometry of reflection off vertical mirror</div>
+        </div>
         By taking the tangent of the right triangle that the angled mirror makes with our X-axis, we can calculate the range of angles the mirror needs to support.
         $$\tan{\theta_{min}} = a / b \rightarrow \arctan{(b / a)} = \theta_{min}$$
         $$\tan{\theta_{max}} = (b + mirror\_size) / a = (b + 3) / a \rightarrow \theta_{max} = arctan{(b + 3) / a}$$
@@ -67,7 +70,10 @@
       <p>
         One concern that we had with using mirrors to scan rows, was the potential arcing of rows due to the different distances the laser has to travel to hit the mirror.
         By using the figure below, we can use some trigonometry to determine how big the arc will be at the largest point from the smallest point of the arc.
-        <img src="./images/scanningReflection.svg">
+        <div class="figure" id="fig_scanningReflection">
+          <img src="./images/scanningReflection.svg" />
+          <div class="caption">Geometry of arc in a single row</div>
+        </div>
         Due to how the circle spins the mirror, the largest point in distance when scanning is between the start and midpoint of the mirror.
         This creates a difference of about half the mirror size in the distance along the X-axis it takes for the laser to hit the mirror.
         By using some trig, we can find that the angle at which the laser comes from the tilted mirror, impacts the distance between the two positions.
@@ -98,7 +104,10 @@
       <p>
         After finding the size of each pixel, it was important to determine how many pixels that we could display at a given speed of our mirror array.
         As seen in the figure below, the mirror array must turn by $$\theta = arctan{(beamwidth / D)}$$ to draw nonoverlapping pixels.
-        <img src="./images/pixelSize.svg">
+        <div class="figure" id="fig_pixelSize">
+          <img src="./images/pixelSize.svg" />
+          <div class="caption">Geometry of pixel sizes and overlaps</div>
+        </div>
         That gives us the amount of radians the mirror array must turn in order to produce a single pixel.
         To find the RPM required to display a certain number of pixels, we found that:
         $$RPM = 2\pi (radians)/ 1 (Hz) * 1 (S) / Num\_pixs * \arctan{(beamwidth / D)} * 60 (RPM) / 1 (Hz)$$
