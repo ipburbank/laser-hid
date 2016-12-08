@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="324.09686"
+   height="283.03845"
+   id="svg5539">
+  <defs
+     id="defs5541" />
+  <metadata
+     id="metadata5544">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-184.50987,-334.11792)"
+     id="layer1">
+    <path
+       d="m 235.36554,589.71232 272.74119,0"
+       id="path5547"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="318.19806"
+       y="616.98645"
+       id="text5549"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="318.19806"
+         y="616.98645"
+         id="tspan5551">Mirror</tspan></text>
+    <path
+       d="m 320.21837,401.82394 a 17.172594,16.162441 0 1 1 -34.34519,0 17.172594,16.162441 0 1 1 34.34519,0 z"
+       id="path5559"
+       style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12, 1;stroke-dashoffset:0" />
+    <path
+       d="m 320.21837,401.82394 a 17.172594,16.162441 0 1 1 -34.34519,0 17.172594,16.162441 0 1 1 34.34519,0 z"
+       transform="translate(34.345174,-6.3605512e-7)"
+       id="path5559-8"
+       style="fill:#ff0000;fill-opacity:1;stroke:#ff0000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:12, 1;stroke-dashoffset:0" />
+    <path
+       d="m 260.61936,400.81379 0,187.88837"
+       id="path5579"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="183.84776"
+       y="495.76813"
+       id="text5581"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="183.84776"
+         y="495.76813"
+         id="tspan5583">distance D</tspan></text>
+    <path
+       d="m 286.13085,373.53967 32.9561,0"
+       id="path5585"
+       style="fill:none;stroke:#000000;stroke-width:1.24642122px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       d="m 319.20821,354.34677 0,27.27412"
+       id="path5587"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       d="m 286.88333,354.34677 0,30.30458"
+       id="path5589"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="274.76151"
+       y="343.23511"
+       id="text5591"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="274.76151"
+         y="343.23511"
+         id="tspan5593">beamwidth</tspan></text>
+    <path
+       d="m 304.05592,403.84425 1.01015,184.85791 33.33503,-184.85791"
+       id="path5595"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="311.12698"
+       y="464.45337"
+       id="text5597"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="311.12698"
+         y="464.45337"
+         id="tspan5599">θ</tspan></text>
+    <path
+       d="m 305.06607,478.59554 c 7.96124,-15.63609 13.90921,-11.13947 19.1929,0"
+       id="path5601"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>

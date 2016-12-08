@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.2"
+   width="807.97504"
+   height="400.19809"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(3.2142857,-431.62505)"
+     id="layer1">
+    <path
+       d="m 565.35714,470.21932 0,194.28572"
+       id="path2985"
+       style="fill:none;stroke:#000000;stroke-width:7.76438761px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-mid:none" />
+    <text
+       x="731.453"
+       y="473.95221"
+       transform="scale(0.7983621,1.2525645)"
+       id="text4397"
+       xml:space="preserve"
+       style="font-size:46.4222908px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="731.453"
+         y="473.95221"
+         id="tspan4399"><tspan
+           x="731.453"
+           y="473.95221"
+           id="tspan4401">Mirror 3&quot;x3&quot;</tspan></tspan></text>
+    <path
+       d="m 107.79726,771.23569 90.11976,-27.50482"
+       id="path3949"
+       style="fill:none;stroke:#000000;stroke-width:1.01112366px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="104.99107"
+       y="829.32709"
+       id="text4385"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="104.99107"
+         y="829.32709"
+         id="tspan4387"><tspan
+           x="104.99107"
+           y="829.32709"
+           id="tspan4389">Angled Mirror</tspan></tspan></text>
+    <path
+       d="m 7.8571429,760.21933 580.7142871,0"
+       id="path3959"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8, 1;stroke-dashoffset:0" />
+    <path
+       d="m 143.57143,786.6479 0,-351.42858"
+       id="path3961"
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:8, 1;stroke-dashoffset:0" />
+    <flowRoot
+       id="flowRoot3963"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><flowRegion
+         id="flowRegion3965"><rect
+           width="95.714287"
+           height="27.142857"
+           x="160.71428"
+           y="428.79074"
+           id="rect3967" /></flowRegion><flowPara
+         id="flowPara3969">Y-axis</flowPara></flowRoot>    <text
+       x="598.5625"
+       y="741.461"
+       id="text4403"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="598.5625"
+         y="741.461"
+         id="tspan4405"><tspan
+           x="598.5625"
+           y="741.461"
+           id="tspan4407">X-axis</tspan></tspan></text>
+    <text
+       x="120"
+       y="799.336"
+       id="text4379"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="120"
+         y="799.336"
+         id="tspan4381"><tspan
+           x="120"
+           y="799.336"
+           id="tspan4383">x = 0</tspan></tspan></text>
+    <text
+       x="548.5625"
+       y="790.0235"
+       id="text4409"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="548.5625"
+         y="790.0235"
+         id="tspan4411"><tspan
+           x="548.5625"
+           y="790.0235"
+           id="tspan4413">x = a</tspan></tspan></text>
+    <path
+       d="m 566.42857,768.79076 0,-19.28572"
+       id="path3995"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="23.584822"
+       y="750.02795"
+       id="text4373"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="23.584822"
+         y="750.02795"
+         id="tspan4375"><tspan
+           x="23.584822"
+           y="750.02795"
+           id="tspan4377">y = 0</tspan></tspan></text>
+    <path
+       d="m 130.71429,661.6479 27.85714,0"
+       id="path4005"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       d="m 133.57143,471.6479 16.42857,0"
+       id="path4007"
+       style="fill:none;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <text
+       x="87.13839"
+       y="664.17053"
+       id="text4367"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"><tspan
+         x="87.13839"
+         y="664.17053"
+         id="tspan4369"><tspan
+           x="87.13839"
+           y="664.17053"
+           id="tspan4371">y = b</tspan></tspan></text>
+    <text
+       x="65.71875"
+       y="475.03241"
+       id="text4357"
+       xml:space="preserve"
+       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"><tspan
+         x="65.71875"
+         y="475.03241"
+         id="tspan4359"><tspan
+           x="65.71875"
+           y="475.03241"
+           id="tspan4361">y = b + 3</tspan></tspan></text>
+    <path
+       d="M 560,662.36218 142.85714,758.07647 -0.71428572,757.36218"
+       id="path4025"
+       style="fill:none;stroke:#ff0000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       d="M 141.42857,757.36218 558.57143,471.6479"
+       id="path4027"
+       style="fill:none;stroke:#ff0000;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <text
+       x="282.50876"
+       y="704.09741"
+       id="text4391"
+       xml:space="preserve"
+       style="font-size:31.26018906px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"><tspan
+         x="282.50876"
+         y="704.09741"
+         id="tspan4393"><tspan
+           x="282.50876"
+           y="704.09741"
+           id="tspan4395">θ</tspan></tspan></text>
+    <path
+       d="m 247.85714,686.98255 c 46.5347,0.81359 20.78872,39.31907 20.47756,39.78444"
+       id="path4037"
+       style="fill:none;stroke:#000000;stroke-width:1.05910027px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+  </g>
+</svg>
