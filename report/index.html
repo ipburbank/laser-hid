@@ -76,7 +76,61 @@
 
     <section>
       <h2>Hardware Design</h2>
+      The entire project is assembled on a piece of plywood.
+      The circuits are distributed between two prototyping boards which are loosely taped down to the plywoood.
+      Long wires are also taped down to the plywood to avoid loose wires.
 
+      <h3>Horizontal mirrors</h3>
+      <p>
+        The horizontal mirrors are held on to a 3D assembly with zipties and glue.
+        The assembly has no top surface and is mostly hollow.
+        The top part has four sides, each with a mirror attached on the outside.
+        The bottom part is a disk with four slots cut in the sides that reach all the way into the hollow center.
+        Each slot is aligned with the middle of the face with a mirror attached.
+        The angle of the mirrors to vertical is precisely calibrated by pieces of paper slipped behind the mirrors to push the top edge out (the bottom edge is glued).
+        The 3D printed assembly is glued to a salvaged compouter fan, which is screwed to the plywood.
+      </p>
+
+      <h3>Phototransistor and emitter</h3>
+      <p>
+        The emitter is hung at the bottom of the hollowed out interior of the mirror rotation assembly by a stiff wire screwed into the wood base.
+        The phototransistor is similarly held on a wire just outside of the spinning mirror assembly.
+        The precise position of the phototransistor is used to calibrate the horizontal position of the rows.
+        <!-- TODO: phototransistor circuit -->
+      </p>
+
+      <h3>Vertical mirror</h3>
+      <p>
+        The vertical mirror sits on a stack of wood glued down to the plywood.
+        It is held down by tape temporarily so that the precise angle can be easily calibrated.
+        The distance of the vertical mirror from the spinning mirror assembly partially determines the distance between rows, along with software tunable settings.
+        The vertical mirror slightly deflects lasers vertically before they hit the spinning assembly, which deflects them side-to-side.
+      </p>
+
+      <h3>Laser platform</h3>
+      <p>
+        The mirror platform is a piece of wood with nuts glued to it.
+        Bolts screwed through the nuts can be used to adjust the height and angle.
+        The laser diotes are hot-glued down to the platform and hand-calibrated to shine at roughly the same point.
+        Additional easily configurable software calibration can adjust for some physical calibration errors.
+      </p>
+
+      <h3>Diode control circuits</h3>
+      <p>
+        <!-- TODO -->
+      </p>
+
+      <h3>DAC for vertical mirror</h3>
+      <p>
+        <!-- TODO -->
+      </p>
+
+      <h3>Power supply</h3>
+      <p>
+        Parts of the DAC circuit are supplied with 5V from a salvage power adapter.
+        The fan is supplied with 12V from the same adapter.
+        The diode control circuits are supplied with 3.3V from a bench power supply.
+      </p>
     </section>
 
     <section>
