@@ -329,7 +329,47 @@
 
     <section>
       <h2>Conclusions</h2>
+      <p>
+        Our expectation was to have a display about 50 by 50 pixels and a framerate around 15fps.
+        This turned out to be very unrealistic.
+        The main speed limitation comes from the speed of the fan.
+        The fan ran around 3000RPM without load, and we based our framerate expectations on the assumption that it would be running that fast in our project.
+        The pixels of a row can be clocked out extremely fast because the only limitation is timer and DMA speed.
+        However, the time between rows is limited by the fan speed, thus the framerate is limited.
+      </p>
 
+      <h3>Standards and regulatory conformance</h3>
+      <p>
+        Our C code complies with something in-between C89 and C99.
+        We do not know precisely how to control the IDE to choose a standard version.
+        We comply with airplane safety rules by always running the system inside and never pointing the projection at a window.
+      </p>
+
+      <h3>Reused design</h3>
+      <p>
+        Our spinning carousel is loosely based off spinning carousel designs linked in the references appendix.
+        However, our design differs substantially in how vertical positions are controlled.
+      </p>
+
+      <h3>Ethical considerations</h3>
+      <p>
+        Due to the eye injury potential of the lasers combined with the unpredictability of the laser direction caused by moving mirrors, constant precautions were necessary.
+        We never left lasers on when we were not actively testing, and we tested with the mirrors stationary as much as possible.
+        We placed a cardboard shield behind the mirror carousel to prevent lasers that missed from shining across the room.
+        We deliberately did much of our development in the end of the room to limit how far throught the room the lasers would shine.
+        We also explicitly told people around us that we would be running lasers not-too-far from eye level, consisent with the disclosure requirement in point one of the IEEE Code of Ethics.
+      </p>
+
+      <p>
+        The appearance of unexpected analog circuit design problems caused us to seek guidance both inside and outside the course staff.
+        We track these contributions and attribute them in this document.
+        Tracking copyrights and the preserving the copyright notification on the original TFT library in our derivative port is not only required by law, but required for compliance with point seven of the IEEE code of ethics.
+      </p>
+
+      <p>
+        Finally, we applied point three of the IEEE Code of Ethics in our performance estimates near the beginning of the project.
+        Our framerate and image dimensions expectations were based on our limited knowledge of the limits of the analog circuitry and the memory limitations of the PIC32.
+      </p>
     </section>
 
     <section>
