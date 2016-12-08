@@ -143,7 +143,16 @@
         All of the graphics in the demo are drawn using this library.
       </p>
 
+      <h3>Lab3 port</h3>
       <p>
+        We mostly completed a port of the simulation, animation, and game logic parts of our Lab 3 Firehose game implementation.
+        This involved using the new rendering API instead of the original TFT graphics API, and using new types for color and position.
+        Additionally, due to bizarre limitations of Protothreads, we needed to strip it from the Lab3 code.
+        The removal of Protothreads actually allowed a considerable simplification because we never made use of the more advanced synchronization features.
+        The trimpot was to be replaced by a analog joystick, chose for generality.
+        We wrote a joystick library using the ADC, but it became irrelevant in the limited final form of the project.
+        Due to the unexpected limitations of the display, we never had a chance to test this port.
+      </p>
 
     </section>
 
