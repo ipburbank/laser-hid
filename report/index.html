@@ -155,25 +155,32 @@
     <section>
       <h2>Conclusions</h2>
       <p>
-        Our expectation was to have a display about 50 by 50 pixels and a framerate around 15fps.
+        Our expectation was to have a display resolution of about 50 by 50 pixels and a framerate around 15fps.
         This turned out to be very unrealistic.
-        The main speed limitation comes from the speed of the fan.
+        As was previously mentioned, the main limitation comes from the speed of the fan.
         The fan ran around 3000RPM without load, and we based our framerate expectations on the assumption that it would be running that fast in our project.
         The pixels of a row can be clocked out extremely fast because the only limitation is timer and DMA speed.
         However, the time between rows is limited by the fan speed, thus the framerate is limited.
+        We also had a stretch goal of supporting some standard video input connections which proved to be too complex and given the resolution we are able to support impractical.
+      </p>
+
+      <p>
+        All of that said, we were able to demonstrate a nontrivial projection system and implemented it in a way that enables future development and improvement.
+        We were able to achieve our main goals in the project and resolving some bottlenecks will automatically enable and enhance existing components making the system more practical.
       </p>
 
       <h3>Standards and regulatory conformance</h3>
       <p>
         Our C code complies with something in-between C89 and C99.
-        We do not know precisely how to control the IDE to choose a standard version.
         We comply with airplane safety rules by always running the system inside and never pointing the projection at a window.
       </p>
 
       <h3>Reused design</h3>
       <p>
         Our spinning carousel is loosely based off spinning carousel designs linked in the references appendix.
-        However, our design differs substantially in how vertical positions are controlled.
+        However, our design differs substantially in how vertical positions are controlled;
+        The designs linked use one mirror per horizontal scan line and adjust the angle of each mirror to achieve distinct scan lines without a Y-axis control like we have.
+        We consider our use of a second stage an improvement as it will enable us to achieve arbitrarily many scan lines which in practical use would exceed the reasonable capabilities of a system requiring one mirror per row.
       </p>
 
       <h3>Ethical considerations</h3>
@@ -181,7 +188,7 @@
         Due to the eye injury potential of the lasers combined with the unpredictability of the laser direction caused by moving mirrors, constant precautions were necessary.
         We never left lasers on when we were not actively testing, and we tested with the mirrors stationary as much as possible.
         We placed a cardboard shield behind the mirror carousel to prevent lasers that missed from shining across the room.
-        We deliberately did much of our development in the end of the room to limit how far throught the room the lasers would shine.
+        We deliberately did much of our development in the end of the room to limit how far through the room the lasers would shine.
         We also explicitly told people around us that we would be running lasers not-too-far from eye level, consisent with the disclosure requirement in point one of the IEEE Code of Ethics.
       </p>
 
