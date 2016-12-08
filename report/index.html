@@ -121,7 +121,14 @@
         <div class="caption">Logical structure for entire system</div>
       </div>
 
-      <h3>Tradeoffs</h3>
+      <h3>Software/Hardware Tradeoffs</h3>
+      <p>
+        We made heavy use of the MCU peripherals and offloaded burdens of timing and control to hardware when possible.
+        The rational was that the CPU would be heavily used by a game or other software creating the image to be projected.
+        Additionally, triggering events based off of hardware allows use to be agnostic to changes in physical conditions and avoid synchronization bugs.
+        For example, the start of each horizontal scan line is triggered by the position of the mirror carousel; if the mirrors are not running at a perfectly constant speed the impact on our system is negligible.
+        Our use of DMA within the horizontal lines triggered by a hardware timer ensures even spacing of pixels regardless of the CPUs load or state.
+      </p>
 
       <h3>Standards and regulations</h3>
       <ul>
