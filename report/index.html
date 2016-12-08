@@ -324,7 +324,76 @@
 
     <section>
       <h2>Results</h2>
+      <div class="figure" id="figinterleaveddots">
+        <img src="images/interleaved_dots.jpg" />
+        <div class="caption">Projecting Interleaved Dots</div>
+      </div>
 
+      <p>
+        We started the project unsure if we would be able to achieve nothing or full VGA resolution projection.
+        When we demoed the project we were able to display very crude 7x200 pixel frames with the red and blue lasers each with four different intensities (pictured above).
+        In the next three sections we discuss what we were able to achieve more specifically in terms of quantitative results, safety, and usability.
+      </p>
+
+      <h3>Operation</h3>
+      <p>
+        The projector operates sufficiently to display up to ten rows at 10 FPS, and we have tested up to 200 columns successfully.
+        We are able to project red and blue with variable intensities.
+        Below is a brief analysis of the performance of each component of the projector.
+      </p>
+
+      <p>
+        The mirror carousel is a 3D printed cube with four mirrors attached to it, and that spins at over 1000 RPM.
+        The limiting factor on our design was the mirror carousel.
+        The timing of the whole projection system is based on the period of the mirrors spinning;
+        if the mirrors spin faster then the FPS increases.
+        Our mirror assembly is quite large, powered by a weak motor, and is not perfectly aligned.
+        The result is that the mirrors spin slowly (at just over 1000 RPM), causing low FPS, and are off center causing the scan lines to be slightly unevenly spaced.
+        The carousel spins at approximately 1200 RPM with is effectively 4800 RPM due to the four mirrors.
+        If we were to drop in a faster effective carousel then the framerate would increase with no additional changes and would give us more headroom to project more rows.
+      </p>
+
+      <p>
+        The Y-axis mirror performs very well.
+        The mirror is commanded to a new position at the end of each row and by visual inspection of the next projected row we can demonstrate that the mirror has settled by the time the next row starts.
+        The mirror's position is precisely control-able allowing us to fine tune the spacing between rows.
+        The galvanometer to which the mirror is attached draws 800 mAmps during normal operating (having a50 Ohm real component to its impedance).
+        The high current draw necessitated a large amplifier which also serves to quickly control the voltage to the mirror.
+        In total, the mirror setup is relatively simple and very effective.
+      </p>
+
+      <p>
+        The lasers and supporting circuitry successfully provide four-intensity control over red and blue lasers.
+        The green laser circuitry is functional but we did not have a green laser which with to demo.
+        The lasers are able switch on and off fast enough to project reasonably sized pixels and can produce sufficient intensities.
+      </p>
+
+      <p>
+        In total, the system functions acceptably well with a few clear and solvable bottlenecks which we plan to address in the future.
+      </p>
+
+      <h3>Safety</h3>
+      <p>
+        The use of lasers and the exposed, spinning mirror carousel are the primary concerns in terms of safety.
+        To help control the dangerous regions where the lasers may be shining we employed cardboard guarding and operated in an unoccupied part of the room.
+        After sufficient testing and tuning we were able to decrease the region in which the lasers would likely shine making safe operation easier.
+        The spinning mirror carousel, operating at over 1000 RPM and with sharp corners, proved a minor hazard and one with was easy to identify (it is both noisy and visually easy to determine to be spinning) and easy to avoid.
+        Overall, the risk when using the projector is minimal with trivial effort to avoid hazards.
+      </p>
+      <h3>Usability</h3>
+      <p>
+        We will comment on two types of usability: the usability from perspective of controlling what is projected and from the perspective of operating the device.
+        We ported the tft drawing library used earlier in the class to our projector meaning it is not difficult for someone with training comparable to students received in the class to use the projector from a projection perspective.
+        Currently, the program needs to be compiled and written to the microcontroller before use which proves to be a barrier for some users as compared to a VGA or HDMI connection.
+        The usability of the device presupposing the software has been prepared and loaded is relatively trivial: there are three sources of power that need to be connected (power over usb, an inverter that plugs into the wall, and a 3.3V bench top supply).
+        Besides powering the device there is occasionally a need to calibrate the position of the lasers, but that is rare.
+      </p>
+
+      <p>
+        The device as it stands is clearly a prototype.
+        A better packaged model would eliminate these needs and simplify operation to a single power connection and a standard interface to control the projection.
+        We plan to make such modifications on our own and as part of future classes.
+      </p>
     </section>
 
     <section>
