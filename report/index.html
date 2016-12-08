@@ -116,13 +116,62 @@
       </p>
 
       <h3>Diode control circuits</h3>
+      <h4>Understanding the Lasers</h4>
       <p>
-        <!-- TODO -->
+        To design the diode control circuit, each of the laser pens used in the display needed to be taken apart and understood.
+        After tearing apart the laser and opening it up with a dremel, we found vastly different circuit designs on each of the different colored lasers.
+        Though pleasingly enough, eac PCB was the same color as the laser.
       </p>
-
+      <p>
+        The red laser has a PCB which is connected to the laser which has two leads on it.
+        One of the leads was connected to the casing which serves as the voltage reference.
+        The other lead is connected to the circuit on the PCB, which is shorted to ground (the spring on the end of the PCB) when a button is pressed.
+        To test what the voltage drop was across the laser, we turned the laser on, and recorded the voltage at each of the leads to the laser.
+        This is how we found out we had a voltage drop of 1.7V across the laser.
+      </p>
+      <p>
+        The process was very similiar with the green laser, the exception being that the green laser has three leads on it.
+        But two of them were shorted together by a mountain of solder so we treated it as one point.
+        With the green laser we found that there is also a 1.7V drop.
+      </p>
+      <p>
+        The blue laser in the set was the strangest of them all.
+        Like the green laser, the blue one had three leads, but they were not shorted together.
+        Instead one lead was connected to what looked like a small transformer on the PCB.
+        The fact that when the laser was powered and we probed that lead which turned out to be at 6V appeared to confirm our suspisions.
+        The lead next to the lead with the transformer, appeared to be connected to the PCB not involving the transformer, with the last lead being the voltage reference.
+        After a bit of tinkering, we found that we could power the laser ourselves if we ignore the lead with the transformer, and connect 2.5V to the voltage reference and the last lead to ground.
+        As such for the rest of it's use, that last lead is ignored.
+      </p>
+      <h4>Controlling the Laser Intensities</h4>
+      <p>
+        After finding out which leads on each of the lasers to connect power and ground to, we tested varying intensities of each laser.
+        For each laser, we would increase or decrease the current across the laser using a desktop power supply, and recorded the amount of current for intensities we wanted to include in our display.
+        There was not a large range of intensities that were easy to distinguish, so we went with 2-bit color for each laser.
+        These 2-bits represented, off, low power, medium power, and full power.
+        We soon found that the laser take much more current than the PIC32 is able to source(180mA-250mA for red and blue, 350-550mA for green).
+        As such, we needed to design a current sink that the PIC32 could control.
+        To do so, we have a current sink made with BJTs and a resistor.
+        The resistor value was chosen based on the voltage drop across the laser and how much current we wanted.
+        Each laser has two current sinks, one for low power, and one for medium power.
+        When combined, they act as sinking the full power level.
+        The BJTs' bases are conneceted to digital outputs on the PIC32, this allows the PIC32 to control the current supplied to each of the lasers digitally.
+      </p>
       <h3>DAC for vertical mirror</h3>
       <p>
-        <!-- TODO -->
+        To control the vertical mirror, a voltage is applied across the two pins.
+        Based on the voltage, the mirror moves to a certain angle.
+        Based on tests, since documentation is lacking, we found that its voltage range is from 0 to about 10.5 Volts.
+        When mounted to our assembly and tested with a laser, we found we were able to strike the mirror array in the range 2.0V to about 5V across the terminals.
+      </p>
+      <p>
+        To control the amount of voltage across the mirror, we have the PIC32 control the output of an MCP4822 DAC over SPI.
+        We defined parameters in the PIC32's programming such that it only tries to use the range at which we will hit the mirrors with the laser.
+        The DAC is able to output voltages from 0-3.3V, but we needed a larger range for the mirror.
+        This lead us to using a MCP6242 op-amp which gives us enough gain to have a range from 0-4.4V.
+        The 4.4V does not give us the full range of the mirror, but as the mirror is quite large we still have the ability to scan many rows.
+        The op-amp is unable to source enough current for the mirror though, as it sinks about 100mA.
+        Therefore the op-amp is connected to a NPN power transistor's base which can easily supply enough current to the mirror, while also giving feedback to the op-amp so that we have the gain that we want.
       </p>
 
       <h3>Power supply</h3>
