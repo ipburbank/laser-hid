@@ -230,9 +230,10 @@
         When combined, they act as sinking the full power level.
         The BJTs' bases are conneceted to digital outputs on the PIC32, this allows the PIC32 to control the current supplied to each of the lasers digitally.
       </p>
-      <h3>DAC for vertical mirror</h3>
+      <h3>DAC for Y-Axis mirror</h3>
       <p>
-        To control the vertical mirror, a voltage is applied across the two pins.
+        The mirror is affixed to a galvanometer, so we need to control the current applied to the mirror assembly.
+        We determined that the mirror has a fairly constant and real impedance, so we use a variable voltage source.
         Based on the voltage, the mirror moves to a certain angle.
         Based on tests, since documentation is lacking, we found that its voltage range is from 0 to about 10.5 Volts.
         When mounted to our assembly and tested with a laser, we found we were able to strike the mirror array in the range 2.0V to about 5V across the terminals.
