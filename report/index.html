@@ -55,7 +55,7 @@
         To do this, we are able to find the max and minumum angle as a function of distance, height, and mirror size.
         <div class="figure" id="fig_reflectionAngle">
           <img src="./images/reflectionAngle.svg" />
-          <div class="caption"><!-- TODO --></div>
+          <div class="caption">Geometry of reflection off vertical mirror</div>
         </div>
         By taking the tangent of the right triangle that the angled mirror makes with our X-axis, we can calculate the range of angles the mirror needs to support.
         $$\tan{\theta_{min}} = a / b \rightarrow \arctan{(b / a)} = \theta_{min}$$
@@ -68,7 +68,7 @@
         By using the figure below, we can use some trigonometry to determine how big the arc will be at the largest point from the smallest point of the arc.
         <div class="figure" id="fig_scanningReflection">
           <img src="./images/scanningReflection.svg" />
-          <div class="caption"><!-- TODO --></div>
+          <div class="caption">Geometry of arc in a single row</div>
         </div>
         Due to how the circle spins the mirror, the largest point in distance when scanning is between the start and midpoint of the mirror.
         This creates a difference of about half the mirror size in the distance along the X-axis it takes for the laser to hit the mirror.
@@ -102,7 +102,7 @@
         As seen in the figure below, the mirror array must turn by $$\theta = arctan{(beamwidth / D)}$$ to draw nonoverlapping pixels.
         <div class="figure" id="fig_pixelSize">
           <img src="./images/pixelSize.svg" />
-          <div class="caption"><!-- TODO --></div>
+          <div class="caption">Geometry of pixel sizes and overlaps</div>
         </div>
         That gives us the amount of radians the mirror array must turn in order to produce a single pixel.
         To find the RPM required to display a certain number of pixels, we found that:
