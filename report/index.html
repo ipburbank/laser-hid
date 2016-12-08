@@ -114,6 +114,20 @@
         This caused the DMA cell transfers to never fire.
       </p>
 
+      <h3>Rendering library</h3>
+      <p>
+        We ported the TFT drawing library to be backed by our framebuffer rather than by the TFT.
+        Due to the simplicity of the framebuffer interface, only rendering_drawPixel in the ported library had to be aware of the framebuffer.
+        However, a number of functions in the interface to the original TFT library were written in a way that was tied to the TFT hardware, presumably for efficiency reasons.
+        We rewrote these functions in terms of rendering_drawPixel to minimize dependence between the projector and the rendering library.
+        This payed off when slightly changing the projector interface midway through the project required minimal changes to the rendering library.
+        Additionally, the color representation of the original TFT library had to be replaced with our color struct, requiring very minor changes throughout the entire library.
+        We added morse code drawing functions to the rendering library as a demonstration.
+        All of the graphics in the demo are drawn using this library.
+      </p>
+
+      <p>
+
     </section>
 
     <section>
