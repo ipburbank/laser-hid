@@ -52,7 +52,60 @@
       </p>
 
       <h3>Background math</h3>
-
+      During the planning part of the project, it was helpful to get an idea of about what our display would look like, based on the parts that were available to us.
+      <h4>Angled Mirror Range</h4>
+      <p>
+        First item we wanted to determine was what range our angled mirror would need to support.
+        To do this, we are able to find the max and minumum angle as a function of distance, height, and mirror size.
+        <img src="./images/reflectionAngle.svg">
+        By taking the tangent of the right triangle that the angled mirror makes with our X-axis, we can calculate the range of angles the mirror needs to support.
+        $$\tan{\theta_{min}} = a / b \rightarrow \arctan{(b / a)} = \theta_{min}$$
+        $$\tan{\theta_{max}} = (b + mirror\_size) / a = (b + 3) / a \rightarrow \theta_{max} = arctan{(b + 3) / a}$$
+        This allowed us to an idea of what range of angles our mirror would need to produce with respect to the mirror.
+      </p>
+      <h4>Row Arc</h4>
+      <p>
+        One concern that we had with using mirrors to scan rows, was the potential arcing of rows due to the different distances the laser has to travel to hit the mirror.
+        By using the figure below, we can use some trigonometry to determine how big the arc will be at the largest point from the smallest point of the arc.
+        <img src="./images/scanningReflection.svg">
+        Due to how the circle spins the mirror, the largest point in distance when scanning is between the start and midpoint of the mirror.
+        This creates a difference of about half the mirror size in the distance along the X-axis it takes for the laser to hit the mirror.
+        By using some trig, we can find that the angle at which the laser comes from the tilted mirror, impacts the distance between the two positions.
+        Here we can say that $$p_0$$ is the first reflection of the laser from the mirror on the screen, and $$p_1$$ is the second.
+        Due to the <a href="http://farside.ph.utexas.edu/teaching/302l/lectures/node127.html"> Law of Reflectivity</a> the angle to the moving mirror is the same as the angle to the screen.
+        Doing this, with theta being the angle between the tilting and rotating mirror:
+        $$\theta = \tan{b / a} \rightarrow \tan{b / a} = \tan{p_0 / L} \rightarrow p_0 = b * L / a$$
+        To find the top position it is a little bit trickier.
+        We know that up until point a, that the laser is in effectively in the same place at the same angle.
+        One beam reflects, but the other continues to hit the further mirror.
+        We find that it gains a position change in the Y-axis of $$\Delta h = mirror\_size/2 * \tan{\theta} = mirror\_size / 2 * b / a$$
+        Before the beam returns to point a, it has effectively gained two delta h's in height.
+        With that in mind, we can then use the same method as before, since the angle is still the same as with p_0, therefore:
+        $$p_1 = mirror\_size * b / a + b * L / a$$
+        Then to find the difference between the smallest and tallest point of the arc we find
+        $$\Delta y = p_1 - p_0 = mirror\_size * b /a + b * L / a - b * L / a = mirror\_size * b / a$$
+        Finding this, we realized that as long as our mirror array is at least three times as far away from the tilted mirror as it is higher, we should see minimal arc when scanning across rows.
+      </p>
+      <h4>Pixel Size</h4>
+      <p>
+        The pixel size of the display is directly tied to the beamwidth of the laser.
+        Due to the nature of the lasers that we used in our setup, we did not observe many nonlinear effects in terms of beam divergance.
+        Therefore when we measured how fast the beam diverged, we assumed that it diverged linearly.
+        We describe beamwidth as a funciton of distance from the mirror.
+        The pixel size that you are able to have, is the size of the beamwidth at a given distance, as we cannot have mulitple beams overlapping, causing aliasing of the output.
+      </p>
+      <h4>RPM Considerations</h4>
+      <p>
+        After finding the size of each pixel, it was important to determine how many pixels that we could display at a given speed of our mirror array.
+        As seen in the figure below, the mirror array must turn by $$\theta = arctan{(beamwidth / D)}$$ to draw nonoverlapping pixels.
+        <img src="./images/pixelSize.svg">
+        That gives us the amount of radians the mirror array must turn in order to produce a single pixel.
+        To find the RPM required to display a certain number of pixels, we found that:
+        $$RPM = 2\pi (radians)/ 1 (Hz) * 1 (S) / Num\_pixs * \arctan{(beamwidth / D)} * 60 (RPM) / 1 (Hz)$$
+        Where $$Num\_pixs = DISPLAY\_HEIGHT * DISPLAY\_WIDTH * FPS$$
+        This comes from having radians per pixel, multiplied by pixels per second, then Hertz per radian, and then RPM per Hertz to get the final RPM.
+        After calculating that our fan speed which spun our mirror array was 3600, we assumed we would be able to have a 50x50 pixel array.
+      </p>
       <h3>Logical structure</h3>
       <div class="figure" id="figlogic">
         <img src="logical_structure_diagram.svg" />
