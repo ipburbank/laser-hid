@@ -149,7 +149,7 @@
         For each laser, we would increase or decrease the current across the laser using a desktop power supply, and recorded the amount of current for intensities we wanted to include in our display.
         There was not a large range of intensities that were easy to distinguish, so we went with 2-bit color for each laser.
         These 2-bits represented, off, low power, medium power, and full power.
-        We soon found that the laser take much more current than the PIC32 is able to source(180mA-250mA for red and blue, 350-550mA for green).
+        We soon found that the laser take much more current than the PIC32 is able to source (180mA-250mA for red and blue, 350-550mA for green).
         As such, we needed to design a current sink that the PIC32 could control.
         To do so, we have a current sink made with BJTs and a resistor.
         The resistor value was chosen based on the voltage drop across the laser and how much current we wanted.
@@ -179,6 +179,7 @@
         Parts of the DAC circuit are supplied with 5V from a salvage power adapter.
         The fan is supplied with 12V from the same adapter.
         The diode control circuits are supplied with 3.3V from a bench power supply.
+        All of the different power supplies were all tied to a common ground.
       </p>
     </section>
 
