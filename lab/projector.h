@@ -1,5 +1,5 @@
 /**
- * @file   pid.h
+ * @file   projector.h
  * @author Istvan Burbank, Peter Friend, James Cassell
  * @date   2016-11-05
  * @brief  Projector Output Functions
