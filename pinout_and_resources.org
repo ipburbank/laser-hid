@@ -1,4 +1,5 @@
 #+STARTUP: align
+#+OPTIONS: ^:{}
 
 * Peripheral Use
 | <15>            | <10>       | <20>                 | <50>                                               |
