@@ -91,4 +91,11 @@
 // twice this)
 #define JOYSTICK_OUTPUT_RANGE (100)
 
+/**
+ * @brief System clock rate, in Hz.
+ *
+ * MUST match pragmas configured in main.c
+ */
+#define SYS_CLOCK (40000000)
+
 #endif // PARAMETERS_H
